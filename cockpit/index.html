@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Brained Cockpit</title>
+<link rel="icon" href="../icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: Kopfzeile mit Gesamtbild, darunter eine Karte pro Kanal (App, Apple, Android, Abos, Instagram, TikTok, Link in Bio, Werbung) */
+:root {
+  --bg: #F6F4F1; --card: #FFFFFF; --ink: #16131F; --ink2: #5F5A70; --ink3: #9A95A8; --line: #E8E3DC;
+  --brand: #FF4F87; --brand-soft: #FFE4EC; --violet: #6D5BFF; --ios: #16131F; --android: #2BB673; --web: #6D5BFF;
+  --ok: #1E9E62; --ok-soft: #DDF5E9; --warn: #B7791F; --warn-soft: #FCF0D9; --off: #8A8597; --off-soft: #EEECEF;
+  --display: "Fredoka", "Plus Jakarta Sans", system-ui, sans-serif; --font: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif; --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F0E14; --card: #18171F; --ink: #F4F2F8; --ink2: #B6B1C4; --ink3: #7D788D; --line: #2A2834;
+  --brand-soft: #3A1625; --ios: #F4F2F8; --ok-soft: #10301F; --warn-soft: #33270F; --off-soft: #24222C; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0F0E14; --card: #18171F; --ink: #F4F2F8; --ink2: #B6B1C4; --ink3: #7D788D; --line: #2A2834;
+  --brand-soft: #3A1625; --ios: #F4F2F8; --ok-soft: #10301F; --warn-soft: #33270F; --off-soft: #24222C; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 60px; }
+header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; padding-block: 8px 20px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img { width: 40px; height: 40px; border-radius: 11px; }
+h1 { font-family: var(--display); font-size: 28px; margin: 0; letter-spacing: -.01em; }
+.meta { color: var(--ink3); font-size: 13px; font-weight: 600; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+button, .btn { font: inherit; font-weight: 700; font-size: 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 9px 14px; border-radius: 11px; cursor: pointer; text-decoration: none; display: inline-flex; gap: 6px; align-items: center; }
+button.primary, .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+button:focus-visible, .btn:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 2px; }
+button:disabled { opacity: .6; cursor: wait; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.kpi { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; min-width: 0; }
+.kpi .l { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink3); }
+.kpi .v { font-family: var(--mono); font-weight: 700; font-size: 30px; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi .d { font-size: 12.5px; color: var(--ink2); font-weight: 600; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }
+@media (max-width: 420px) { .grid { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 18px; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.card.wide { grid-column: 1 / -1; }
+.ch { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ch h2 { margin: 0; font-size: 17px; font-weight: 800; display: flex; align-items: center; gap: 9px; }
+.dot { width: 10px; height: 10px; border-radius: 3px; background: var(--c, var(--brand)); }
+.pill { font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.warn { background: var(--warn-soft); color: var(--warn); } .pill.off { background: var(--off-soft); color: var(--off); }
+.nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px 16px; }
+.n .v { font-family: var(--mono); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.n .l { font-size: 12.5px; color: var(--ink2); font-weight: 600; }
+.meter { display: grid; gap: 6px; }
+.meter .row { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; font-weight: 600; color: var(--ink2); }
+.meter .row b { font-family: var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.meter .bar { height: 8px; border-radius: 4px; background: var(--off-soft); overflow: hidden; }
+.meter .bar span { display: block; height: 100%; background: var(--ok); border-radius: 4px; }
+.meter .bar span.warn { background: var(--warn); } .meter .bar span.bad { background: #D23B5E; }
+.note { font-size: 13px; color: var(--ink2); background: var(--bg); border-radius: 12px; padding: 10px 12px; margin: 0; }
+.split { display: flex; height: 14px; border-radius: 7px; overflow: hidden; background: var(--off-soft); }
+.split span { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; font-weight: 600; color: var(--ink2); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+.chart { width: 100%; height: 120px; display: block; }
+.chart text { fill: var(--ink3); font: 600 10px var(--font); }
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; color: var(--ink3); font-weight: 700; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+td.num, th.num { text-align: right; font-family: var(--mono); }
+td a { color: var(--ink); font-weight: 600; }
+.lock { max-width: 420px; margin: 12vh auto 0; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; display: flex; flex-direction: column; gap: 14px; }
+.lock input { font: inherit; font-family: var(--mono); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 100%; }
+.err { color: #D23B5E; font-weight: 700; font-size: 13.5px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; }
+@media (prefers-reduced-motion: no-preference) { .card, .kpi { animation: in .35s ease both; } @keyframes in { from { opacity: 0; transform: translateY(6px); } } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast" hidden></div>
+<script>
+const API = 'https://hsjceeclecvkjbusabpg.supabase.co/functions/v1/cockpit';
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const fmt = n => n == null || n === '' ? '–' : Number(n).toLocaleString('de-CH');
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { } } };
+let key = store.get('cockpit-key') || '', data = null;
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 3500); }
+
+async function load(collect = false) {
+  const r = await fetch(API + (collect ? '?collect' : ''), { method: collect ? 'POST' : 'GET', headers: { 'x-cockpit-key': key } });
+  const d = await r.json().catch(() => ({ error: 'Server antwortet nicht' }));
+  if (r.status === 401) { store.set('cockpit-key', null); key = ''; return lock('Der Schlüssel stimmt nicht.'); }
+  if (d.error) throw new Error(d.error);
+  data = d; render();
+  if (collect && d.collected) { const bad = Object.entries(d.collected).filter(([k, v]) => v !== 'ok'); toast(bad.length ? 'Teilweise aktualisiert: ' + bad.map(([k, v]) => k + ' – ' + v).join(' · ') : 'Alle Zahlen frisch geholt'); }
+}
+
+function lock(err = '') {
+  $('#app').innerHTML = `<form class="lock" id="lockf"><div class="brand"><img src="../icon.png" alt=""><h1>Brained Cockpit</h1></div>
+    <label for="k">Cockpit-Schlüssel</label><input id="k" type="password" autocomplete="current-password" placeholder="Schlüssel einfügen" required>
+    ${err ? `<div class="err">${esc(err)}</div>` : ''}<button class="primary" type="submit">Öffnen</button>
+    <p class="note">Den Schlüssel findest du in der Datei «.env» im Brained-Ordner unter COCKPIT_KEY. Er bleibt nur auf diesem Gerät gespeichert.</p></form>`;
+  $('#lockf').addEventListener('submit', e => { e.preventDefault(); key = $('#k').value.trim(); store.set('cockpit-key', key); start(); });
+}
+
+// Kleines Balken-/Liniendiagramm, eine Skala für Marken und Beschriftung
+function chart(rows, k, color = 'var(--brand)', label = '') {
+  if (!rows?.length) return '<p class="note">Noch keine Daten.</p>';
+  const W = 600, H = 120, pad = 18, vals = rows.map(r => +r[k] || 0), max = Math.max(1, ...vals), bw = (W - pad) / vals.length;
+  const bars = vals.map((v, i) => `<rect x="${(pad + i * bw + 1).toFixed(1)}" y="${(H - 16 - (v / max) * (H - 30)).toFixed(1)}" width="${Math.max(1, bw - 2).toFixed(1)}" height="${((v / max) * (H - 30)).toFixed(1)}" rx="2" fill="${color}" opacity="${i === vals.length - 1 ? 1 : .55}"><title>${esc(rows[i].d)}: ${fmt(v)}</title></rect>`).join('');
+  const d0 = rows[0].d?.slice(5).split('-').reverse().join('.'), d1 = rows.at(-1).d?.slice(5).split('-').reverse().join('.');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${esc(label)}">
+    <line x1="${pad}" x2="${W}" y1="${H - 16}" y2="${H - 16}" stroke="var(--line)"/><line x1="${pad}" x2="${W}" y1="14" y2="14" stroke="var(--line)" stroke-dasharray="3 4"/>
+    <text x="0" y="17">${fmt(max)}</text><text x="0" y="${H - 13}">0</text>${bars}
+    <text x="${pad}" y="${H - 2}">${d0}</text><text x="${W}" y="${H - 2}" text-anchor="end">${d1}</text></svg>`;
+}
+const status = (on, wait) => on ? '<span class="pill ok">verbunden</span>' : wait ? `<span class="pill warn">${wait}</span>` : '<span class="pill off">nicht verbunden</span>';
+const num = (v, l) => `<div class="n"><div class="v">${fmt(v)}</div><div class="l">${l}</div></div>`;
+const mb = b => (b / 1048576).toLocaleString('de-CH', { maximumFractionDigits: b < 1048576 * 10 ? 1 : 0 }) + ' MB';
+const meter = (label, used, max, show) => { const p = Math.min(100, used / max * 100); return `<div class="meter"><div class="row"><span>${label}</span><b>${show(used)} von ${show(max)}</b></div><div class="bar"><span class="${p > 85 ? 'bad' : p > 60 ? 'warn' : ''}" style="width:${Math.max(p, 1)}%"></span></div></div>`; };
+const ago = iso => { if (!iso) return 'nie'; const m = Math.round((Date.now() - Date.parse(iso)) / 60000); return m < 1 ? 'gerade eben' : m < 60 ? `vor ${m} min` : m < 1440 ? `vor ${Math.round(m / 60)} h` : `vor ${Math.round(m / 1440)} Tagen`; };
+
+function postsTable(posts, cols) {
+  if (!posts?.length) return '<p class="note">Noch keine Beiträge.</p>';
+  return `<div class="tbl"><table><thead><tr><th>Beitrag</th>${cols.map(c => `<th class="num">${c[1]}</th>`).join('')}</tr></thead><tbody>
+    ${posts.slice(0, 8).map(p => `<tr><td><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc((p.caption || '(ohne Text)').slice(0, 48))}</a><div class="meta">${p.at ? new Date(p.at).toLocaleDateString('de-CH') : ''}</div></td>${cols.map(c => `<td class="num">${fmt(p[c[0]])}</td>`).join('')}</tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+function render() {
+  const o = data.own || {}, L = data.latest || {}, S = data.series || {}, C = data.connected || {}, can = data.can_connect || {};
+  const ap = L.apple || {}, ig = L.instagram, tt = L.tiktok;
+  const store30 = (S.apple_store || []).slice(-30), dl7 = store30.slice(-7).reduce((s, r) => s + (r.downloads || 0), 0), dlAll = (S.apple_store || []).reduce((s, r) => s + (r.downloads || 0), 0);
+  const plat = o.by_platform || {}, pt = Object.values(plat).reduce((a, b) => a + b, 0) || 1;
+  const PC = { ios: ['iPhone', 'var(--ios)'], android: ['Android', 'var(--android)'], web: ['Web', 'var(--web)'], unbekannt: ['noch unbekannt', 'var(--off)'] };
+  const connect = p => can[p] ? `<a class="btn primary" href="${API}?connect=${p}&k=${encodeURIComponent(key)}">Verbinden</a>` : '<span class="meta">App-Zugang fehlt noch</span>';
+  const last = L.collect_log?.at;
+  $('#app').innerHTML = `
+  <header><div class="brand"><img src="../icon.png" alt=""><div><h1>Brained Cockpit</h1><div class="meta">Zahlen geholt ${ago(last)} · automatisch alle 3 Stunden</div></div></div>
+    <div class="actions"><button class="primary" id="refresh">Jetzt aktualisieren</button><button id="logout">Abmelden</button></div></header>
+
+  <section class="kpis" aria-label="Überblick">
+    <div class="kpi"><div class="l">Nutzer total</div><div class="v">${fmt(o.users_total)}</div><div class="d">+${fmt(o.users_new_7d)} in 7 Tagen</div></div>
+    <div class="kpi"><div class="l">Aktiv diese Woche</div><div class="v">${fmt(o.wau)}</div><div class="d">heute ${fmt(o.dau)} · Monat ${fmt(o.mau)}</div></div>
+    <div class="kpi"><div class="l">App-Store-Downloads</div><div class="v">${fmt(dlAll)}</div><div class="d">${fmt(dl7)} in 7 Tagen</div></div>
+    <div class="kpi"><div class="l">Pro-Abos aktiv</div><div class="v">${fmt(o.pro_active)}</div><div class="d">+${fmt(o.pro_new_30d)} in 30 Tagen</div></div>
+    <div class="kpi"><div class="l">Follower</div><div class="v">${fmt((ig?.followers || 0) + (tt?.followers || 0))}</div><div class="d">Instagram ${fmt(ig?.followers)} · TikTok ${fmt(tt?.followers)}</div></div>
+    <div class="kpi"><div class="l">Klicks Link in Bio</div><div class="v">${fmt(o.clicks_total)}</div><div class="d">${fmt(o.clicks_7d)} in 7 Tagen</div></div>
+  </section>
+
+  <div class="grid">
+    <section class="card wide"><div class="ch"><h2><span class="dot"></span>App-Nutzung</h2>${status(true)}</div>
+      <div class="nums">${num(o.users_new_1d, 'neue Nutzer heute')}${num(o.users_new_30d, 'neue Nutzer, 30 Tage')}${num(o.dau, 'aktiv heute')}${num(o.mau, 'aktiv im Monat')}${num(o.study_sessions_7d, 'Lern-Sessions, 7 Tage')}${num(Math.round((o.study_min_7d || 0) / 60), 'Lernstunden, 7 Tage')}</div>
+      <div><div class="meta" style="margin-bottom:6px">Nutzer nach Gerät</div>
+        <div class="split">${Object.entries(plat).map(([k, n]) => `<span style="width:${n / pt * 100}%;background:${(PC[k] || PC.unbekannt)[1]}"></span>`).join('')}</div>
+        <div class="legend" style="margin-top:8px">${Object.entries(plat).map(([k, n]) => `<span><i style="background:${(PC[k] || PC.unbekannt)[1]}"></i>${(PC[k] || [k])[0]}: ${fmt(n)}</span>`).join('') || 'Noch keine Nutzer'}</div></div>
+      <div class="grid" style="gap:10px"><div><div class="meta">Neue Nutzer pro Tag (30 Tage)</div>${chart(o.series, 'signups', 'var(--brand)', 'Neue Nutzer pro Tag')}</div>
+        <div><div class="meta">Aktive Lernende pro Tag (30 Tage)</div>${chart(o.series, 'active', 'var(--violet)', 'Aktive Lernende pro Tag')}</div></div>
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:var(--ios)"></span>Apple · App Store</h2>${status(C.apple)}</div>
+      <div class="nums">${num(dl7, 'Downloads, 7 Tage')}${num(store30.reduce((s, r) => s + (r.page_views || 0), 0), 'Seitenaufrufe, 30 Tage')}${num(store30.reduce((s, r) => s + (r.impressions || 0), 0), 'Impressionen, 30 Tage')}${num(store30.reduce((s, r) => s + (r.redownloads || 0), 0), 'erneute Downloads')}</div>
+      ${store30.length ? chart(store30, 'downloads', 'var(--ios)', 'Downloads pro Tag') : '<p class="note">Die App-Store-Statistik ist eingeschaltet. Apple liefert die ersten Zahlen 1–2 Tage nach dem Launch.</p>'}
+      <div class="meta">TestFlight</div>
+      <div class="nums">${num(ap.testers, 'Tester')}${num(ap.testers_active_30d, 'aktiv, 30 Tage')}${num(ap.sessions_30d, 'Sessions, 30 Tage')}${num(ap.feedback_30d, 'Feedbacks')}${num(ap.crashes_30d, 'Abstürze')}</div>
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:var(--android)"></span>Android · Google Play</h2>${status(true)}</div>
+      <div class="nums">${num(plat.android, 'Android-Nutzer total')}${num(o.active_by_platform?.android, 'aktiv diese Woche')}${num(o.clicks_by_target?.android, 'Klicks Richtung Play Store')}</div>
+      <p class="note">Gezählt wird, wer Brained auf Android öffnet und ein Konto hat. Das ist genauer als die Play-Downloads, weil nur echte Nutzer zählen. Die Aufteilung nach Gerät erscheint mit dem nächsten App-Update.</p>
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:#3ECF8E"></span>Server (Supabase)</h2>${status(true)}</div>
+      ${meter('Datenbank', o.db_bytes || 0, 500 * 1048576, mb)}
+      ${meter('Dateispeicher', o.storage_bytes || 0, 1024 * 1048576, mb)}
+      ${meter('Aktive Konten (30 Tage)', o.auth_mau || 0, 50000, fmt)}
+      <div class="nums">${num(o.auth_users, 'Konten total')}${num(o.ai_calls_1d, 'Brainy-Aufrufe heute')}${num(o.ai_calls_30d, 'Brainy-Aufrufe, 30 Tage')}${S.supabase?.length ? num(S.supabase.slice(-7).reduce((a, r) => a + (r.requests || 0), 0), 'Server-Anfragen, 7 Tage') : ''}</div>
+      <p class="note">Grenzen des Gratis-Plans. Wird ein Balken orange (über 60 %), lohnt sich Supabase Pro (25 USD/Monat). Brainy-Aufrufe kosten Geld, sobald Claude statt der Gratis-KI läuft.</p>
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:var(--ok)"></span>Abos (Pro)</h2>${status(C.revenuecat, 'Verkauf noch aus')}</div>
+      <div class="nums">${num(o.pro_active, 'aktive Abos')}${num(o.pro_new_30d, 'neu, 30 Tage')}${Object.entries(o.pro_by_source || {}).map(([k, n]) => num(n, 'über ' + k)).join('')}</div>
+      <p class="note">Im Moment ist alles gratis. Sobald der Pro-Verkauf eingeschaltet ist, erscheinen hier alle Abos aus App Store, Google Play und Web.</p>
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:#E1306C"></span>Instagram ${ig?.username ? '· @' + esc(ig.username) : ''}</h2>${status(C.instagram)}</div>
+      ${C.instagram && ig ? `<div class="nums">${num(ig.followers, 'Follower')}${num(ig.posts_count, 'Beiträge')}${num(ig.last28?.reach, 'erreichte Konten, 28 T.')}${num(ig.last28?.views, 'Aufrufe, 28 T.')}${num(ig.last28?.profile_links_taps, 'Klicks auf den Bio-Link')}${num(ig.last28?.total_interactions, 'Interaktionen')}</div>
+        ${chart(S.instagram, 'followers', '#E1306C', 'Follower-Verlauf')}${postsTable(ig.posts, [['views', 'Aufrufe'], ['likes', 'Likes'], ['comments', 'Komm.'], ['shares', 'Geteilt'], ['saved', 'Gesp.']])}`
+      : `<p class="note">Noch nicht verbunden. Nach dem Verbinden siehst du hier Follower, Reichweite, Aufrufe, Likes, Kommentare und Link-Klicks pro Post.</p><div>${connect('instagram')}</div>`}
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:#25F4EE"></span>TikTok ${tt?.username ? '· @' + esc(tt.username) : ''}</h2>${status(C.tiktok)}</div>
+      ${C.tiktok && tt ? `<div class="nums">${num(tt.followers, 'Follower')}${num(tt.likes, 'Likes total')}${num(tt.videos, 'Videos')}${num(tt.views_recent, 'Aufrufe (letzte 20)')}</div>
+        ${chart(S.tiktok, 'followers', '#25C4EE', 'Follower-Verlauf')}${postsTable(tt.posts, [['views', 'Aufrufe'], ['likes', 'Likes'], ['comments', 'Komm.'], ['shares', 'Geteilt']])}`
+      : `<p class="note">Noch nicht verbunden. Nach dem Verbinden siehst du hier Follower, Likes und die Aufrufe jedes Videos.</p><div>${connect('tiktok')}</div>`}
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:var(--violet)"></span>Link in Bio</h2>${status(true, '')}</div>
+      <div class="nums">${num(o.clicks_total, 'Klicks total')}${num(o.clicks_7d, 'Klicks, 7 Tage')}${Object.entries(o.clicks_by_src || {}).map(([k, n]) => num(n, 'von ' + ({ ig: 'Instagram', tt: 'TikTok', web: 'Webseite' }[k] || k))).join('')}</div>
+      <div class="legend">${Object.entries(o.clicks_by_target || {}).map(([k, n]) => `<span><i style="background:${(PC[k] || PC.unbekannt)[1]}"></i>${(PC[k] || [k])[0]}: ${fmt(n)}</span>`).join('') || 'Noch keine Klicks'}</div>
+      ${chart(o.series, 'clicks', 'var(--violet)', 'Klicks pro Tag')}
+    </section>
+
+    <section class="card"><div class="ch"><h2><span class="dot" style="--c:var(--warn)"></span>Werbung</h2><span class="pill off">kommt später</span></div>
+      <p class="note">Hier erscheinen später Ausgaben, Klicks und Kosten pro Download aus TikTok- und Meta-Werbung.</p>
+    </section>
+  </div>`;
+  $('#refresh').onclick = async e => { e.target.disabled = true; e.target.textContent = 'Hole Zahlen …'; try { await load(true); } catch (err) { toast(err.message); render(); } };
+  $('#logout').onclick = () => { store.set('cockpit-key', null); key = ''; lock(); };
+}
+
+async function start() {
+  if (!key) return lock();
+  $('#app').innerHTML = '<p class="meta">Lade Zahlen …</p>';
+  try { await load(); } catch (e) { lock(e.message); }
+  const h = location.hash;
+  if (h.startsWith('#verbunden-')) toast(h.slice(11) === 'instagram' ? 'Instagram ist verbunden' : 'TikTok ist verbunden');
+  if (h === '#verbindung-abgebrochen') toast('Verbindung abgebrochen');
+}
+start();
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#FF4F87" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Brained" />
+  <meta name="description" content="Brained – die Lern-App für die Schweiz. Tracke Lernsessions, baue Streaks auf und miss dich mit Freunden." />
+  <title>Brained</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/icon-180.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div id="phone">
+    <div id="app"></div>
+  </div>
+  <script type="module" src="js/app.js"></script>
+  <script>
+    // Notfall-Anzeige: Falls die App nicht startet, Fehler zeigen statt weisser Seite
+    (function () {
+      var errs = [];
+      window.addEventListener('error', function (e) { errs.push((e.message || 'Fehler') + (e.filename ? ' (' + e.filename.split('/').pop() + ':' + e.lineno + ')' : '')); });
+      window.addEventListener('unhandledrejection', function (e) { errs.push(String(e.reason && e.reason.message || e.reason)); });
+      setTimeout(function () {
+        if (window.__booted) return;
+        var d = document.createElement('div');
+        d.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#FFF0F5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:30px;text-align:center;font-family:-apple-system,system-ui,sans-serif;color:#16131F';
+        d.innerHTML = '<div style="font-size:54px">🧠</div><b style="font-size:20px">Brained lädt nicht richtig</b><div style="color:#57536A;font-size:15px">Prüfe deine Internetverbindung und lade neu.</div>'
+          + '<button onclick="location.reload()" style="background:#FF4F87;color:#fff;border:0;border-radius:999px;padding:14px 28px;font-weight:800;font-size:16px">Neu laden</button>'
+          + '<button onclick="try{localStorage.removeItem(\'brained.v1\')}catch(e){};location.reload()" style="background:none;border:0;color:#57536A;text-decoration:underline;font-size:14px">Lokale Daten zurücksetzen (Konto bleibt erhalten)</button>'
+          + (errs.length ? '<code style="font-size:11px;color:#9893A8;max-width:320px;word-break:break-word">' + errs.slice(0, 3).join('<br>').replace(/</g, '&lt;') + '</code>' : '');
+        document.body.appendChild(d);
+      }, 9000);
+    })();
+  </script>
+</body>
+</html>
