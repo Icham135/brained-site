@@ -1,0 +1,113 @@
+/* Exam Studio 2 – Scanner-Animation (Präfix exs-)
+   Animationen hängen nur an Klassen (.on / .cl / .done) → render() per morphdom startet nichts neu.
+   Fortschritt kommt als --p (0–1) bzw. --sp pro Schritt und wird per Transition weich nachgeführt. */
+.exs {
+  --exs-bg: var(--ex-bg, #F5F4F1); --exs-paper: var(--ex-paper, #FFFFFF); --exs-ink: var(--ex-ink, #0E1015); --exs-ink2: var(--ex-ink2, #3B404B);
+  --exs-muted: var(--ex-muted, #8B909B); --exs-line: var(--ex-line, #E5E3DE); --exs-side: var(--ex-side, #15171C); --exs-side2: var(--ex-side2, #1E2128);
+  --exs-accent: var(--ex-accent, #FF4F87); --exs-ok: var(--ex-ok, #12B76A); --exs-warn: var(--ex-warn, #F79009);
+  --exs-sweep: 3.8s; --exs-read: 4.6s;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 16px 28px; margin: 0 auto; max-width: 520px;
+  color: var(--exs-ink); background: var(--exs-bg); border-radius: 24px; box-sizing: border-box; width: 100%;
+}
+.exs-head { text-align: center; }
+.exs-kicker { display: block; font-size: 11px; font-weight: 800; letter-spacing: .14em; color: var(--exs-muted); }
+.exs-head h2 { margin: 4px 0 0; font-size: 22px; line-height: 1.2; font-weight: 800; color: var(--exs-ink); }
+
+/* ---------- Bühne + Blatt-Stapel ---------- */
+.exs-stage { width: 100%; display: flex; justify-content: center; padding: 10px 0 18px;
+  background: radial-gradient(60% 55% at 50% 45%, rgba(255, 79, 135, .07), transparent 70%); }
+.exs-stack { position: relative; width: min(72vw, 320px, 31vh); aspect-ratio: 1 / 1.414; }
+.exs-sheet { position: absolute; inset: 0; overflow: hidden; border-radius: 6px; background: var(--exs-paper);
+  box-shadow: 0 1px 2px rgba(14, 16, 21, .08), 0 10px 30px -12px rgba(14, 16, 21, .28);
+  transform-origin: 50% 100%; transition: transform .75s cubic-bezier(.2, .8, .2, 1), opacity .55s ease, box-shadow .5s ease;
+  z-index: calc(10 - var(--d, 0)); }
+.exs-sheet.next { transform: translateY(calc(var(--d) * 9px)) scale(calc(1 - var(--d) * .035)) rotate(calc(var(--d) * 1.1deg)); filter: brightness(.97); }
+.exs-sheet.next[style*="--d:3"], .exs-sheet.next[style*="--d:4"] { opacity: 0; }
+.exs-sheet.on { z-index: 12; box-shadow: 0 1px 2px rgba(14, 16, 21, .1), 0 22px 50px -16px rgba(14, 16, 21, .38); }
+.exs-sheet.done { z-index: 13; transform: translate(-118%, -6%) rotate(-11deg); opacity: 0; pointer-events: none; }
+.exs-raw, .exs-clean, .exs-clean img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 50%; display: block; }
+.exs-raw { user-select: none; }
+/* Platzhalter-Seite, solange noch keine Bilder da sind */
+.exs-ph { display: flex; flex-direction: column; gap: 7%; padding: 14% 12%; box-sizing: border-box; }
+.exs-ph i { display: block; height: 3.2%; border-radius: 3px; background: var(--exs-line); }
+.exs-ph i:nth-child(1) { width: 55%; height: 4.5%; background: #D9D6CF; } .exs-ph i:nth-child(3n) { width: 78%; } .exs-ph i:nth-child(4n) { width: 64%; }
+
+/* Bereinigte Seite: wird oberhalb des Balkens freigelegt */
+.exs-clean { clip-path: inset(0 0 100% 0); }
+.exs-sheet.done .exs-clean { clip-path: inset(0 0 0 0); }
+.exs-sheet.on.cl .exs-clean { animation: exs-erase var(--exs-sweep) cubic-bezier(.45, .05, .35, 1) both; }
+/* Glanz, der nach dem Radieren einmal über die saubere Seite zieht */
+.exs-sheet.on.cl::after { content: ''; position: absolute; inset: -20% -60%; pointer-events: none; z-index: 3;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .75) 50%, transparent 60%);
+  transform: translateX(-70%); animation: exs-shine 1.3s ease-in-out calc(var(--exs-sweep) - .1s) both; }
+
+/* Balken: Container in voller Blatthöhe, per translateY (GPU) verschoben; Linie sitzt an seiner Oberkante */
+.exs-beam { position: absolute; left: 0; right: 0; top: 0; height: 100%; z-index: 4; pointer-events: none; transform: translateY(-2%); opacity: 0; }
+.exs-sheet.on .exs-beam { opacity: 1; animation: exs-read var(--exs-read) ease-in-out infinite alternate; }
+.exs-sheet.on.cl .exs-beam { animation: exs-sweep var(--exs-sweep) cubic-bezier(.45, .05, .35, 1) both, exs-read var(--exs-read) ease-in-out var(--exs-sweep) infinite alternate-reverse; }
+.exs-line { position: absolute; left: -2%; right: -2%; top: -1.5px; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--exs-accent) 12%, #fff 50%, var(--exs-accent) 88%, transparent);
+  box-shadow: 0 0 10px 2px rgba(255, 79, 135, .55), 0 0 26px 6px rgba(255, 79, 135, .22); }
+.exs-glow { position: absolute; left: 0; right: 0; top: -42px; height: 84px;
+  background: radial-gradient(60% 50% at 50% 50%, rgba(255, 79, 135, .16), transparent 70%),
+              linear-gradient(to bottom, transparent, rgba(255, 255, 255, .55) 46%, rgba(255, 255, 255, .55) 54%, transparent); mix-blend-mode: screen; }
+/* Radier-Krümel an der Kante – nur während des Radierens */
+.exs-dust { position: absolute; left: 0; right: 0; top: 0; height: 0; opacity: 0; }
+.exs-sheet.on.cl .exs-dust { animation: exs-dust-on var(--exs-sweep) linear both; }
+.exs-dust i { position: absolute; left: var(--x); top: -1px; width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(70, 64, 74, .55); transform: scale(var(--s)); }
+.exs-sheet.on.cl .exs-dust i { animation: exs-crumb var(--t) ease-out var(--w) infinite; }
+.exs-dust i.pk { background: rgba(255, 79, 135, .6); width: 2px; height: 2px; }
+
+@keyframes exs-erase { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes exs-sweep { from { transform: translateY(-2%); } to { transform: translateY(100%); } }
+@keyframes exs-read { from { transform: translateY(2%); } to { transform: translateY(98%); } }
+@keyframes exs-crumb { 0% { transform: translate(0, 0) scale(var(--s)); opacity: 0; } 15% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(calc(var(--s) * .4)); opacity: 0; } }
+@keyframes exs-dust-on { 0%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes exs-shine { from { transform: translateX(-70%); } to { transform: translateX(70%); } }
+
+.exs-count { margin: -4px 0 0; font-size: 13px; font-weight: 600; color: var(--exs-muted); }
+
+/* ---------- Schritte ---------- */
+.exs-steps { list-style: none; margin: 0; padding: 6px; width: 100%; box-sizing: border-box; background: var(--exs-paper); border: 1px solid var(--exs-line); border-radius: 18px; }
+.exs-steps li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 10px; color: var(--exs-muted); transition: color .3s ease; }
+.exs-steps li + li { border-top: 1px solid var(--exs-line); }
+.exs-steps li > div { flex: 1; min-width: 0; }
+.exs-steps b { display: block; font-size: 15px; font-weight: 700; }
+.exs-steps small { display: block; font-size: 12.5px; line-height: 1.35; margin-top: 1px; }
+.exs-dot { flex: none; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; border: 2px solid var(--exs-line); box-sizing: border-box; display: grid; place-items: center; color: #fff; transition: background .3s, border-color .3s; }
+.exs-dot svg { width: 14px; height: 14px; opacity: 0; transform: scale(.4); transition: opacity .3s, transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+.exs-steps li.now { color: var(--exs-ink2); } .exs-steps li.now b { color: var(--exs-ink); }
+.exs-steps li.now .exs-dot { border-color: var(--exs-accent); border-right-color: transparent; animation: exs-spin .9s linear infinite; }
+.exs-steps li.done { color: var(--exs-ink2); } .exs-steps li.done b { color: var(--exs-ink); }
+.exs-steps li.done .exs-dot { background: var(--exs-ok); border-color: var(--exs-ok); }
+.exs-steps li.done .exs-dot svg { opacity: 1; transform: none; }
+.exs-sbar { display: block; height: 3px; margin-top: 8px; border-radius: 3px; background: var(--exs-line); overflow: hidden; position: relative; }
+.exs-steps li:not(.now) .exs-sbar { display: none; }
+.exs-sbar::after { content: ''; position: absolute; inset: 0; background: var(--exs-accent); transform-origin: left; transform: scaleX(var(--sp, 0)); transition: transform .6s ease; }
+@keyframes exs-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Gesamt-Fortschritt + Wartehinweis ---------- */
+.exs-total { display: flex; align-items: center; gap: 12px; width: 100%; }
+.exs-bar { flex: 1; height: 8px; border-radius: 8px; background: var(--exs-line); position: relative; overflow: hidden; }
+.exs-bar::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(90deg, var(--exs-side2), var(--exs-accent));
+  transform-origin: left; transform: scaleX(var(--p, 0)); transition: transform .7s cubic-bezier(.2, .8, .2, 1); }
+.exs-total b { font-size: 15px; font-weight: 800; min-width: 48px; text-align: right; font-variant-numeric: tabular-nums; }
+.exs-wait { margin: 0; min-height: 0; font-size: 13px; text-align: center; color: var(--exs-warn); font-weight: 600; }
+.exs-wait:not(.on) { display: none; }
+
+@media (max-width: 380px) { .exs { padding: 14px 12px 22px; } .exs-head h2 { font-size: 19px; } .exs-stack { width: min(78vw, 300px, 31vh); } }
+
+/* ---------- Weniger Bewegung: kein Balken, keine Krümel, saubere Seite blendet einfach ein ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .exs *, .exs *::before, .exs *::after, .exs-sheet.on.cl::after { animation: none !important; }
+  .exs-beam, .exs-sheet.on.cl::after { display: none; }
+  .exs-sheet { transition: opacity .4s ease; }
+  .exs-sheet.next { transform: translateY(calc(var(--d) * 6px)); filter: none; }
+  .exs-sheet.done { transform: none; }
+  .exs-clean, .exs-sheet.done .exs-clean { clip-path: none; opacity: 0; transition: opacity .6s ease; }
+  .exs-sheet.cl .exs-clean { opacity: 1; }
+  .exs-steps li.now .exs-dot { border-right-color: var(--exs-accent); }
+  .exs-dot svg, .exs-sbar::after, .exs-bar::after { transition: none; }
+}

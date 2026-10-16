@@ -1,0 +1,2 @@
+{ "name": "Brained Cockpit", "short_name": "Cockpit", "start_url": "./", "scope": "./", "display": "standalone", "background_color": "#0F0E14", "theme_color": "#0F0E14",
+  "icons": [{ "src": "../icon.png", "sizes": "512x512", "type": "image/png" }] }
