@@ -1,0 +1,22 @@
+/* Play-Button: fünf Varianten (nur hell), aktiv über data-play am <html>; die Farben folgen dem gewählten Look. Vorschau: tools/play-vergleich.html */
+:root[data-theme="light"][data-play] { --pa: var(--lk-b1, #B8688A); --pb: var(--lk-b2, #8E4566); --pi: var(--lk-bink, #fff); }
+:root[data-theme="light"][data-play] .tab-start button svg path { fill: var(--pi); stroke: var(--pi); }
+:root[data-theme="light"][data-play] .tab-start button svg { color: var(--pi); }
+:root[data-theme="light"][data-play] .tab-start button .live-time { color: var(--pi); }
+
+/* 1 · Vollfarbe: Squircle in der Look-Farbe mit Farbschein */
+:root[data-theme="light"][data-play="1"] .tab-start button { background: radial-gradient(90% 80% at 80% 8%, rgba(255, 255, 255, .38), rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, var(--pa), var(--pb)) !important; box-shadow: 0 12px 22px -8px var(--pb), 0 0 0 5px var(--bg); }
+/* 2 · Weiss mit Farbring: runder weisser Knopf, Ring und Dreieck in Farbe */
+:root[data-theme="light"][data-play="2"] .tab-start button { border-radius: 50%; background: #fff !important; box-shadow: inset 0 0 0 4px var(--pa), 0 10px 20px -8px rgba(22, 19, 31, .35), 0 0 0 5px var(--bg); }
+:root[data-theme="light"][data-play="2"] .tab-start button svg path { fill: var(--pb); stroke: var(--pb); }
+:root[data-theme="light"][data-play="2"] .tab-start button .live-time { color: var(--pb); }
+/* 3 · Pille: breiter Knopf, ruhig und gross zum Treffen */
+:root[data-theme="light"][data-play="3"] .tab-start button { width: 88px; height: 54px; border-radius: 27px; margin-top: 0; align-self: center; background: linear-gradient(155deg, var(--pa), var(--pb)) !important; box-shadow: 0 12px 20px -8px var(--pb), 0 0 0 5px var(--bg); }
+/* 4 · Dunkel: Tinte als Kern, Look-Farbe als Ring und Schein */
+:root[data-theme="light"][data-play="4"] .tab-start button { border-radius: 50%; background: linear-gradient(155deg, color-mix(in srgb, var(--ink) 88%, #fff), var(--ink)) !important; box-shadow: 0 0 0 5px var(--bg), 0 0 0 7.5px var(--pa), 0 14px 26px -6px var(--pa); }
+:root[data-theme="light"][data-play="4"] .tab-start button svg path { fill: #fff; stroke: #fff; }
+:root[data-theme="light"][data-play="4"] .tab-start button .live-time { color: #fff; }
+/* 5 · Glanz: runder 3D-Knopf mit Glanzkante */
+:root[data-theme="light"][data-play="5"] .tab-start button { width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(70% 52% at 50% 0%, rgba(255, 255, 255, .6), rgba(255, 255, 255, 0) 70%), linear-gradient(180deg, var(--pa), var(--pb)) !important;
+  box-shadow: inset 0 -7px 12px rgba(0, 0, 0, .2), inset 0 2px 3px rgba(255, 255, 255, .55), 0 12px 22px -8px var(--pb), 0 0 0 5px var(--bg); }
+:root[data-theme="light"][data-play="5"] .tab-start button svg { filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .25)); }

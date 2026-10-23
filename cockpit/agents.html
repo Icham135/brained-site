@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Brained Agents</title>
+<link rel="icon" href="../icon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="../icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Cockpit">
+<meta name="theme-color" content="#0F0E14">
+
+  <link rel="stylesheet" href="../fonts/fonts.css" />
+<style>
+/* Agents-Büro: Pixel-Büro mit Räumen pro Agent (Bibliothek = Research, Besprechung = Analyse/Planer, Studio = Ersteller, Post-Kabinen = Poster, Lounge = Pause),
+   Seitenleiste mit allen Personas, Zahlen getrennt nach TikTok und Instagram, Rangliste, Detail pro Persona */
+:root {
+  --bg: #F6F4F1; --card: #FFFFFF; --ink: #16131F; --ink2: #5F5A70; --ink3: #9A95A8; --line: #E8E3DC; --soft: #EEECEF;
+  --violet: #6D5BFF; --ok: #1E9E62; --ok-soft: #DDF5E9; --warn: #B7791F; --warn-soft: #FCF0D9; --bad: #D14343;
+  --tt: #111111; --tt2: #25F4EE; --tt3: #FE2C55; --ig: #D6249F;
+  --frame: #1B1925; --frame2: #26233A; --frame-ink: #ECE8F6; --frame-ink2: #A49FB8;
+  --display: "Fredoka", "Plus Jakarta Sans", system-ui, sans-serif; --font: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace; --pix: "Silkscreen", "JetBrains Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F0E14; --card: #18171F; --ink: #F4F2F8; --ink2: #B6B1C4; --ink3: #7D788D; --line: #2A2834; --soft: #24222C;
+  --ok-soft: #10301F; --warn-soft: #33270F; --tt: #F4F2F8; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #0F0E14; --card: #18171F; --ink: #F4F2F8; --ink2: #B6B1C4; --ink3: #7D788D; --line: #2A2834; --soft: #24222C;
+  --ok-soft: #10301F; --warn-soft: #33270F; --tt: #F4F2F8; color-scheme: dark; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 60px; display: grid; gap: 22px; }
+header { display: flex; flex-wrap: wrap; gap: 10px 20px; align-items: end; justify-content: space-between; }
+h1 { font-family: var(--display); font-size: 28px; margin: 0; }
+h2 { font-family: var(--display); font-size: 20px; margin: 0 0 12px; text-wrap: balance; }
+.meta { color: var(--ink3); font-size: 13px; }
+a { color: var(--violet); }
+button { font: inherit; font-weight: 600; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 7px 13px; border-radius: 10px; cursor: pointer; }
+
+/* Büro + Seitenleiste */
+.hq { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 0; background: var(--frame); border-radius: 22px; overflow: hidden; color: var(--frame-ink); }
+.bar { grid-column: 1 / -1; display: flex; gap: 14px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--frame2); font-family: var(--pix); font-size: 12px; letter-spacing: .04em; color: var(--frame-ink2); flex-wrap: wrap; }
+.bar b { color: var(--frame-ink); font-weight: 400; }
+.bar .live { width: 8px; height: 8px; border-radius: 50%; background: #3DDC84; box-shadow: 0 0 8px #3DDC84; }
+.office { position: relative; padding: 14px; display: grid; place-items: center; min-width: 0; }
+.stagebox { position: relative; width: 100%; max-width: 900px; aspect-ratio: 384 / 224; }
+canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; image-rendering: crisp-edges; border-radius: 10px; }
+.tag { position: absolute; transform: translate(-50%, -100%); pointer-events: none; text-align: center; white-space: nowrap; }
+.tag .n { font-family: var(--pix); font-size: 11px; color: #fff; text-shadow: 0 1px 0 #000, 0 0 3px #000; }
+.tag .b { display: inline-block; margin-bottom: 3px; background: #FFFDF6; color: #1B1925; font-family: var(--pix); font-size: 10px; padding: 3px 7px; border-radius: 6px; border: 2px solid #1B1925; position: relative; }
+.tag .b::after { content: ''; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); border: 4px solid transparent; border-top-color: #1B1925; }
+.tip { position: absolute; z-index: 3; pointer-events: none; background: #FFFDF6; color: #1B1925; border: 2px solid #1B1925; border-radius: 8px; padding: 6px 9px; font-size: 12px; max-width: 220px; box-shadow: 3px 3px 0 rgba(0,0,0,.35); }
+.tip b { font-family: var(--pix); font-weight: 400; display: block; font-size: 11px; margin-bottom: 2px; }
+.side { border-left: 1px solid var(--frame2); padding: 12px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.side .hd { display: flex; align-items: center; justify-content: space-between; font-family: var(--pix); font-size: 13px; }
+.filters { display: flex; gap: 5px; flex-wrap: wrap; }
+.filters button { background: transparent; color: var(--frame-ink2); border: 1px solid var(--frame2); font-family: var(--pix); font-weight: 400; font-size: 10px; padding: 4px 8px; border-radius: 6px; }
+.filters button.on { color: #1B1925; background: #F4D35E; border-color: #F4D35E; }
+.ag { display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 9px; border-radius: 12px; background: var(--frame2); cursor: pointer; border: 2px solid transparent; }
+.ag.sel { border-color: #F4D35E; }
+.ag img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; image-rendering: auto; }
+.ag .nm { font-family: var(--pix); font-size: 13px; display: flex; gap: 6px; align-items: center; }
+.ag .st { font-size: 12px; color: var(--frame-ink2); }
+.ag .st i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; background: #6B6680; }
+.ag .st i.work { background: #3DDC84; box-shadow: 0 0 6px #3DDC84; } .ag .st i.sleep { background: #7A8CFF; }
+.chain { grid-column: 1 / -1; display: flex; gap: 3px; margin-top: 2px; }
+.chain span { flex: 1; text-align: center; font-family: var(--pix); font-size: 8.5px; padding: 3px 0; border-radius: 4px; background: #1B1925; color: #6B6680; }
+.chain span.done { color: #CFEAD9; background: #1E3A2B; } .chain span.now { color: #1B1925; background: #3DDC84; }
+
+/* Karten mit TikTok / Instagram getrennt */
+.goalbar { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.gk { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; display: grid; gap: 8px; min-width: 0; }
+.gk .lb { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
+.gk .big { font-family: var(--mono); font-weight: 700; font-size: 30px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.gk .big small { font-size: 15px; color: var(--ink3); font-weight: 500; }
+.track { position: relative; height: 16px; border-radius: 999px; background: linear-gradient(90deg, #E5484D 0%, #F5A524 35%, #F4D35E 55%, #7BD389 78%, #1E9E62 100%); overflow: visible; }
+.track .rest { position: absolute; top: 0; bottom: 0; right: 0; border-radius: 0 999px 999px 0; background: color-mix(in srgb, var(--card) 55%, transparent); }
+.track .pin { position: absolute; top: -5px; width: 6px; height: 26px; border-radius: 3px; background: var(--ink); box-shadow: 0 0 0 3px var(--card); transform: translateX(-50%); }
+.ticks { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink3); font-family: var(--mono); }
+@media (max-width: 760px) { .goalbar { grid-template-columns: 1fr 1fr; } .goalbar .gk:first-child { grid-column: 1 / -1; } }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: grid; gap: 12px; cursor: pointer; min-width: 0; }
+.card.sel { outline: 2px solid var(--violet); }
+.card .top { display: flex; align-items: center; gap: 10px; }
+.card .top img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+.card .top b { font-family: var(--display); font-size: 18px; }
+.pl { display: grid; grid-template-columns: 92px repeat(4, 1fr); gap: 6px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.pl .p { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 13px; }
+.pl .p svg { width: 16px; height: 16px; flex: none; }
+.pl .v { font-family: var(--mono); font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; display: block; }
+.pl .k { font-size: 10px; color: var(--ink3); text-transform: uppercase; letter-spacing: .05em; }
+.pl.none { color: var(--ink3); font-size: 13px; grid-template-columns: 92px 1fr; }
+.next { font-size: 13px; color: var(--ink2); }
+
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; min-width: 0; }
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 9px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11px; color: var(--ink3); text-transform: uppercase; letter-spacing: .05em; font-weight: 700; }
+th:nth-child(-n+2), td:nth-child(-n+2) { text-align: left; }
+td { font-family: var(--mono); } td:nth-child(2) { font-family: var(--font); font-weight: 700; }
+th.g { text-align: center; border-bottom: 0; padding-bottom: 0; }
+.rank { font-family: var(--display); font-size: 18px; }
+.hint { font-size: 12px; color: var(--ink3); margin-top: 10px; }
+
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tabs button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.cal { display: grid; gap: 10px; }
+.day { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start; }
+.day .d { font-weight: 700; font-size: 13px; } .day .d small { display: block; color: var(--ink3); font-weight: 600; }
+.day.today .d { color: var(--violet); }
+.items { display: grid; gap: 8px; min-width: 0; }
+.it { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; padding: 8px; min-width: 0; }
+.it .th { width: 46px; height: 64px; border-radius: 8px; background: var(--soft) center/cover; flex: none; display: grid; place-items: center; font-size: 11px; color: var(--ink3); }
+.it .tx { min-width: 0; flex: 1; } .it .tx b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.it .tx span { font-size: 12px; color: var(--ink3); }
+.pf { display: flex; gap: 4px; flex-wrap: wrap; justify-content: end; }
+.chip { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: var(--soft); color: var(--ink2); white-space: nowrap; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); } .chip.wait { background: var(--warn-soft); color: var(--warn); } .chip.err { color: var(--bad); }
+.chat { display: grid; gap: 8px; max-height: 520px; overflow-y: auto; }
+.msg { border-left: 3px solid var(--line); padding: 4px 0 4px 10px; font-size: 14px; }
+.msg .h { font-size: 12px; color: var(--ink3); font-weight: 700; } .msg .h b { color: var(--ink); }
+.list { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.log { font-family: var(--mono); font-size: 12px; display: grid; gap: 4px; max-height: 520px; overflow-y: auto; }
+.log div { color: var(--ink2); overflow-wrap: anywhere; } .log time { color: var(--ink3); margin-right: 8px; }
+.lock { max-width: 360px; margin: 18vh auto; display: grid; gap: 12px; }
+.lock input { font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+@media (max-width: 900px) { .hq { grid-template-columns: 1fr; } .side { border-left: 0; border-top: 1px solid var(--frame2); } .office { padding: 8px; } }
+@media (max-width: 640px) { .day { grid-template-columns: 1fr; gap: 6px; } .tag .n { font-size: 9px; } .tag .b { font-size: 8px; padding: 2px 5px; } .pl { grid-template-columns: 78px repeat(4, 1fr); } }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const API = 'https://hsjceeclecvkjbusabpg.supabase.co/functions/v1/cockpit';
+// Personas: Farbe (Pullover), Haare, Profilbild
+const P = {
+  Lia: { slots: { ig: 'instagram_lia', tt: 'tiktok_lia' }, c: '#E8A08C', hair: '#E6C27A', hair2: '#C9A25A', style: 'long', skin: '#F4D2B8', nick: 'lia', desk: 0 },
+  Laurene: { slots: { ig: 'instagram_laurene', tt: 'tiktok_laurene' }, c: '#7FA8D8', hair: '#B98A5E', hair2: '#9A6E45', style: 'bun', skin: '#F2CDB0', nick: 'laurene', desk: 1 },
+  Elena: { slots: { tt: 'tiktok_elena' }, c: '#9C8BD9', hair: '#3A2A22', hair2: '#24180F', style: 'bob', skin: '#EBC4A2', nick: 'elena', desk: 2 },
+  Leni: { slots: { ig: 'instagram_leni', tt: 'tiktok_leni' }, c: '#6FB79A', hair: '#4A3022', hair2: '#301E14', style: 'long', skin: '#F0C8A6', nick: 'leni', desk: 3 }
+};
+const NAMES = Object.keys(P);
+const AG = ['research', 'entscheiden', 'planen', 'erstellen', 'posten'], AGL = { research: 'Research', entscheiden: 'Analyse', planen: 'Planer', erstellen: 'Ersteller', posten: 'Poster', analyse: 'Analyse' };
+const LOGNAME = { research: 'research', analyse: 'entscheiden', planer: 'planen', ersteller: 'erstellen', poster: 'posten' };
+const DOING = { research: 'recherchiert', entscheiden: 'entscheidet', planen: 'plant', erstellen: 'erstellt', posten: 'postet', analyse: 'wertet aus' };
+const ICON = {
+  tt: `<svg viewBox="0 0 24 24"><path fill="var(--tt)" d="M16.6 3c.4 2.2 1.8 3.7 4 3.9v3.2c-1.5 0-2.9-.4-4-1.2v6.2c0 3.3-2.6 5.9-5.9 5.9S4.8 18.4 4.8 15.1s2.6-5.9 5.9-5.9c.3 0 .6 0 .9.1v3.3a2.7 2.7 0 1 0 1.8 2.5V3h3.2z"/></svg>`,
+  ig: `<svg viewBox="0 0 24 24"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".5" stop-color="#D62976"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="url(#igg)" stroke-width="2.4"/><circle cx="12" cy="12" r="4" fill="none" stroke="url(#igg)" stroke-width="2.4"/><circle cx="17.3" cy="6.7" r="1.3" fill="#D62976"/></svg>`
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const fmt = n => n == null ? '–' : Number(n).toLocaleString('de-CH');
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch { } } };
+const zh = d => new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Zurich', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(d);
+const swiss = (o = 0) => zh(new Date(Date.now() + o * 864e5)).slice(0, 10);
+const hour = () => +zh(new Date()).slice(11, 13);
+const hhmm = t => zh(new Date(t)).slice(11, 16);
+const dlabel = d => new Date(d + 'T12:00:00Z').toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'numeric' });
+let key = store.get('cockpit-key') || '', D = null, S = null, sel = store.get('agents-sel') || null, tab = 'kalender', filter = 'alle';
+
+// ---------- Zustand pro Persona ----------
+function mood(n) {
+  const s = D?.[n] ?? {}, st = s.status;
+  if (st?.agent && Date.now() - new Date(st.since) < 3600e3) return { k: 'work', a: st.agent, t: DOING[st.agent] ?? st.agent };
+  const h = hour(); return h >= 23 || h < 6 ? { k: 'sleep', t: 'schläft' } : { k: 'idle', t: 'Pause' };
+}
+// Welche Agents haben heute schon gearbeitet (aus dem Log)
+function chain(n) {
+  const s = D?.[n] ?? {}, done = new Set(), d = swiss(), m = mood(n);
+  for (const l of s.log ?? []) if (zh(new Date(l.t)).slice(0, 10) === d && LOGNAME[l.agent]) done.add(LOGNAME[l.agent]);
+  return AG.map(a => `<span class="${m.a === a || (m.a === 'analyse' && a === 'entscheiden') ? 'now' : done.has(a) ? 'done' : ''}">${AGL[a]}</span>`).join('');
+}
+function plat(n, k) {
+  const L = S?.latest?.[P[n].slots[k]];
+  if (L) { const ps = (L.posts ?? []).filter(q => Date.parse(q.at) > Date.now() - 30 * 864e5);
+    return { views: ps.reduce((a, q) => a + (q.views ?? 0), 0), likes: ps.reduce((a, q) => a + (q.likes ?? 0), 0), posts: ps.length, fol: L.followers, user: L.username }; }
+  const a = D?.[n]?.analysis ?? {}, x = a.plat?.[k] ?? {}; return { views: x.views, likes: x.likes, posts: x.posts, fol: a.followers?.[k]?.followers, user: a.followers?.[k]?.username };
+}
+function hasSlot(n, k) { return !!D?.[n]?.analysis?.followers?.[k] || (k === 'tt') || n !== 'Elena'; }
+
+// ---------- Pixel-Büro (384×224 Pixel, hochskaliert) ----------
+const W = 384, H = 224, CORR = 92;
+const ROOMS = [
+  { id: 'lib', x: 0, y: 0, w: 128, h: 80, door: 64, floor: ['#5E6E93', '#56658A'] },
+  { id: 'meet', x: 128, y: 0, w: 128, h: 80, door: 192, floor: ['#C9B79C', '#BFAD92'] },
+  { id: 'studio', x: 256, y: 0, w: 128, h: 80, door: 320, floor: ['#3F3B4E', '#383447'] },
+  { id: 'office', x: 0, y: 104, w: 240, h: 120, door: 120, floor: ['#B48359', '#A97A51'] },
+  { id: 'lounge', x: 240, y: 104, w: 144, h: 120, door: 312, floor: ['#6F9AAD', '#6893A6'] }
+];
+const roomAt = (x, y) => ROOMS.find(r => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) ?? null;
+// Stationen (Fusspunkt der Figur) pro Tätigkeit, ein Platz pro Persona
+const ST = {
+  research: i => [36 + i * 18, 70], entscheiden: i => [156 + i * 18, 70], analyse: i => [166 + i * 16, 138],
+  planen: i => [148 + i * 12, 40], erstellen: i => [282 + i * 18, 66], posten: (i, ig) => [ig ? 300 : 270, 152 + i * 2],
+  sleep: i => [266 + i * 17, 206], desk: i => [[48, 150], [128, 150], [48, 198], [128, 198]][i]
+};
+const IDLE = [[352, 146], [366, 146], [210, 196], [214, 150], [330, 184], [180, 96], [96, 92], [300, 96], [24, 128]];
+const OBJ = []; // klickbare Objekte: {x,y,w,h,t,d,go}
+const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const g = cv.getContext('2d');
+const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); };
+
+function sky() { const h = hour(); return h >= 21 || h < 6 ? ['#1C2347', '#2B3466'] : h < 8 || h >= 19 ? ['#F2A65A', '#F7CF8B'] : ['#8ECDF5', '#CFEBFF']; }
+function drawRoom(r) {
+  for (let y = r.y; y < r.y + r.h; y += 8) for (let x = r.x; x < r.x + r.w; x += 16) R(x, y, 16, 8, ((x / 16 + y / 8) % 2) ? r.floor[0] : r.floor[1]);
+  if (r.id === 'office') for (let y = r.y; y < r.y + r.h; y += 8) R(r.x, y + 7, r.w, 1, '#9A6C46');
+  R(r.x, r.y, r.w, 18, '#E9E1D3'); R(r.x, r.y + 18, r.w, 2, '#CFC3AE'); // Wand
+}
+function walls() {
+  R(0, 80, W, 4, '#2A2738'); R(0, 100, W, 4, '#2A2738');
+  for (const r of ROOMS) { R(r.x, r.y, 3, r.h, '#2A2738'); R(r.door - 9, r.y < 80 ? 80 : 100, 18, 4, r.y < 80 ? ROOMS[0].floor[0] && '#8C8270' : '#8C8270'); }
+  R(W - 3, 0, 3, H, '#2A2738'); R(0, 0, W, 3, '#2A2738'); R(0, H - 3, W, 3, '#2A2738');
+}
+function win(x, y) { const [a, b] = sky(); R(x, y, 26, 13, '#3A3550'); R(x + 2, y + 2, 22, 9, a); R(x + 2, y + 7, 22, 4, b); R(x + 12, y + 2, 2, 9, '#3A3550'); }
+function plant(x, y) { R(x + 2, y + 8, 8, 6, '#B5653E'); R(x + 3, y, 6, 9, '#3F8F4E'); R(x, y + 3, 4, 5, '#4FA35E'); R(x + 8, y + 2, 4, 6, '#4FA35E'); R(x + 5, y - 3, 3, 4, '#5DB96B'); }
+function shelf(x, y, w = 30) { R(x, y, w, 30, '#6B4A2E'); for (let r = 0; r < 3; r++) { R(x + 2, y + 2 + r * 9, w - 4, 8, '#3D2A1A'); for (let b = 0; b < (w - 6) / 3; b++) R(x + 3 + b * 3, y + 3 + r * 9 + (b % 3 === 0 ? 1 : 0), 2, 7 - (b % 3 === 0 ? 1 : 0), ['#C0504D', '#4F81BD', '#9BBB59', '#F2C14E', '#8064A2', '#E8A08C'][(b * 7 + r * 3) % 6]); } }
+function desk(x, y, c, glow) { R(x, y, 40, 12, '#8A5A36'); R(x, y + 12, 40, 2, '#6B4428'); R(x + 13, y - 9, 14, 10, '#24222E'); R(x + 14, y - 8, 12, 7, glow ? '#7FD3FF' : '#33405A'); R(x + 19, y + 1, 2, 2, '#24222E'); R(x + 4, y + 3, 7, 4, '#EDE7DA'); R(x + 30, y + 3, 4, 5, c); R(x + 16, y + 17, 10, 7, '#3D3A4C'); }
+function chair(x, y, c = '#3D3A4C') { R(x, y, 8, 7, c); R(x + 1, y + 7, 6, 2, '#2A2738'); }
+
+function drawScene() {
+  OBJ.length = 0;
+  ROOMS.forEach(drawRoom); R(0, 80, W, 24, '#8C8270'); for (let x = 0; x < W; x += 12) R(x, 91, 6, 1, '#7F7564'); // Gang
+  // Bibliothek (Research)
+  shelf(8, 4); shelf(40, 4); shelf(90, 4, 30); win(70, 4);
+  R(28, 50, 76, 12, '#7A5235'); R(28, 62, 76, 2, '#5C3D27'); R(40, 46, 10, 6, '#EDE7DA'); R(70, 47, 12, 5, '#C0504D'); R(88, 46, 6, 7, '#F2C14E');
+  for (let i = 0; i < 4; i++) chair(32 + i * 18, 64, '#4A5578');
+  plant(112, 60); OBJ.push({ x: 8, y: 4, w: 112, h: 60, t: 'Bibliothek', d: 'Hier sucht der Research-Agent jeden Morgen im Web nach Trends, Hashtags und Formaten.', go: 'research' });
+  // Besprechung (Analyse/Entscheiden + Planer am Kalender)
+  R(138, 4, 46, 26, '#FAFAF7'); R(138, 4, 46, 2, '#9A95A8'); for (let i = 0; i < 6; i++) R(140 + i * 7, 9, 1, 19, '#DDD8CC'); for (let j = 0; j < 3; j++) R(140, 14 + j * 6, 42, 1, '#DDD8CC');
+  [[142, 10, '#E8A08C'], [156, 16, '#7FA8D8'], [170, 10, '#9C8BD9'], [149, 22, '#6FB79A'], [163, 22, '#F2C14E']].forEach(([x, y, c]) => R(x, y, 5, 4, c));
+  OBJ.push({ x: 138, y: 4, w: 46, h: 26, t: 'Kalender-Wand', d: 'Der Planer hängt hier die Posts der nächsten Tage auf. Klick: Kalender öffnen.', go: 'kalender' });
+  win(196, 4); win(226, 4);
+  R(150, 50, 84, 12, '#EDE4D3'); R(150, 62, 84, 2, '#C9BCA4'); for (let i = 0; i < 4; i++) { chair(152 + i * 18, 64, '#8C6B4F'); chair(152 + i * 18, 40, '#8C6B4F'); }
+  R(176, 53, 10, 6, '#24222E'); R(177, 54, 8, 4, '#7FD3FF'); R(200, 54, 6, 4, '#FAFAF7');
+  OBJ.push({ x: 150, y: 40, w: 84, h: 32, t: 'Besprechungstisch', d: 'Die Analyse verbindet Research und Zahlen und entscheidet, was gepostet wird. Klick: Gespräch der Agents.', go: 'gespraech' });
+  // Studio (Ersteller)
+  R(330, 4, 46, 44, '#F3EDE4'); R(330, 46, 46, 3, '#D9CFBF'); win(268, 4);
+  R(300, 26, 1, 22, '#9A95A8'); g.strokeStyle = '#FFF6D8'; g.lineWidth = 2; g.beginPath(); g.arc(300.5, 22, 8, 0, 7); g.stroke(); R(296, 48, 9, 2, '#6B6680');
+  R(352, 52, 2, 14, '#6B6680'); R(348, 46, 10, 7, '#24222E'); R(355, 48, 4, 3, '#4A4658'); R(347, 65, 12, 2, '#6B6680');
+  R(268, 58, 26, 8, '#5A5470'); R(270, 52, 10, 7, '#24222E'); R(271, 53, 8, 5, '#F7B2C8');
+  OBJ.push({ x: 262, y: 4, w: 116, h: 64, t: 'Studio', d: 'Der Ersteller macht hier Bilder, Folien und Reels (Gratis-KI, Musik, Text).', go: 'kalender' });
+  // Büro: 4 Pulte, Analyse-Bildschirm, Pflanzen
+  NAMES.forEach((n, i) => { const [x, y] = ST.desk(i); desk(x - 20, y - 22, P[n].c, mood(n).k === 'work'); R(x - 19, y - 9, 12, 3, P[n].c); });
+  R(160, 108, 64, 18, '#24222E'); R(162, 110, 60, 14, '#12304A'); const bars = [5, 8, 6, 10, 9, 12];
+  bars.forEach((b, i) => R(166 + i * 9, 122 - b, 6, b, ['#E8A08C', '#7FA8D8', '#9C8BD9', '#6FB79A', '#F2C14E', '#25F4EE'][i])); win(100, 106); win(40, 106);
+  OBJ.push({ x: 160, y: 108, w: 64, h: 18, t: 'Zahlen-Bildschirm', d: 'Abends wertet die Analyse hier die letzten 7/14/30 Tage aus. Klick: Rangliste.', go: '#rang' });
+  plant(4, 206); plant(224, 120); plant(224, 206); R(176, 170, 40, 26, '#C9A27A'); R(178, 172, 36, 22, '#D9B58C');
+  // Lounge: Post-Kabinen (TikTok / Instagram), Kaffee, Sofa, Pokal
+  R(256, 108, 22, 32, '#111'); R(258, 110, 18, 18, '#1E1E1E'); R(263, 114, 6, 9, '#25F4EE'); R(265, 113, 6, 9, '#FE2C55'); R(264, 113, 5, 9, '#FFF'); R(258, 130, 18, 8, '#2A2A2A');
+  const gr = g.createLinearGradient(286, 140, 308, 108); gr.addColorStop(0, '#FEDA75'); gr.addColorStop(.5, '#D62976'); gr.addColorStop(1, '#4F5BD5'); g.fillStyle = gr; g.fillRect(286, 108, 22, 32);
+  R(290, 114, 14, 14, '#FFF'); R(292, 116, 10, 10, '#D62976'); R(294, 118, 6, 6, '#FFF'); R(295, 119, 4, 4, '#D62976'); R(288, 130, 18, 8, '#FFFFFF33');
+  OBJ.push({ x: 256, y: 108, w: 22, h: 32, t: 'TikTok-Kabine', d: 'Der Poster schickt hier die Posts als TikTok-Entwurf (bis TikTok direktes Posten freigibt).', go: 'kalender' });
+  OBJ.push({ x: 286, y: 108, w: 22, h: 32, t: 'Instagram-Kabine', d: 'Hier postet der Poster automatisch auf Instagram.', go: 'kalender' });
+  R(344, 108, 14, 22, '#5A5470'); R(346, 112, 10, 6, '#24222E'); R(349, 122, 4, 4, '#FFF'); R(362, 106, 16, 30, '#E8EEF2'); R(362, 118, 16, 1, '#B8C2CA');
+  OBJ.push({ x: 344, y: 106, w: 34, h: 30, t: 'Kaffee-Ecke', d: 'Pause zwischen den Läufen.' });
+  R(254, 196, 76, 16, '#8E4F6E'); R(254, 192, 76, 6, '#A65E80'); R(254, 196, 5, 16, '#7A4260'); R(325, 196, 5, 16, '#7A4260');
+  OBJ.push({ x: 254, y: 192, w: 76, h: 20, t: 'Sofa', d: 'Nachts (23–6 Uhr) schlafen hier alle.' });
+  const lead = D ? board()[0]?.n : null; R(340, 176, 20, 10, '#3D3A4C'); R(344, 166, 12, 10, '#F2C14E'); R(342, 164, 16, 3, '#F7D774'); R(348, 160, 4, 4, lead ? P[lead].c : '#F2C14E');
+  OBJ.push({ x: 338, y: 158, w: 24, h: 30, t: 'Pokal', d: lead ? `Führt gerade: ${lead}. Klick: Rangliste.` : 'Rangliste', go: '#rang' });
+  plant(370, 206);
+  walls();
+  if (hour() >= 23 || hour() < 6) { g.fillStyle = 'rgba(10,14,40,.35)'; g.fillRect(0, 0, W, H); }
+}
+
+// Figur zeichnen (Fusspunkt x,y), dir: 0 vorne, 1 hinten, -1/1 Seite über flip
+function person(n, x, y, f, back, flip, sit) {
+  const p = P[n]; x = Math.round(x); y = Math.round(y);
+  g.fillStyle = 'rgba(0,0,0,.25)'; g.fillRect(x - 5, y - 1, 10, 2);
+  if (!sit) { const s = f % 2; R(x - 4, y - 6, 3, 5 + (s ? -1 : 0), '#2B2B3A'); R(x + 1, y - 6, 3, 5 + (s ? 0 : -1), '#2B2B3A'); R(x - 4, y - 1 + (s ? -1 : 0), 3, 1, '#1A1A24'); R(x + 1, y - 1 + (s ? 0 : -1), 3, 1, '#1A1A24'); }
+  const by = sit ? y - 10 : y - 13;
+  R(x - 5, by, 10, 8, p.c); R(x - 5, by + 7, 10, 1, '#00000033'); R(x - 6, by + 1, 2, 6, p.c); R(x + 4, by + 1, 2, 6, p.c); R(x - 6, by + 6, 2, 2, p.skin); R(x + 4, by + 6, 2, 2, p.skin);
+  const hy = by - 8; R(x - 4, hy, 8, 8, p.skin);
+  // Haare
+  R(x - 5, hy - 1, 10, 3, p.hair); R(x - 5, hy + 1, 2, back ? 7 : 4, p.hair); R(x + 3, hy + 1, 2, back ? 7 : 4, p.hair);
+  if (back) R(x - 4, hy, 8, 8, p.hair);
+  if (p.style === 'long') { R(x - 5, hy + 4, 2, 7, p.hair2); R(x + 3, hy + 4, 2, 7, p.hair2); if (back) R(x - 4, hy + 6, 8, 5, p.hair2); }
+  if (p.style === 'bun') { R(x - 2, hy - 4, 4, 3, p.hair); R(x - 1, hy - 5, 2, 1, p.hair2); }
+  if (p.style === 'bob') { R(x - 5, hy + 4, 2, 3, p.hair2); R(x + 3, hy + 4, 2, 3, p.hair2); }
+  if (!back) { R(x - 2 + (flip ? -1 : 0), hy + 4, 1, 2, '#2B2238'); R(x + 1 + (flip ? -1 : 0), hy + 4, 1, 2, '#2B2238'); R(x - 3, hy + 6, 1, 1, '#F2A7A0'); R(x + 2, hy + 6, 1, 1, '#F2A7A0'); }
+}
+
+// Bewegung: über Türen und Gang zum Ziel
+const B = {}; NAMES.forEach((n, i) => B[n] = { x: ST.desk(i)[0], y: ST.desk(i)[1], path: [], f: 0, back: false, flip: false, wait: 0, goal: null });
+function route(a, b) {
+  const ra = roomAt(a[0], a[1]), rb = roomAt(b[0], b[1]), pts = [];
+  if (ra && ra === rb) return [[b[0], a[1]], b];
+  if (ra) pts.push([a[0], ra.y < 80 ? 74 : 110], [ra.door, ra.y < 80 ? 74 : 110], [ra.door, CORR]); else pts.push([a[0], CORR]);
+  if (rb) pts.push([rb.door, CORR], [rb.door, rb.y < 80 ? 74 : 110], [b[0], rb.y < 80 ? 74 : 110]);
+  pts.push(b); return pts;
+}
+function target(n) {
+  const i = P[n].desk, m = mood(n);
+  if (m.k === 'sleep') return ST.sleep(i);
+  if (m.k === 'work') return m.a === 'posten' ? ST.posten(i, (Date.now() / 60000 | 0) % 2) : (ST[m.a] ?? ST.desk)(i);
+  return null;
+}
+function think(n, dt) {
+  const b = B[n], t = target(n);
+  if (t && (!b.goal || b.goal[0] !== t[0] || b.goal[1] !== t[1])) { b.goal = t; b.path = route([b.x, b.y], t); }
+  if (!t && !b.path.length && (b.wait -= dt) <= 0) { const o = Math.random() < .35 ? ST.desk(P[n].desk) : IDLE[Math.random() * IDLE.length | 0]; b.goal = [o[0] + (Math.random() * 8 - 4 | 0), o[1]]; b.path = route([b.x, b.y], b.goal); b.wait = 5 + Math.random() * 9; }
+  const nx = b.path[0]; if (!nx) return false;
+  const dx = nx[0] - b.x, dy = nx[1] - b.y, d = Math.hypot(dx, dy), sp = 26 * dt;
+  if (d <= sp) { b.x = nx[0]; b.y = nx[1]; b.path.shift(); } else { b.x += dx / d * sp; b.y += dy / d * sp; }
+  if (Math.abs(dx) > Math.abs(dy)) { b.flip = dx < 0; b.back = false; } else b.back = dy < 0;
+  return true;
+}
+let last = performance.now(), frame = 0;
+function loop(now) {
+  const dt = Math.min(.1, (now - last) / 1000); last = now; frame += dt;
+  drawScene();
+  const order = [...NAMES].sort((a, b) => B[a].y - B[b].y);
+  for (const n of order) { const moving = think(n, dt), m = mood(n), b = B[n]; person(n, b.x, b.y, moving ? (frame * 8 | 0) : 0, moving && b.back, b.flip, !moving && (m.k === 'sleep' || (m.k === 'work' && m.a !== 'planen' && m.a !== 'posten'))); }
+  tags(); requestAnimationFrame(loop);
+}
+function tags() {
+  const box = $('#stagebox'); if (!box) return; const s = box.clientWidth / W;
+  NAMES.forEach(n => { const el = $(`#tag-${n}`), b = B[n], m = mood(n); if (!el) return;
+    el.style.left = b.x * s + 'px'; el.style.top = (b.y - 26 + (m.k === 'sleep' ? 3 : 0)) * s + 'px';
+    const txt = m.k === 'work' ? m.t + ' …' : m.k === 'sleep' ? 'z z z' : ''; if (el.dataset.t !== txt) { el.dataset.t = txt; el.querySelector('.b').textContent = txt; el.querySelector('.b').hidden = !txt; } });
+}
+function hit(ev) {
+  const r = cv.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * W, y = (ev.clientY - r.top) / r.height * H;
+  const who = NAMES.find(n => Math.abs(B[n].x - x) < 7 && y > B[n].y - 24 && y < B[n].y + 2);
+  if (who) { const m = mood(who); return { t: who, d: m.k === 'work' ? `${AGL[m.a] ?? m.a}-Agent ${m.t} gerade.` : m.k === 'sleep' ? 'Schläft bis zum Morgenlauf.' : 'Hat gerade Pause. Klick: Details.', who }; }
+  return OBJ.find(o => x >= o.x && x <= o.x + o.w && y >= o.y && y <= o.y + o.h) ?? null;
+}
+
+// ---------- Daten ----------
+async function load() {
+  const h = { headers: { 'x-cockpit-key': key } }, [r, rs] = await Promise.all([fetch(API + '?agents', h), fetch(API, h)]);
+  if (r.status === 401) { store.set('cockpit-key', null); key = ''; return lock('Der Schlüssel stimmt nicht.'); }
+  const first = !D; D = await r.json(); S = await rs.json().catch(() => S); first ? render() : update();
+}
+function lock(err = '') {
+  $('#app').innerHTML = `<form class="lock" id="lf"><h1>Brained Agents</h1><div class="meta">Gleicher Schlüssel wie im Cockpit.</div>
+  <input id="k" type="password" placeholder="Cockpit-Schlüssel" autocomplete="current-password">${err ? `<div style="color:var(--bad)">${esc(err)}</div>` : ''}<button>Öffnen</button></form>`;
+  $('#lf').onsubmit = e => { e.preventDefault(); key = $('#k').value.trim(); store.set('cockpit-key', key); load(); };
+}
+const clicks = n => D?._clicks?.[P[n].nick] ?? { bio: 0, store: 0 };
+function board() {
+  return NAMES.map(n => { const t = plat(n, 'tt'), i = plat(n, 'ig'), c = clicks(n); return { n, tt: t, ig: i, views: (t.views ?? 0) + (i.views ?? 0), fol: (t.fol ?? 0) + (i.fol ?? 0), ...c }; })
+    .sort((a, b) => b.store - a.store || b.bio - a.bio || b.views - a.views);
+}
+
+function render() {
+  $('#app').innerHTML = `
+  <header><div><h1>Brained Agents</h1><div class="meta">Vier Personas, je fünf Agents: Research → Analyse → Planer → Ersteller → Poster · <a href="./">zum Cockpit</a> · <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude schreiben</a></div></div></header>
+  <section class="hq">
+    <div class="bar"><span class="live"></span><b>LIVE</b><span id="clock"></span><span id="upd"></span><span style="margin-left:auto">Klick auf Figuren und Gegenstände</span><button id="fetch" style="font-family:var(--pix);font-weight:400;font-size:10px;padding:4px 9px;background:#F4D35E;color:#1B1925;border:0">Zahlen holen</button></div>
+    <div class="office"><div class="stagebox" id="stagebox">${NAMES.map(n => `<div class="tag" id="tag-${n}"><div class="b" hidden></div><div class="n">${n}</div></div>`).join('')}<div class="tip" id="tip" hidden></div></div></div>
+    <aside class="side"><div class="hd"><span>Agents</span><span style="color:var(--frame-ink2)">${NAMES.length * 5}</span></div>
+      <div class="filters">${[['alle', 'Alle'], ['work', 'Aktiv'], ['idle', 'Pause'], ['sleep', 'Schläft']].map(([k, v]) => `<button data-f="${k}" class="${filter === k ? 'on' : ''}">${v}</button>`).join('')}</div>
+      <div id="agents" style="display:grid;gap:8px"></div></aside>
+  </section>
+  <section class="goalbar" id="goalbar"></section>
+  <section class="cards" id="cards"></section>
+  <section class="box" id="rang"></section>
+  <section class="box" id="detail"></section>`;
+  $('#stagebox').prepend(cv);
+  const tip = $('#tip');
+  cv.onmousemove = ev => { const h = hit(ev); cv.style.cursor = h ? 'pointer' : 'default'; tip.hidden = !h; if (!h) return;
+    const r = $('#stagebox').getBoundingClientRect(); tip.innerHTML = `<b>${esc(h.t)}</b>${esc(h.d ?? '')}`; tip.style.left = Math.min(ev.clientX - r.left + 12, r.width - 230) + 'px'; tip.style.top = (ev.clientY - r.top + 12) + 'px'; };
+  cv.onmouseleave = () => tip.hidden = true;
+  cv.onclick = ev => { const h = hit(ev); if (!h) return; if (h.who) return pick(h.who);
+    if (h.go?.startsWith('#')) return $(h.go).scrollIntoView({ behavior: 'smooth' }); if (h.go) { tab = h.go; if (!sel) sel = NAMES[0]; update(); $('#detail').scrollIntoView({ behavior: 'smooth' }); } };
+  document.addEventListener('click', e => { const f = e.target.closest('[data-f]'); if (f) { filter = f.dataset.f; document.querySelectorAll('[data-f]').forEach(b => b.classList.toggle('on', b === f)); side(); }
+    const t = e.target.closest('[data-tab]'); if (t) { tab = t.dataset.tab; detail(); }
+    const p = e.target.closest('[data-n]'); if (p) pick(p.dataset.n); });
+  $('#fetch').onclick = async e => { const b = e.target; b.disabled = true; b.textContent = 'hole …';
+    try { await fetch(API + '?collect', { method: 'POST', headers: { 'x-cockpit-key': key } }); await load(); b.textContent = 'aktuell ✓'; } catch { b.textContent = 'Fehler'; }
+    setTimeout(() => { b.disabled = false; b.textContent = 'Zahlen holen'; }, 4000); };
+  update(); requestAnimationFrame(loop); setInterval(() => { const c = $('#clock'); if (c) c.textContent = zh(new Date()).slice(11, 16); }, 1000);
+}
+function pick(n) { sel = n; store.set('agents-sel', n); update(); $('#detail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function goal() { // Ziel: 1 Mio. Aufrufe bis 31.10. über alle Konten (alle Posts ab 12.10.) + Klicks und Follower gesamt
+  let v = 0, fol = 0, clk = 0;
+  for (const n of NAMES) { for (const k of Object.keys(P[n].slots)) { const L = S?.latest?.[P[n].slots[k]]; for (const q of L?.posts ?? []) if (q.at >= '2026-10-12') v += q.views ?? 0; fol += plat(n, k).fol ?? 0; } clk += clicks(n).bio ?? 0; }
+  const pct = Math.min(100, v / 1e4), days = Math.max(0, Math.ceil((Date.parse('2026-10-31T23:59:00+01:00') - Date.now()) / 864e5));
+  $('#goalbar').innerHTML = `<div class="gk"><div class="lb"><span>Ziel · 1 Mio. Aufrufe bis 31.10.</span><span>noch ${days} Tage</span></div>
+      <div class="big">${fmt(v)} <small>/ 1'000'000 · ${pct.toFixed(1)} %</small></div>
+      <div class="track"><div class="rest" style="left:${pct}%"></div><div class="pin" style="left:${pct}%"></div></div>
+      <div class="ticks"><span>0</span><span>250k</span><span>500k</span><span>750k</span><span>1 Mio.</span></div></div>
+    <div class="gk"><div class="lb"><span>Klicks gesamt</span><span>Bio-Links</span></div><div class="big">${fmt(clk)}</div><div class="meta">alle Personas, letzte 30 Tage</div></div>
+    <div class="gk"><div class="lb"><span>Follower gesamt</span><span>TikTok + Instagram</span></div><div class="big">${fmt(fol)}</div><div class="meta">alle vier Konten</div></div>`;
+}
+function update() { goal(); side(); cards(); rang(); detail(); const u = Object.values(D).map(x => x?.updated_at).filter(Boolean).sort().pop(), z = S?.generated_at && Object.values(S.latest ?? {}).map(x => x?.updated_at).filter(Boolean).sort().pop();
+  $('#upd').textContent = (u ? '· Agents aktiv ' + hhmm(u) : '') + (z ? ' · Zahlen von ' + dlabel(zh(new Date(z)).slice(0, 10)) + ' ' + hhmm(z) : ''); }
+function side() {
+  $('#agents').innerHTML = NAMES.filter(n => filter === 'alle' || mood(n).k === filter).map(n => { const m = mood(n), s = D[n] ?? {}, lastLog = (s.log ?? []).at(-1);
+    return `<div class="ag ${sel === n ? 'sel' : ''}" data-n="${n}"><img src="av/${P[n].nick}.jpg" alt=""><div><div class="nm">${n}</div>
+      <div class="st"><i class="${m.k}"></i>${m.k === 'work' ? AGL[m.a] + '-Agent ' + esc(m.t) : m.k === 'sleep' ? 'schläft · Morgenlauf 05:05' : lastLog ? 'zuletzt: ' + esc(AGL[LOGNAME[lastLog.agent]] ?? lastLog.agent) + ' ' + hhmm(lastLog.t) : 'noch nicht gestartet'}</div></div>
+      <div class="chain">${chain(n)}</div></div>`; }).join('') || '<div class="meta" style="color:var(--frame-ink2)">Niemand in diesem Zustand.</div>';
+}
+function platRow(n, k) {
+  if (k === 'ig' && n === 'Elena') return `<div class="pl none"><span class="p">${ICON.ig}Instagram</span><span>kein Konto</span></div>`;
+  const x = plat(n, k);
+  return `<div class="pl"><span class="p">${ICON[k]}${k === 'tt' ? 'TikTok' : 'Instagram'}</span>
+    <div><span class="v">${fmt(x.views)}</span><span class="k">Aufrufe</span></div><div><span class="v">${fmt(x.likes)}</span><span class="k">Likes</span></div>
+    <div><span class="v">${fmt(x.fol)}</span><span class="k">Follower</span></div><div><span class="v">${fmt(x.posts)}</span><span class="k">Posts</span></div></div>`;
+}
+function cards() {
+  $('#cards').innerHTML = NAMES.map(n => { const s = D[n] ?? {};
+    const nx = (s.calendar ?? []).filter(i => i.status !== 'online' && i.status !== 'fehler' && i.date >= swiss()).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))[0];
+    return `<article class="card ${sel === n ? 'sel' : ''}" data-n="${n}"><div class="top"><img src="av/${P[n].nick}.jpg" alt=""><b>${n}</b><span class="meta" style="margin-left:auto">30 Tage${s.analysis?.trend ? ' · Trend ' + esc(s.analysis.trend) : ''}</span></div>
+      <div>${platRow(n, 'tt')}${platRow(n, 'ig')}</div>
+      <div class="next">${nx ? `Nächster Post: <b>${dlabel(nx.date)} ${esc(nx.time)}</b> · ${esc(nx.format)} · ${esc(nx.status)}` : 'Noch kein Post geplant'}</div></article>`; }).join('');
+}
+function rang() {
+  $('#rang').innerHTML = `<h2>Rangliste · letzte 30 Tage</h2><div class="tbl"><table>
+    <thead><tr><th></th><th></th><th class="g" colspan="2">Bio-Link</th><th class="g" colspan="2">TikTok</th><th class="g" colspan="2">Instagram</th></tr>
+    <tr><th>#</th><th>Persona</th><th>Store</th><th>Klicks</th><th>Aufrufe</th><th>Follower</th><th>Aufrufe</th><th>Follower</th></tr></thead>
+    <tbody>${board().map((b, i) => `<tr><td class="rank">${['🥇', '🥈', '🥉'][i] ?? i + 1}</td><td>${b.n}</td><td>${fmt(b.store)}</td><td>${fmt(b.bio)}</td>
+      <td>${fmt(b.tt.views)}</td><td>${fmt(b.tt.fol)}</td><td>${b.n === 'Elena' ? '–' : fmt(b.ig.views)}</td><td>${b.n === 'Elena' ? '–' : fmt(b.ig.fol)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="hint">Sortiert nach Store-Klicks (Klicks auf den Bio-Link, die in den App Store oder Google Play führen – der beste Hinweis auf Downloads pro Persona), dann Bio-Klicks, dann Aufrufe.</div>`;
+}
+function pfChips(i) {
+  const c = (k, lab) => { const v = i.posted?.[k]; return v ? `<span class="chip ${v === 'fehler' ? 'err' : 'ok'}">${lab} ${v === 'fehler' ? '✕' : v === 'alter Plan' ? '(alter Plan)' : k === 'tt' ? (i.ttOk ? 'Entwurf ✓' : 'gesendet') : '✓'}</span>` : ''; };
+  return c('tt', 'TikTok') + c('ig', 'Instagram') + (i.posted ? '' : `<span class="chip ${i.status === 'bereit' ? 'wait' : i.status === 'fehler' ? 'err' : ''}">${esc(i.status)}</span>`);
+}
+function detail() {
+  if (!sel) { $('#detail').innerHTML = '<div class="meta">Klick auf eine Persona, um Kalender, Gespräch der Agents und Research zu sehen.</div>'; return; }
+  const n = sel, s = D[n] ?? {}, T = { kalender: 'Kalender', gespraech: 'Gespräch der Agents', research: 'Research & Learnings', log: 'Log' };
+  let body = '';
+  if (tab === 'kalender') {
+    const days = []; for (let o = -7; o <= 14; o++) days.push(swiss(o));
+    const by = d => (s.calendar ?? []).filter(i => i.date === d).sort((a, b) => a.time.localeCompare(b.time));
+    body = `<div class="cal">${days.filter(d => by(d).length || d >= swiss()).slice(0, 18).map(d => `<div class="day ${d === swiss() ? 'today' : ''}"><div class="d">${dlabel(d)}${d === swiss() ? '<small>heute</small>' : ''}</div>
+      <div class="items">${by(d).map(i => { const u = i.media?.urls?.[0]; return `<div class="it"><div class="th" style="${u ? `background-image:url('${esc(u)}')` : ''}">${u ? '' : i.media?.kind === 'video' ? 'Reel' : '–'}</div>
+        <div class="tx"><b>${esc(i.title || i.format)}</b><span>${esc(i.time)} · ${esc(i.format)}${i.error && i.status === 'geplant' ? ' · wird nachgeholt' : ''}</span></div><div class="pf">${pfChips(i)}</div></div>`; }).join('') || '<span class="meta">frei</span>'}</div></div>`).join('')}</div>`;
+  }
+  const who = x => AGL[LOGNAME[x]] ?? AGL[x] ?? x;
+  if (tab === 'gespraech') body = `<div class="chat">${(s.messages ?? []).slice(-40).reverse().map(m => `<div class="msg" style="border-color:${P[n].c}"><div class="h"><b>${esc(who(m.from))}</b> → ${esc(who(m.to))} · ${dlabel(zh(new Date(m.t)).slice(0, 10))} ${hhmm(m.t)}</div>${esc(m.text)}</div>`).join('') || '<span class="meta">Noch keine Nachrichten</span>'}</div>`;
+  if (tab === 'research') { const r = s.research ?? {}, a = s.analysis ?? {}, dc = s.decision ?? {};
+    body = `<div style="display:grid;gap:18px;max-width:75ch">
+      <div><h2>Entscheid</h2><div>${esc(dc.why ?? '–')}</div>${dc.tone ? `<div class="meta">Ton: ${esc(dc.tone)}</div>` : ''}</div>
+      <div><h2>Learnings</h2><ul class="list">${(a.learnings ?? []).map(l => `<li>${esc(l)}</li>`).join('') || '<li>noch keine</li>'}</ul></div>
+      <div><h2>Trend-Formate${r.depth ? ` · ${r.depth} Suchrunde(n)` : ''}</h2><ul class="list">${(r.formats ?? []).slice(0, 8).map(f => `<li><b>${esc(f.name)}</b>${f.why ? ' – ' + esc(f.why) : ''}</li>`).join('') || '<li>–</li>'}</ul></div>
+      <div><h2>Hashtags</h2><div>${esc((r.hashtags ?? []).join(' ')) || '–'}</div></div></div>`; }
+  if (tab === 'log') body = `<div class="log">${(s.log ?? []).slice(-80).reverse().map(l => `<div><time>${dlabel(zh(new Date(l.t)).slice(0, 10))} ${hhmm(l.t)}</time><b>${esc(who(l.agent))}</b> ${esc(String(l.msg).slice(0, 260))}</div>`).join('')}</div>`;
+  $('#detail').innerHTML = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><img src="av/${P[n].nick}.jpg" alt="" style="width:34px;height:34px;border-radius:50%"><h2 style="margin:0">${n}</h2></div>
+    <div class="tabs">${Object.entries(T).map(([k, v]) => `<button data-tab="${k}" class="${tab === k ? 'on' : ''}">${v}</button>`).join('')}</div>${body}`;
+}
+setInterval(() => key && D && load().catch(() => { }), 60e3);
+key ? load().catch(e => lock(e.message)) : lock();
+</script>
+</body>
+</html>

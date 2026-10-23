@@ -1,0 +1,249 @@
+/* ============ Brained Shop: Auren, Hintergründe, Rahmen, Feier-Effekte, Shop-Oberfläche ============ */
+/* Alle Animationen nur mit transform/opacity; Partikel sind klein, wenige und werden bei kleinen Avataren weggelassen. */
+@keyframes fx-rot { to { transform: rotate(360deg) } }
+@keyframes fx-glow { 0%,100% { opacity: .55; transform: scale(.96) } 50% { opacity: 1; transform: scale(1.04) } }
+@keyframes fx-twinkle { 0%,100% { opacity: 1; transform: scale(1) } 50% { opacity: .25; transform: scale(.55) } }
+@keyframes fx-drift { from { transform: translate(-7%, -5%) scale(.9) } to { transform: translate(7%, 6%) scale(1.12) } }
+@keyframes b-flap { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-9deg) scaleX(.93) } }
+@keyframes b-spin { to { transform: rotate(360deg) } }
+@keyframes b-zz { 0% { transform: translate(0, 6px); opacity: 0 } 30% { opacity: 1 } 100% { transform: translate(6px, -10px); opacity: 0 } }
+.b-flap { animation: b-flap 1.8s ease-in-out infinite; }
+.b-spin { animation: b-spin 1.6s linear infinite; }
+.b-z { animation: b-zz 2.4s ease-in-out infinite; }
+.b-led-line { animation: fx-glow 1.4s ease-in-out infinite; }
+
+/* ---- Wrapper um Avatare mit Aura ---- */
+.av-x { position: relative; flex: none; display: inline-grid; place-items: center; }
+.av-x > .av, .av-x > .av-fr { position: relative; z-index: 1; }
+.fxa { position: absolute; left: -20%; top: -20%; width: 140%; height: 140%; pointer-events: none; z-index: 0; --fall: 1.45em; }
+.fxa i, .fxb i { position: absolute; display: block; left: var(--x); top: var(--y); }
+.fxa .glow { left: 0; top: 0; width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(closest-side, transparent 52%, var(--g1, rgba(255,255,255,.4)) 72%, transparent 100%); animation: fx-glow 2.8s ease-in-out infinite; }
+.fxa.sm * { animation: none !important; }
+.fxa.sm .glow { opacity: .85; }
+.av.brain > svg { position: relative; z-index: 1; }
+
+/* Feuer */
+.fxa-fire { --g1: rgba(255,110,20,.6); }
+.fxa-fire .fl { top: var(--y); width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 50% 0 50% 50%; background: radial-gradient(circle at 35% 65%, #FFF6B0 0, #FFC21F 38%, #FF5A00 72%, #D8200A 100%); transform: rotate(-45deg); opacity: 0; animation: fx-flame var(--t) ease-in infinite; animation-delay: var(--d); }
+@keyframes fx-flame { 0% { transform: translateY(0) rotate(-45deg) scale(.5); opacity: 0 } 18% { opacity: .95 } 100% { transform: translateY(calc(var(--rise) * -1)) rotate(-45deg) scale(.12); opacity: 0 } }
+.fxa-fire .em { width: .03em; height: .03em; border-radius: 50%; background: #FFB347; box-shadow: 0 0 .04em #FF6A00; opacity: 0; animation: fx-ember var(--t) ease-out infinite; animation-delay: var(--d); }
+@keyframes fx-ember { 0% { transform: translate(0, 0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translate(var(--dx), -.75em); opacity: 0 } }
+/* Wasser */
+.fxa-water { --g1: rgba(60,170,255,.5); }
+.fxa-water .blob { left: 8%; top: 8%; width: 84%; height: 84%; border: max(1.5px, .03em) solid rgba(90,200,255,.55); border-radius: 58% 42% 55% 45% / 48% 60% 40% 52%; animation: fx-rot 7s linear infinite; }
+.fxa-water .b2 { left: 12%; top: 12%; width: 76%; height: 76%; border-color: rgba(170,235,255,.5); border-radius: 44% 56% 42% 58% / 58% 42% 56% 44%; animation-duration: 9s; animation-direction: reverse; }
+.fxa-water .bb { width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 50%; border: 1.5px solid rgba(255,255,255,.85); background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(160,225,255,.25)); opacity: 0; animation: fx-bubble var(--t) ease-in infinite; animation-delay: var(--d); }
+@keyframes fx-bubble { 0% { transform: translate(0, 0) scale(.5); opacity: 0 } 15% { opacity: .9 } 100% { transform: translate(var(--dx), -.55em) scale(1); opacity: 0 } }
+.fxa-water .dr { top: 82%; width: .035em; height: .05em; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: #7FD0FF; opacity: 0; animation: fx-drop var(--t) ease-in infinite; animation-delay: var(--d); }
+@keyframes fx-drop { 0% { transform: translateY(0) scaleY(.6); opacity: 0 } 20% { opacity: .9 } 100% { transform: translateY(.45em) scaleY(1.25); opacity: 0 } }
+/* Blitz */
+.fxa-lightning { --g1: rgba(150,110,255,.6); }
+.fxa-lightning .glow { animation: fx-flash 2.4s linear infinite; }
+@keyframes fx-flash { 0%,84%,100% { opacity: .45 } 88% { opacity: 1 } 90% { opacity: .5 } 93% { opacity: 1 } }
+.fxa-lightning .bolt { position: absolute; left: var(--x); top: var(--y); width: .2em; height: .4em; margin: -.2em 0 0 -.1em; transform: rotate(var(--rot)); opacity: 0; overflow: visible; animation: fx-bolt var(--t) linear infinite; animation-delay: var(--d); }
+@keyframes fx-bolt { 0%,86%,100% { opacity: 0 } 88% { opacity: 1 } 90% { opacity: .1 } 92% { opacity: 1 } 96% { opacity: .35 } 98% { opacity: 0 } }
+/* Nordlicht (Aura) und Hintergrund */
+.fxa-aurora { --g1: rgba(110,255,200,.28); }
+.fxa .ab, .fxb .ab { width: 70%; height: 46%; border-radius: 50%; background: radial-gradient(closest-side, var(--c), transparent); opacity: .8; animation: fx-drift 6s ease-in-out infinite alternate; }
+.fxa .a1, .fxb .a1 { left: -2%; top: 8%; --c: rgba(76,255,181,.75); }
+.fxa .a2, .fxb .a2 { left: 32%; top: 48%; --c: rgba(90,180,255,.75); animation-duration: 7.5s; animation-delay: -2s; }
+.fxa .a3, .fxb .a3 { left: 30%; top: -2%; --c: rgba(176,124,255,.7); animation-duration: 9s; animation-delay: -4s; }
+/* Schnee */
+.fxa-snow { --g1: rgba(150,220,255,.4); }
+.fxa .fk, .fxb .fk { top: -4%; width: var(--s); height: var(--s); border-radius: 50%; background: #fff; box-shadow: 0 0 .03em #BFEFFF; opacity: 0; animation: fx-snow var(--t) linear infinite; animation-delay: var(--d); }
+@keyframes fx-snow { 0% { transform: translate(0, 0); opacity: 0 } 10% { opacity: 1 } 90% { opacity: .9 } 100% { transform: translate(var(--dx), var(--fall)); opacity: 0 } }
+/* Sakura */
+.fxa-sakura { --g1: rgba(255,150,190,.38); }
+.fxa .pt, .fxb .pt { top: -6%; width: var(--s); height: calc(var(--s) * .75); border-radius: 100% 0 100% 0; background: linear-gradient(135deg, #FFD6E4, #FF8DB5); opacity: 0; animation: fx-petal var(--t) ease-in-out infinite; animation-delay: var(--d); }
+@keyframes fx-petal { 0% { transform: translate(0, 0) rotate(var(--rot)); opacity: 0 } 10% { opacity: 1 } 50% { transform: translate(calc(var(--dx) * .4 + .06em), calc(var(--fall) * .5)) rotate(calc(var(--rot) + 140deg)) } 100% { transform: translate(var(--dx), var(--fall)) rotate(calc(var(--rot) + 300deg)); opacity: 0 } }
+/* Sternenstaub & Gold */
+.fxa-stardust { --g1: rgba(180,150,255,.42); }
+.fxa .orb { left: 0; top: 0; width: 100%; height: 100%; animation: fx-rot 22s linear infinite; }
+.fxa .st { width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); background: linear-gradient(135deg, #fff, #FFE98A); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); animation: fx-twinkle var(--t) ease-in-out infinite; animation-delay: var(--d); }
+.fxa .orb .st { position: absolute; }
+.fxa .gs { background: linear-gradient(135deg, #FFF8CC, #FFC93C); }
+.fxa-gold { --g1: rgba(255,200,60,.5); }
+/* Regenbogen / Gold-Ring */
+.fxa-rainbow { --g1: rgba(255,140,200,.22); }
+.fxa .rb { left: 6%; top: 6%; width: 88%; height: 88%; border-radius: 50%; background: conic-gradient(#FF4F4F, #FFB84F, #FFE94F, #4FDB7A, #4FB6FF, #8C5BFF, #FF4F9E, #FF4F4F); -webkit-mask: radial-gradient(closest-side, transparent 80%, #000 84%, #000 94%, transparent 98%); mask: radial-gradient(closest-side, transparent 80%, #000 84%, #000 94%, transparent 98%); animation: fx-rot 6s linear infinite; opacity: .92; }
+.fxa .rb2 { left: 0; top: 0; width: 100%; height: 100%; opacity: .4; animation-duration: 10s; animation-direction: reverse; }
+.fxa .gd { background: conic-gradient(#FFE27A, #E8A317, #FFF6C2, #C98A00, #FFE27A); animation-duration: 5s; }
+/* Geist */
+.fxa-ghost { --g1: rgba(200,225,255,.4); }
+.fxa .wp { top: var(--y); width: var(--s); height: calc(var(--s) * 1.3); border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.8), rgba(190,215,255,.28) 60%, transparent 72%); opacity: 0; animation: fx-wisp var(--t) ease-in-out infinite; animation-delay: var(--d); }
+@keyframes fx-wisp { 0% { transform: translate(0, .1em) scale(.7); opacity: 0 } 25% { opacity: .85 } 100% { transform: translate(var(--dx), -.55em) scale(1.15); opacity: 0 } }
+/* Pixel-Glitch */
+.fxa-glitch { --g1: rgba(0,240,255,.3); }
+.fxa .gl { left: 14.3%; top: 14.3%; width: 71.4%; height: 71.4%; border-radius: 50%; border: max(1.5px, .015em) solid; opacity: .8; }
+.fxa .g1 { border-color: #00F0FF; animation: fx-gl1 1.7s steps(1, end) infinite; }
+.fxa .g2 { border-color: #FF2BD6; animation: fx-gl2 1.7s steps(1, end) infinite; }
+@keyframes fx-gl1 { 0% { transform: translate(.012em, 0) } 20% { transform: translate(-.02em, .01em); opacity: .3 } 40% { transform: translate(.02em, -.012em); opacity: .9 } 70% { transform: translate(-.01em, 0); opacity: .2 } 85% { transform: translate(.03em, .01em); opacity: .9 } }
+@keyframes fx-gl2 { 0% { transform: translate(-.012em, 0) } 25% { transform: translate(.02em, -.01em); opacity: .25 } 45% { transform: translate(-.025em, .012em); opacity: .9 } 75% { transform: translate(.01em, 0); opacity: .2 } 90% { transform: translate(-.03em, -.01em); opacity: .9 } }
+.fxa .px { width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); animation: fx-px var(--t) steps(1, end) infinite; animation-delay: var(--d); }
+.fxa .p0 { background: #00F0FF; } .fxa .p1 { background: #FF2BD6; } .fxa .p2 { background: #fff; }
+@keyframes fx-px { 0% { transform: translate(0, 0); opacity: 1 } 25% { transform: translate(.05em, -.02em); opacity: 0 } 50% { transform: translate(-.04em, .03em); opacity: 1 } 75% { transform: translate(.02em, .05em); opacity: 0 } 100% { opacity: 1 } }
+
+/* ---- Hintergründe in der Avatar-Scheibe ---- */
+.fxb { position: absolute; inset: 0; z-index: 0; overflow: hidden; border-radius: 50%; pointer-events: none; --fall: 1.1em; }
+.fxb-stars { background: linear-gradient(160deg, #0E1240, #3B2C7A 70%, #6B3FA0); }
+.fxb .s { width: var(--s); height: var(--s); border-radius: 50%; background: #fff; opacity: .9; animation: fx-twinkle var(--t) ease-in-out infinite; animation-delay: var(--d); }
+.fxb .shoot { left: 70%; top: 12%; width: .22em; height: max(1px, .012em); background: linear-gradient(90deg, #fff, transparent); opacity: 0; transform: rotate(-30deg); animation: fx-shoot 5s linear infinite; }
+@keyframes fx-shoot { 0%,70% { opacity: 0; transform: translate(0, 0) rotate(-30deg) } 72% { opacity: 1 } 85% { opacity: 0; transform: translate(-.5em, .3em) rotate(-30deg) } 100% { opacity: 0 } }
+.fxb-rain { background: linear-gradient(180deg, #6B7B96, #2F3B52); }
+.fxb .rn { top: -20%; width: max(1px, .012em); height: var(--h); background: linear-gradient(transparent, rgba(200,225,255,.9)); opacity: 0; animation: fx-rain var(--t) linear infinite; animation-delay: var(--d); }
+@keyframes fx-rain { 0% { transform: translate(0, 0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translate(-.12em, calc(var(--fall) * 1.3)); opacity: .2 } }
+.fxb-snow { background: linear-gradient(180deg, #CFE8FF, #8FB8E8); }
+.fxb-sakura { background: linear-gradient(180deg, #FFE8EF, #FFBFD4); }
+.fxb-bubbles { background: linear-gradient(180deg, #9AE6E0, #3FA9C9); }
+.fxb .bb { top: 100%; width: var(--s); height: var(--s); border-radius: 50%; border: 1.5px solid rgba(255,255,255,.85); background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(160,225,255,.2)); opacity: 0; animation: fx-rise var(--t) ease-in infinite; animation-delay: var(--d); }
+@keyframes fx-rise { 0% { transform: translate(0, 0) scale(.6); opacity: 0 } 15% { opacity: .9 } 100% { transform: translate(var(--dx), calc(var(--fall) * -1.1)) scale(1); opacity: 0 } }
+.fxb-matrix { background: linear-gradient(180deg, #02150A, #06361C); }
+.fxb .mx { top: -30%; width: max(2px, .035em); height: var(--h); background: linear-gradient(transparent, #33FF88); opacity: 0; animation: fx-mx var(--t) linear infinite; animation-delay: var(--d); }
+@keyframes fx-mx { 0% { transform: translateY(0); opacity: 0 } 10% { opacity: 1 } 100% { transform: translateY(calc(var(--fall) * 1.6)); opacity: .3 } }
+.fxb-aurora { background: linear-gradient(180deg, #05102B, #0B2A4A); }
+.fxb-aurora .ab { width: 90%; height: 55%; }
+.fxb-sunset { background: linear-gradient(180deg, #FF9E5E, #FF5E8E 55%, #7A4DDB); }
+.fxb .sun { left: 50%; top: auto; bottom: 26%; width: .34em; height: .34em; margin-left: -.17em; border-radius: 50%; background: radial-gradient(circle, #FFF3B0, #FFC24F 70%); animation: fx-sun 6s ease-in-out infinite alternate; }
+@keyframes fx-sun { from { transform: translateY(.05em) } to { transform: translateY(-.05em) } }
+.fxb-dawn { background: linear-gradient(180deg, #FFD9B0, #FF9CB3); }
+.fxb-lagoon { background: linear-gradient(180deg, #A5EFEA, #3FA9C9); }
+.fxb-peach { background: linear-gradient(180deg, #FFE6CC, #FFB88F); }
+.fxb-lilac { background: linear-gradient(180deg, #EBDDFF, #B49CFF); }
+.fxb-mintfog { background: linear-gradient(180deg, #DDF9EC, #8FDDBB); }
+.fxb .fog { left: -20%; top: 30%; width: 80%; height: 50%; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.75), transparent); animation: fx-drift 9s ease-in-out infinite alternate; }
+
+/* ---- Neue Rahmen ---- */
+.fr-water::before { background: conic-gradient(#2BB0ED, #7FE0FF, #1572D6, #7FE0FF, #2BB0ED); animation: fx-rot 4s linear infinite; }
+.fr-sakura::before { background: conic-gradient(#FF9EC4, #FFE4EE, #F06BA0, #FFE4EE, #FF9EC4); animation: fx-rot 7s linear infinite; }
+.fr-ice::before { background: conic-gradient(#E6FBFF, #7FD8FF, #fff, #5FA8E8, #E6FBFF); animation: fx-rot 6s linear infinite; }
+.av-fr.fr-ice { box-shadow: 0 0 8px rgba(120,200,255,.55); }
+.fr-pixel::before { background: conic-gradient(#00F0FF 0 25%, #FF2BD6 0 50%, #fff 0 62%, #00F0FF 0 75%, #FF2BD6 0 100%); animation: fx-rot 1.6s steps(8) infinite; }
+.fr-aurora::before { background: conic-gradient(#4CFFB5, #5AB4FF, #B07CFF, #4CFFB5); animation: fx-rot 5s linear infinite; }
+.fr-bolt::before { background: conic-gradient(#1B1050, #9B6BFF, #fff, #9B6BFF, #1B1050); animation: fx-rot 1.8s linear infinite; }
+.av-fr.fr-bolt { box-shadow: 0 0 9px rgba(155,107,255,.6); }
+.fr-royal::before { background: conic-gradient(#FFE27A, #E8A317, #FFF6C2, #C98A00, #FFE27A); animation: fx-rot 3.5s linear infinite; }
+.av-fr.fr-royal { box-shadow: 0 0 10px rgba(255,200,60,.6); }
+
+/* ---- Feier-Effekte (Overlay über der App) ---- */
+.fxc { position: fixed; inset: 0; z-index: 9000; pointer-events: none; overflow: hidden; }
+.fxc i, .fxc b { position: absolute; display: block; }
+.fxc-fire .fgl { left: 0; right: 0; bottom: 0; height: 46vh; background: linear-gradient(to top, rgba(255,110,20,.55), rgba(255,170,40,.2) 60%, transparent); opacity: 0; animation: fxc-glow 3.2s ease-in-out forwards; }
+@keyframes fxc-glow { 0% { opacity: 0 } 18% { opacity: 1 } 70% { opacity: .8 } 100% { opacity: 0 } }
+.fxc-fire .fl { bottom: -6vh; left: var(--x); width: var(--s); height: var(--s); border-radius: 50% 0 50% 50%; background: radial-gradient(circle at 35% 65%, #FFF6B0 0, #FFC21F 38%, #FF5A00 72%, #D8200A 100%); transform: rotate(-45deg); opacity: 0; animation: fxc-flame var(--t) ease-out forwards; animation-delay: var(--d); }
+@keyframes fxc-flame { 0% { transform: translateY(0) rotate(-45deg) scale(.6); opacity: 0 } 15% { opacity: 1 } 100% { transform: translateY(calc(var(--h) * -1)) rotate(-45deg) scale(.1); opacity: 0 } }
+.fxc-fire .em { bottom: 0; left: var(--x); width: 5px; height: 5px; border-radius: 50%; background: #FFB347; box-shadow: 0 0 8px #FF6A00; opacity: 0; animation: fxc-ember var(--t) ease-out forwards; animation-delay: var(--d); }
+@keyframes fxc-ember { 0% { transform: translate(0, 0); opacity: 0 } 15% { opacity: 1 } 100% { transform: translate(var(--dx), calc(var(--h) * -1)); opacity: 0 } }
+.fxc-wave .wv { left: -10%; width: 120%; height: 80vh; bottom: -80vh; background: linear-gradient(#3FB6FF, #1572D6); opacity: .62; animation: fxc-rise 4s ease-in-out forwards; }
+.fxc-wave .w2 { opacity: .4; background: linear-gradient(#7FE0FF, #2B8FE0); animation-delay: .25s; animation-duration: 4.1s; }
+.fxc-wave .wv::before { content: ""; position: absolute; left: 0; top: -34px; width: 200%; height: 36px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 36' preserveAspectRatio='none'%3E%3Cpath d='M0 36 V18 Q15 0 30 18 T60 18 T90 18 T120 18 V36z' fill='%233FB6FF'/%3E%3C/svg%3E") repeat-x; background-size: 120px 36px; animation: fxc-slide 1.6s linear infinite; }
+.fxc-wave .w2::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 36' preserveAspectRatio='none'%3E%3Cpath d='M0 36 V18 Q15 0 30 18 T60 18 T90 18 T120 18 V36z' fill='%237FE0FF'/%3E%3C/svg%3E"); animation-direction: reverse; animation-duration: 2.2s; }
+@keyframes fxc-rise { 0% { transform: translateY(0) } 40% { transform: translateY(-92vh) } 60% { transform: translateY(-92vh) } 100% { transform: translateY(0) } }
+@keyframes fxc-slide { to { transform: translateX(-120px) } }
+.fxc-wave .bb { bottom: -4vh; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%; border: 2px solid rgba(255,255,255,.85); background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(160,225,255,.2)); opacity: 0; animation: fxc-bub var(--t) ease-in forwards; animation-delay: var(--d); }
+@keyframes fxc-bub { 0% { transform: translate(0, 0); opacity: 0 } 15% { opacity: .95 } 100% { transform: translate(var(--dx), calc(var(--h) * -1.3)); opacity: 0 } }
+.fxc-fireworks .rk { left: var(--x); top: 100vh; width: 4px; height: 14px; margin-left: -2px; border-radius: 2px; background: linear-gradient(#fff, transparent); opacity: 0; animation: fxc-rocket .55s ease-out forwards; animation-delay: var(--d); }
+@keyframes fxc-rocket { 0% { transform: translateY(0); opacity: 1 } 100% { transform: translateY(calc(var(--y) - 100vh)); opacity: 0 } }
+.fxc-fireworks .bs { left: var(--x); top: var(--y); }
+.fxc-fireworks .sp { left: 0; top: 0; width: 8px; height: 8px; margin: -4px; border-radius: 50%; background: hsl(var(--h) 95% 62%); box-shadow: 0 0 10px 1px hsl(var(--h) 95% 62%); opacity: 0; animation: fxc-spark 1.8s cubic-bezier(.1,.7,.3,1) forwards; animation-delay: var(--d); }
+@keyframes fxc-spark { 0% { transform: translate(0, 0) scale(1); opacity: 1 } 70% { opacity: 1 } 100% { transform: translate(var(--dx), var(--dy)) scale(.3); opacity: 0 } }
+.fxc-aurora .cu { top: -10vh; left: var(--x); width: var(--w); height: 78vh; background: linear-gradient(to bottom, transparent, var(--c) 28%, transparent); transform-origin: top center; opacity: 0; animation: fxc-cur var(--t) ease-in-out forwards; animation-delay: var(--d); }
+.fxc-aurora .c0 { --c: rgba(76,255,181,.65); } .fxc-aurora .c1 { --c: rgba(90,180,255,.6); } .fxc-aurora .c2 { --c: rgba(176,124,255,.6); }
+@keyframes fxc-cur { 0% { opacity: 0; transform: skewX(-8deg) scaleY(.6) } 25% { opacity: 1 } 55% { transform: skewX(8deg) scaleY(1) } 100% { opacity: 0; transform: skewX(-4deg) scaleY(.9) } }
+.fxc-aurora .s { left: var(--x); top: var(--y); width: var(--s); height: var(--s); border-radius: 50%; background: #fff; opacity: 0; animation: fxc-tw var(--t) ease-in-out 3 forwards; animation-delay: var(--d); }
+@keyframes fxc-tw { 0%,100% { opacity: 0 } 50% { opacity: 1 } }
+.fxc-gold .cw { top: -40px; left: var(--x); width: var(--s); height: var(--s); animation: fxc-fall var(--t) cubic-bezier(.4,.1,.8,.6) forwards; animation-delay: var(--d); opacity: 0; }
+.fxc-gold .cw b { inset: 0; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #FFF6B0, #FFC93C 55%, #C98A00); border: 2px solid #E8A317; animation: fxc-flip var(--st) linear infinite; }
+@keyframes fxc-fall { 0% { transform: translateY(0); opacity: 1 } 100% { transform: translateY(112vh); opacity: 1 } }
+@keyframes fxc-flip { 0%,100% { transform: scaleX(1) } 50% { transform: scaleX(.12) } }
+.fxc-snow .fk, .fxc-sakura .pt { top: -30px; left: var(--x); width: var(--s); height: var(--s); opacity: 0; animation: fxc-drift var(--t) linear forwards; animation-delay: var(--d); }
+.fxc-snow .fk { border-radius: 50%; background: #fff; box-shadow: 0 0 6px #BFEFFF; }
+.fxc-sakura .pt { height: calc(var(--s) * .75); border-radius: 100% 0 100% 0; background: linear-gradient(135deg, #FFD6E4, #FF8DB5); transform: rotate(var(--rot)); }
+@keyframes fxc-drift { 0% { transform: translate(0, 0) rotate(var(--rot, 0deg)); opacity: 0 } 10% { opacity: 1 } 90% { opacity: 1 } 100% { transform: translate(var(--dx), 110vh) rotate(calc(var(--rot, 0deg) + 300deg)); opacity: 0 } }
+
+/* ---- Bewegung reduzieren: Auren, Hintergründe, Rahmen stehen still; der Schein bleibt ---- */
+@media (prefers-reduced-motion: reduce) {
+  .fxa *, .fxb *, .b-flap, .b-spin, .b-z, .b-led-line, .fr-water::before, .fr-sakura::before, .fr-ice::before, .fr-pixel::before, .fr-aurora::before, .fr-bolt::before, .fr-royal::before, .shop-item::after, .shop-live * { animation: none !important; }
+  .fxa .fl, .fxa .em, .fxa .bb, .fxa .dr, .fxa .fk, .fxa .pt, .fxa .wp, .fxb .rn, .fxb .mx, .fxb .bb, .fxb .fk, .fxb .pt { opacity: .7; }
+  .fxa .bolt { opacity: .9; }
+}
+
+/* ============ Shop-Oberfläche ============ */
+.shop-live { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
+:root[data-theme="dark"] @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .profile-head 
+.shop-hero2 { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 22px; background: linear-gradient(135deg, var(--pv-red), var(--pv-red-2)); color: #fff; margin-bottom: 12px; }
+.shop-hero2 .shop-live { padding: 4px; }
+.shop-hero2 .shop-hero2 .coins { font-size: 28px; font-weight: 800; line-height: 1.1; }
+.shop-hero2 .coll { font-size: 13px; font-weight: 600; margin-top: 6px; }
+.shop-hero2 .coll b { font-weight: 800; }
+.shop-hero2 .bar { height: 7px; border-radius: 99px; background: rgba(255,255,255,.28); margin-top: 5px; overflow: hidden; }
+.shop-hero2 .bar i { display: block; height: 100%; border-radius: 99px; background: #fff; transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.shop-hero2 small { display: block; opacity: .8; font-weight: 600; font-size: 11.5px; margin-top: 6px; }
+.try-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 10px 12px; border-radius: 16px; background: var(--pv-red-soft); margin-bottom: 12px; font-size: 13px; }
+.try-chip { padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-size: 12px; font-weight: 700; color: var(--ink); }
+.try-act { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.daily { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 18px; background: linear-gradient(120deg, #FFF3C9, #FFE0EC); color: #5A3D00; margin-bottom: 12px; border: 1.5px solid #F5D77A; }
+.daily.done { background: var(--surface-2); border-color: var(--line); color: var(--ink-2); }
+.daily .e { font-size: 26px; } .daily .pv { flex: none; display: grid; place-items: center; }
+.daily .faint { color: inherit; opacity: .7; }
+:root[data-theme="dark"] .daily:not(.done) { background: linear-gradient(120deg, #3A3010, #3A1F2E); color: #FFE9A8; border-color: #6B5A1E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .daily:not(.done) { background: linear-gradient(120deg, #3A3010, #3A1F2E); color: #FFE9A8; border-color: #6B5A1E; } }
+
+.shop-cats { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px 0 8px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+.shop-cats::-webkit-scrollbar, .rar-chips::-webkit-scrollbar { display: none; }
+.shop-cats button { flex: none; height: 34px; padding: 0 13px; border-radius: 999px; background: var(--surface); border: 1.5px solid var(--line); font-weight: 700; font-size: 13px; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; }
+.shop-cats button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.shop-cats button i { font-style: normal; font-size: 10.5px; font-weight: 800; background: var(--pv-red); color: #fff; border-radius: 99px; padding: 1px 6px; }
+.shop-filter { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 12px; }
+.rar-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.rar-chips button { flex: none; height: 28px; padding: 0 11px; border-radius: 999px; background: var(--surface-2); font-size: 12px; font-weight: 700; color: var(--ink-2); display: inline-flex; align-items: center; gap: 5px; border: 1.5px solid transparent; }
+.rar-chips button i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.rar-chips button.on { background: var(--surface); color: var(--ink); border-color: var(--c, var(--ink)); }
+.select.sort { height: 34px; width: auto; min-width: 118px; font-size: 13px; padding: 0 28px 0 10px; }
+.chip-toggle { height: 34px; padding: 0 12px; border-radius: 10px; background: var(--surface-2); font-size: 12.5px; font-weight: 700; color: var(--ink-2); border: 1.5px solid transparent; }
+.chip-toggle.on { background: var(--pv-red-soft); color: var(--v2-red-text, #A5586B); border-color: var(--pv-red); }
+
+/* Karten nach Seltenheit: Rand, Glow, bei «legendär» ein Glanzstreifen (nur transform, nur wenn sichtbar) */
+.shop-item { overflow: hidden; content-visibility: auto; contain-intrinsic-size: 140px 130px; }
+.shop-item.r-rare { border-color: #16B37755; }
+.shop-item.r-epic { border-color: #8C5BFF77; box-shadow: 0 3px 0 var(--line), 0 6px 18px -8px #8C5BFFaa; }
+.shop-item.r-legend { border-color: #F5A30A99; box-shadow: 0 3px 0 var(--line), 0 6px 20px -6px #F5A30Acc; background: linear-gradient(180deg, color-mix(in srgb, #F5A30A 9%, var(--surface)), var(--surface)); }
+.shop-item.r-legend::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(105deg, transparent, rgba(255,255,255,.45), transparent); transform: translateX(0) skewX(-12deg); animation: shop-shine 5s ease-in-out infinite; pointer-events: none; }
+@keyframes shop-shine { 0%,55% { transform: translateX(0) skewX(-12deg) } 100% { transform: translateX(520%) skewX(-12deg) } }
+.shop-item.eq { border-color: var(--pv-red); }
+.shop-item > .av, .shop-item > .av-fr { margin: 2px 0; }
+.shop-item > .av-x { margin: 11px 0; }
+.fx-tile { display: grid; place-items: center; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--line); flex: none; }
+.fx-tile.r-rare { background: #16B37722; border-color: #16B37766; } .fx-tile.r-epic { background: #8C5BFF22; border-color: #8C5BFF77; } .fx-tile.r-legend { background: #F5A30A26; border-color: #F5A30A99; }
+.fx-tile.big { width: 150px; height: 150px; font-size: 76px; }
+.shop-detail .det-prev { display: grid; place-items: center; padding: 22px 34px; border-radius: 30px; background: radial-gradient(circle at 50% 45%, var(--surface), var(--surface-2)); min-width: 240px; }
+.shop-detail .btn.on { border-color: var(--v2-red-3, #CD9BA8); color: var(--v2-red-text, #A5586B); }
+
+/* ---- «Mein Look» im Profil ---- */
+.my-look { background: var(--surface); border: 1.5px solid var(--line); border-radius: 22px; padding: 14px; margin: 12px 0; display: flex; flex-direction: column; gap: 10px; }
+.my-look .ml-top { display: flex; gap: 14px; align-items: center; }
+.my-look .ml-top .shop-live { padding: 6px; }
+.lk-row { gap: 8px; }
+.lk-row .lk { width: 74px; height: auto; padding: 6px 4px 5px; border-radius: 16px; gap: 3px; flex-direction: column; font-size: 11px; font-weight: 700; color: var(--ink-2); }
+.lk-row .lk span { max-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lk-row .lk.on { border-color: var(--pv-red); background: var(--pv-red-soft); color: var(--ink); }
+
+@media (max-width: 380px) {
+  .shop-hero2 { padding: 12px; gap: 12px; } .shop-hero2 .coins { font-size: 24px; }
+  .shop-grid { gap: 8px; }
+}
+
+/* Skins ersetzen Hut und Brille: gesperrte Plätze grau */
+.lk-row .lk.locked { opacity: .45; filter: grayscale(1); }
+.my-look .seg button.dim { opacity: .55; }
+.lk-hint { padding: 0 2px; }
+
+/* ---- Vektor-Symbole statt Emojis, einheitliche Kacheln (Brained 2.0) ---- */
+.ico-coin { width: 1em; height: 1em; vertical-align: -.14em; margin-right: .3em; color: #E0A21A; flex: none; }
+.fx-ic { display: grid; place-items: center; color: var(--ink-2); } .fx-ic svg { width: 100%; height: auto; }
+.fx-ic.big { width: 84px; margin: 0 auto; color: var(--v2-red-text, #A5586B); }
+.fx-tile.r-rare .fx-ic { color: #16B377; } .fx-tile.r-epic .fx-ic { color: #8C5BFF; } .fx-tile.r-legend .fx-ic { color: #F5A30A; }
+.shop-item { align-items: center; text-align: center; }
+.shop-item .p { display: inline-flex; align-items: center; justify-content: center; }
+.shop-item.eq { box-shadow: 0 0 0 2px var(--pv-red); }
+.shop-hero2 .coins { display: inline-flex; align-items: center; } .shop-hero2 .ico-coin { color: #FFD66B; }
+.shop-detail, .daily { text-align: center; }

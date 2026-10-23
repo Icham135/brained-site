@@ -1,0 +1,103 @@
+/* Farb-Looks für den hellen Modus (nur Farben, keine Layout-Änderung). Aktiv über data-look am <html>.
+   Dunkelmodus und Clarity (Blau) bleiben unverändert. Vorschau: tools/design-vergleich.html */
+:root[data-theme="light"][data-look] { --lk-hi: #fff; }
+:root[data-theme="light"][data-look] :is(.card, .pv-card, .pv-list, .v2-fr, .v2-req, .v2-practice, .v2-stats .c, .my-look, .kpi, .list, .feed-item, .tile, .mode-card, .shop-item, .pl-row, .rm-solo, .sprint-card, .ovs .insight, .insight, .c.lock, .v2-stats .lock) {
+  background: radial-gradient(120% 90% at 85% 0%, var(--lk-hi), rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, var(--lk-hi), rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, var(--lk-c1), var(--lk-c2));
+}
+:root[data-theme="light"][data-look] { --perl: radial-gradient(120% 140% at 88% 0%, #fff, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, var(--lk-p1), var(--lk-p2)); --v2-pill: var(--lk-p1); }
+
+/* A · Butter & Creme: warmes Notizbuch */
+:root[data-theme="light"][data-look="a"] {
+  --lk-b1: #7A4A1A; --lk-b2: #5A3410; --lk-bink: #FFF3D6; --lk-btn2: #FFFDF6; --lk-btn2-ink: #3B2A12; --lk-btn2-line: #D9C690;
+  --bg: #F2E6C4; --surface: #FFFBF0; --surface-2: #F6EDD3; --surface-3: #EDDFB8; --line: #E5D8B0;
+  --ink: #2A2113; --ink-2: #5A4A30; --ink-3: #8A7753; --brand: #B26A2B; --brand-soft: #FBE9C4;
+  --lk-c1: #FFFDF6; --lk-c2: #F6ECD0; --lk-p1: #FFFBEF; --lk-p2: #F4E7BD;
+  --v2-red-1: #FFF8E1; --v2-red-2: #F2DC9C; --v2-red-3: #E2C46E; --v2-on-red: #3B2A12; --v2-red-text: #9A5B1E; --v2-tab-red: #8A5A22; --v2-red-glow: rgba(255, 244, 200, .8);
+}
+/* B · Mint Studio: frisch und ruhig */
+:root[data-theme="light"][data-look="b"] {
+  --lk-b1: #2A8068; --lk-b2: #1E6B55; --lk-bink: #FFFFFF; --lk-btn2: #FAFFFC; --lk-btn2-ink: #0F3D2F; --lk-btn2-line: #A9D3C2;
+  --bg: #D3EBE0; --surface: #F5FCF9; --surface-2: #E6F4EE; --surface-3: #D6EBE2; --line: #BFDCCF;
+  --ink: #10241D; --ink-2: #34574B; --ink-3: #5F8174; --brand: #1E6B55; --brand-soft: #D3F0E4;
+  --lk-c1: #F6FCF9; --lk-c2: #DCF0E7; --lk-p1: #FFFFFF; --lk-p2: #E0F3EA;
+  --v2-red-1: #F2FBF7; --v2-red-2: #B7E1D0; --v2-red-3: #8CCBB3; --v2-on-red: #0F3D2F; --v2-red-text: #1E6B55; --v2-tab-red: #1E6B55; --v2-red-glow: rgba(220, 255, 240, .8);
+}
+/* C · Lavendel Dunst: weich, passt zum violetten Lernraum */
+:root[data-theme="light"][data-look="c"] {
+  --lk-b1: #7A63E0; --lk-b2: #5B45C9; --lk-bink: #FFFFFF; --lk-btn2: #FFFFFF; --lk-btn2-ink: #2A1B5E; --lk-btn2-line: #C4B8EA;
+  --bg: #DDD3F2; --surface: #FAF8FF; --surface-2: #EEE9FA; --surface-3: #E2DAF4; --line: #D0C6EA;
+  --ink: #1B1433; --ink-2: #4A4070; --ink-3: #7B71A3; --brand: #5B45C9; --brand-soft: #E7E0FA;
+  --lk-c1: #FBF9FF; --lk-c2: #E8E0F8; --lk-p1: #FFFFFF; --lk-p2: #EAE3FA;
+  --v2-red-1: #F6F2FF; --v2-red-2: #C9BBF0; --v2-red-3: #A692E0; --v2-on-red: #2A1B5E; --v2-red-text: #5B45C9; --v2-tab-red: #5B45C9; --v2-red-glow: rgba(240, 232, 255, .85);
+}
+/* D · Pfirsich Sunset: warm und freundlich */
+:root[data-theme="light"][data-look="d"] {
+  --lk-b1: #FF7F5A; --lk-b2: #E5502F; --lk-bink: #FFFFFF; --lk-btn2: #FFFFFF; --lk-btn2-ink: #4A1A0A; --lk-btn2-line: #F0BFA6;
+  --bg: #FAD9C7; --surface: #FFF8F4; --surface-2: #FCEADF; --surface-3: #F8DCCC; --line: #F0CBB6;
+  --ink: #2C150C; --ink-2: #6A3F2F; --ink-3: #9A6F5C; --brand: #D4472B; --brand-soft: #FFE1D4;
+  --lk-c1: #FFF9F5; --lk-c2: #FBE3D6; --lk-p1: #FFFFFF; --lk-p2: #FFE8DA;
+  --v2-red-1: #FFD7C2; --v2-red-2: #FF9E7A; --v2-red-3: #F2784F; --v2-on-red: #4A1A0A; --v2-red-text: #D4472B; --v2-tab-red: #D4472B; --v2-red-glow: rgba(255, 235, 224, .85);
+}
+/* E · Graphit & Lime: Papier, Schwarz, ein Lime-Akzent */
+:root[data-theme="light"][data-look="e"] {
+  --lk-b1: #2B2B30; --lk-b2: #0D0D10; --lk-bink: #FFFFFF; --lk-btn2: #FFFFFF; --lk-btn2-ink: #0D0D10; --lk-btn2-line: #BDBAB2;
+  --bg: #E6E4DF; --surface: #FFFFFF; --surface-2: #F1EFEA; --surface-3: #E4E1DA; --line: #D8D5CE;
+  --ink: #0D0D10; --ink-2: #44444C; --ink-3: #75757F; --brand: #5F7F00; --brand-soft: #ECF8BE;
+  --lk-c1: #FFFFFF; --lk-c2: #F1EFEA; --lk-p1: #FFFFFF; --lk-p2: #ECEAE4;
+  --v2-red-1: #2B2B30; --v2-red-2: #0D0D10; --v2-red-3: #000; --v2-on-red: #FFFFFF; --v2-red-text: #5F7F00; --v2-tab-red: #0D0D10; --v2-red-glow: rgba(198, 244, 50, .5);
+}
+:root[data-theme="light"][data-look="e"] .v2-today .deco g { stroke: #C6F432; }
+/* E: «Heute gelernt»-Banner wird schwarz mit Lime-Glanz (Text weiss) */
+:root[data-theme="light"][data-look="e"] .v2-today { background: radial-gradient(110% 90% at 88% 0%, rgba(198, 244, 50, .30), rgba(198, 244, 50, 0) 58%), linear-gradient(155deg, #2B2B30, #0D0D10) !important; box-shadow: 0 14px 30px rgba(13, 13, 16, .28), inset 0 1px 0 rgba(255, 255, 255, .12); color: #fff; }
+:root[data-theme="light"][data-look="e"] .v2-today :is(h2, h3, b, strong, small, span, p, div) { color: inherit; }
+
+/* F · Weiss & Violett: strahlend weiss, kräftiges Violett auf den Buttons */
+:root[data-theme="light"][data-look="f"] {
+  --bg: #F4F2FB; --surface: #FFFFFF; --surface-2: #F1EEFA; --surface-3: #E6E1F5; --line: #E2DDF3;
+  --ink: #17122E; --ink-2: #4A4470; --ink-3: #7C76A0; --brand: #6D4DF2; --brand-soft: #ECE6FF;
+  --lk-c1: #FFFFFF; --lk-c2: #F0EDFA; --lk-p1: #FFFFFF; --lk-p2: #F1EEFA;
+  --v2-red-1: #7B5CFF; --v2-red-2: #5A3BDC; --v2-red-3: #4528B8; --v2-on-red: #FFFFFF; --v2-red-text: #5A3BDC; --v2-tab-red: #6D4DF2; --v2-red-glow: rgba(190, 170, 255, .7);
+  --lk-b1: #7B5CFF; --lk-b2: #5A3BDC; --lk-bink: #FFFFFF; --lk-btn2: #FFFFFF; --lk-btn2-ink: #2B1F6B; --lk-btn2-line: #D9D2F5;
+}
+/* G · Silber Satin: Chrom und Graphit, Buttons wie gebürstetes Metall */
+:root[data-theme="light"][data-look="g"] {
+  --bg: #DFE1E6; --surface: #F7F8FA; --surface-2: #ECEEF1; --surface-3: #DEE0E5; --line: #CBCED6;
+  --ink: #14161C; --ink-2: #454A57; --ink-3: #767B88; --brand: #4B5160; --brand-soft: #E3E5EA;
+  --lk-c1: #FFFFFF; --lk-c2: #E9EBEF; --lk-p1: #FFFFFF; --lk-p2: #D9DCE2;
+  --v2-red-1: #4A4F5C; --v2-red-2: #262932; --v2-red-3: #14161C; --v2-on-red: #FFFFFF; --v2-red-text: #3A3F4C; --v2-tab-red: #262932; --v2-red-glow: rgba(255, 255, 255, .6);
+  --lk-b1: #4A4F5C; --lk-b2: #262932; --lk-bink: #FFFFFF; --lk-btn2: linear-gradient(155deg, #FFFFFF, #D9DCE2); --lk-btn2-ink: #1B1E26; --lk-btn2-line: #BFC3CC;
+}
+/* H · Nebel Indigo: graues Violett, tiefe Indigo-Buttons */
+:root[data-theme="light"][data-look="h"] {
+  --bg: #D8D5E6; --surface: #F5F4FA; --surface-2: #E8E5F3; --surface-3: #DAD6EA; --line: #C7C2DD;
+  --ink: #181432; --ink-2: #463F70; --ink-3: #766F9D; --brand: #3D2FA0; --brand-soft: #E4E0F6;
+  --lk-c1: #F6F5FB; --lk-c2: #E5E2F1; --lk-p1: #FBFAFE; --lk-p2: #E7E4F3;
+  --v2-red-1: #4A3BB8; --v2-red-2: #2C2080; --v2-red-3: #1D1560; --v2-on-red: #FFFFFF; --v2-red-text: #3D2FA0; --v2-tab-red: #3D2FA0; --v2-red-glow: rgba(170, 160, 235, .6);
+  --lk-b1: #4A3BB8; --lk-b2: #2C2080; --lk-bink: #FFFFFF; --lk-btn2: #EEECF8; --lk-btn2-ink: #281E78; --lk-btn2-line: #B3ACDA;
+}
+/* I · Silber & Flieder: helles Silber, weiche Flieder-Buttons */
+:root[data-theme="light"][data-look="i"] {
+  --bg: #E9E8EE; --surface: #FAFAFC; --surface-2: #F0EFF4; --surface-3: #E4E2EB; --line: #D5D3DF;
+  --ink: #1A1630; --ink-2: #4B4768; --ink-3: #7C7899; --brand: #7B5FE0; --brand-soft: #EDE8FC;
+  --lk-c1: #FFFFFF; --lk-c2: #F0EFF5; --lk-p1: #FFFFFF; --lk-p2: #F0EEF6;
+  --v2-red-1: #D5C8FF; --v2-red-2: #AE97F7; --v2-red-3: #8D72EA; --v2-on-red: #231552; --v2-red-text: #6A4FD6; --v2-tab-red: #7B5FE0; --v2-red-glow: rgba(235, 228, 255, .9);
+  --lk-b1: #C4B2FF; --lk-b2: #A58BF6; --lk-bink: #231552; --lk-btn2: #FFFFFF; --lk-btn2-ink: #6A4FD6; --lk-btn2-line: #A58BF6;
+}
+/* J · Platin & Amethyst: dunkleres Platin, glänzende Amethyst-Buttons */
+:root[data-theme="light"][data-look="j"] {
+  --bg: #CBCAD6; --surface: #F1F0F6; --surface-2: #E3E2EC; --surface-3: #D5D3E1; --line: #BEBCCD;
+  --ink: #15112B; --ink-2: #433D66; --ink-3: #726C94; --brand: #7040D8; --brand-soft: #E3DBFA;
+  --lk-c1: #F3F2F8; --lk-c2: #DCDAE7; --lk-p1: #F8F7FB; --lk-p2: #DDDBEA;
+  --v2-red-1: #A07BFF; --v2-red-2: #6A3FE0; --v2-red-3: #4F28B8; --v2-on-red: #FFFFFF; --v2-red-text: #5C34C8; --v2-tab-red: #6A3FE0; --v2-red-glow: rgba(215, 200, 255, .7);
+  --lk-b1: #A07BFF; --lk-b2: #6A3FE0; --lk-bink: #FFFFFF; --lk-btn2: linear-gradient(155deg, #FFFFFF, #D6D4E2); --lk-btn2-ink: #241A55; --lk-btn2-line: #B3B0C8;
+}
+
+/* Mehr Kontrast für alle Looks: Zweit-Buttons mit klarem Rand, Hauptbutton gefüllt (Freunde heute, Play-Menü u. a.) */
+:root[data-theme="light"][data-look] .v2-fr .btns button { background: var(--lk-btn2) !important; color: var(--lk-btn2-ink) !important; border: 1.5px solid var(--lk-btn2-line); box-shadow: 0 2px 0 var(--lk-btn2-line); font-weight: 800; }
+:root[data-theme="light"][data-look] .v2-fr .btns button:last-child { background: linear-gradient(155deg, var(--lk-b1), var(--lk-b2)) !important; color: var(--lk-bink) !important; border-color: transparent; box-shadow: 0 8px 18px -8px var(--lk-b2); }
+:root[data-theme="light"][data-look] :is(.btn.ghost, .btn.soft, .btn.secondary, .pl-all, .tb-ghost, .pv-btn.ghost, .icon-btn:not(.plain), .v2-pill, .pl-chip:not(.on)) { border: 1px solid var(--lk-btn2-line); }
+:root[data-theme="light"][data-look] .pl-chip.on, :root[data-theme="light"][data-look] .pl-row.on { border-color: var(--lk-b2) !important; }
+:root[data-theme="light"][data-look] .tab-start button svg { color: var(--v2-on-red); }
+/* «Heute gelernt»: Text immer in Tintenfarbe (nur Look E hat die schwarze Karte mit weisser Schrift) */
+:root[data-theme="light"][data-look]:not([data-look="e"]) .v2-today { color: var(--ink); }
+:root[data-theme="light"][data-look]:not([data-look="e"]) .v2-today :is(h2, h3, b, strong, small, span, p, div) { color: inherit; }

@@ -1,0 +1,51 @@
+/* Darkmode: tiefes Pflaumen-Dunkel, Karten in zwei dunklen Tönen, Buttons im Hintergrundton (Gegenstück zum hellen Perlmutt) */
+:root[data-theme="dark"] {
+  --bg: #17111B; --surface: #221A28; --surface-2: #2B2133; --surface-3: #352A3E;
+  --ink: #F7F1F9; --ink-2: #CDBFD6; --ink-3: #968AA0; --line: #3B2F45;
+  --brand: #E58BA5; --brand-soft: #3A1E2B;
+  --v2-on-red: #F7F1F9; --v2-red-text: #E7A0B8;
+  --perl: radial-gradient(120% 140% at 88% 0%, rgba(255, 255, 255, .12), rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #3A2F44, #2B2234);
+  --dk-card: radial-gradient(120% 90% at 85% 0%, rgba(255, 255, 255, .09), rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, rgba(255, 255, 255, .05), rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #2D2335, #211A28);
+  color-scheme: dark;
+}
+:root[data-theme="dark"] body { background: var(--bg); }
+
+/* Karten und Flächen */
+:root[data-theme="dark"] :is(.card, .pv-card, .pv-list, .v2-fr, .v2-req, .v2-practice, .v2-stats .c, .my-look, .kpi, .list, .feed-item, .tile, .mode-card, .shop-item, .pl-row, .rm-solo, .sprint-card, .ovs .insight, .insight, .c.lock, .v2-stats .lock) { background: var(--dk-card); }
+
+/* Banner «Heute gelernt»: helleres Dunkel-Quarz */
+:root[data-theme="dark"] .v2-today { background: radial-gradient(120% 90% at 85% 0%, rgba(255, 255, 255, .2), rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, rgba(255, 255, 255, .1), rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #43364E, #2D2336); box-shadow: 0 14px 30px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .14); }
+:root[data-theme="dark"] .v2-today .deco g { stroke: #F7F1F9; }
+:root[data-theme="dark"] .v2-today .deco { opacity: .22; }
+
+/* Buttons, Pillen, Chips: dunkles Perlmutt, helle Schrift */
+:root[data-theme="dark"] :is(.v2-pill, .seg button.on, .rk-seg button.on, .pl-seg button.on, .rm-btn.gold, .rm-home, .rm-take, .hub .cl-card-cta, .cl-card-cta, .btn.light, .tb-btn.white, .btn.ghost, .btn.soft, .btn.secondary, .pl-all, .tb-ghost, .pv-tabs button:not(.on), .pv-btn.ghost, .icon-btn:not(.plain), .v2-warn, .v2-fr .btns button, .v2-fr .btns button.main, .pl-chip:not(.on):not(.more), .daily .pv-btn, .pl-solo .rm-btn.red) { background: var(--perl) !important; color: var(--ink) !important; box-shadow: none !important; }
+:root[data-theme="dark"] .rm-take { border-color: #4A3C55 !important; }
+:root[data-theme="dark"] .v2-pill .num, :root[data-theme="dark"] .v2-pill svg { color: var(--ink); }
+
+/* Auswahl: Hintergrundton, heller Rahmen */
+:root[data-theme="dark"] :is(.pl-chip.on, .pl-row.on, .rk-chip.on, .pv-tabs button.on) { background: #0F0B12 !important; color: var(--ink) !important; border-color: var(--ink) !important; box-shadow: none !important; }
+:root[data-theme="dark"] :is(.pv-coins, .trophy) { background: var(--bg) !important; color: var(--ink); }
+:root[data-theme="dark"] .pv-tr { background: var(--perl) !important; color: var(--ink); }
+:root[data-theme="dark"] .pv-tri { background: #4B3C57 !important; color: #F7F1F9 !important; }
+
+/* Play-Button */
+:root[data-theme="dark"] .tab-start button, :root[data-theme="dark"] .tab-start button:not(.live), :root[data-theme="dark"] .tab-start button.live { background: radial-gradient(90% 80% at 80% 10%, rgba(255, 255, 255, .25), transparent 60%), linear-gradient(155deg, #4B3C57, #34293E) !important; box-shadow: 0 8px 22px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .22); }
+:root[data-theme="dark"] .tab-start button svg path { fill: #FFFFFF; stroke: #FFFFFF; }
+
+/* Rangliste: eigene Zeile */
+:root[data-theme="dark"] .rk-me { background: linear-gradient(155deg, #43364E, #2D2336) !important; color: var(--ink); }
+:root[data-theme="dark"] .rk-me * { color: var(--ink); }
+
+/* Feinschliff: Violett/Pfirsich-Reste auch im Dunkeln im System */
+:root[data-theme="dark"] { --violet: #A97FC0; --violet-soft: #2B2133; --flame-soft: #2B2133; }
+:root[data-theme="dark"] .v2-practice .ic rect:first-child { fill: #3A2F44; stroke: var(--ink); }
+:root[data-theme="dark"] .v2-practice .ic rect:last-child { fill: #4B3C57; stroke: var(--ink); }
+
+/* Feinschliff: Hauptbuttons (Token --v2-red-*) im Dunkeln als dunkles Perlmutt statt weisser Fläche mit heller Schrift */
+:root[data-theme="dark"] { --v2-red-1: #3A2F44; --v2-red-2: #2B2234; --v2-red-3: #4B3C57; --v2-red-glow: rgba(255, 255, 255, .12); --v2-red-shadow: 0 4px 12px -6px rgba(0, 0, 0, .5); }
+/* Lernraum bleibt dunkelviolett mit weissen Buttons, unabhängig vom Darkmode-Schalter */
+:root[data-theme="dark"] :is(.rm-play, .rm) { --v2-red-1: #FFFFFF; --v2-red-2: #F4F5F8; --v2-on-red: #16131F; }
+:root[data-theme="dark"] .game-tile { background: var(--dk-card) !important; }
+:root[data-theme="dark"] .game-tile .ge { background: #3A2F44; }
+:root[data-theme="dark"] :is(.chip-btn.on, .rk-gchip.on) { background: #0F0B12 !important; box-shadow: none; }

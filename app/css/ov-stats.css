@@ -1,0 +1,146 @@
+/* ============ Überarbeitung: Statistik (Übersicht, Verlauf, Kalender, Ziele, Trophäen) ============
+   Nur innerhalb von .ovs (Shop-Ansicht bleibt unberührt). Eigene Tokens --ovs-*; globale --ov-* aus ov.css werden bevorzugt. */
+.ovs {
+  --ovs-line: var(--ov-line, color-mix(in srgb, var(--ink) 8%, transparent));
+  --ovs-glass: var(--ov-glass, color-mix(in srgb, var(--surface) 82%, transparent));
+  --ovs-shadow: var(--ov-shadow, 0 1px 0 rgba(255,255,255,.5) inset, 0 1px 2px rgba(22,19,31,.04), 0 10px 30px -8px rgba(22,19,31,.10));
+  --ovs-ease: cubic-bezier(.22,1,.36,1);
+  --ovs-gold-a: #FFE08A; --ovs-gold-b: #F5A70A; --ovs-gold-c: #B86E00;
+  animation: ovs-in .45s var(--ovs-ease) both;
+}
+:root[data-theme="dark"] .ovs { --ovs-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px -8px rgba(0,0,0,.5); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ovs { --ovs-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px -8px rgba(0,0,0,.5); } }
+@keyframes ovs-in { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
+
+/* ---------- Karten: Glas + feine Ränder ---------- */
+.ovs .card, .ovs .kpi, .ovs .list, .ovs .suggest, .ovs .trophy {
+  background: var(--ovs-glass); border: 1px solid var(--ovs-line); box-shadow: var(--ovs-shadow);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+}
+.ovs .card { border-radius: 24px; padding: 20px; margin-bottom: 16px; }
+.ovs .card-h { margin-bottom: 16px; }
+.ovs .card-h h3 { font-size: 16px; font-weight: 800; letter-spacing: -.2px; }
+.ovs .card-h > .faint { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+.ovs .section-t { font-size: 11.5px; letter-spacing: .9px; margin: 28px 6px 12px; }
+.ovs .list { border-radius: 22px; }
+.ovs .li { padding: 13px 16px; border-bottom-color: var(--ovs-line); transition: background .2s; }
+.ovs button.li:active { background: var(--surface-2); }
+.ovs .li .ico { border-radius: 14px; }
+
+/* ---------- KPIs ---------- */
+.ovs .kpis { gap: 10px; margin-bottom: 16px; }
+.ovs .kpi { border-radius: 20px; padding: 14px 12px; position: relative; overflow: hidden; animation: ovs-in .5s var(--ovs-ease) both; }
+.ovs .kpi:nth-child(2) { animation-delay: .06s } .ovs .kpi:nth-child(3) { animation-delay: .12s }
+.ovs .kpi::after { content: ""; position: absolute; inset: -40% -30% auto auto; width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--brand) 14%, transparent), transparent); pointer-events: none; }
+.ovs .kpi b { font-size: 21px; letter-spacing: -.6px; }
+.ovs .kpi span { font-size: 11.5px; letter-spacing: .1px; }
+.ovs .kpi .ico { width: 28px; height: 28px; border-radius: 9px; font-size: 14px; margin-bottom: 10px; }
+.ovs .kpi.center { text-align: center; }
+
+/* ---------- Vorschlag + Brainy-Analyse ---------- */
+.ovs .suggest { border-radius: 22px; padding: 14px 16px; border-color: color-mix(in srgb, var(--violet) 28%, transparent); background: linear-gradient(135deg, color-mix(in srgb, var(--violet) 10%, var(--surface)), var(--ovs-glass) 70%); }
+.ovs .insight { border-radius: 24px; padding: 20px; border: 1px solid var(--ovs-line); position: relative; overflow: hidden;
+  background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--violet) 18%, transparent), transparent 60%), radial-gradient(90% 80% at 0% 100%, color-mix(in srgb, var(--brand) 14%, transparent), transparent 60%), var(--ovs-glass); box-shadow: var(--ovs-shadow); }
+.ovs .insight li { padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--ovs-line); animation: ovs-in .5s var(--ovs-ease) both; }
+.ovs .insight li:nth-child(2) { animation-delay: .07s } .ovs .insight li:nth-child(3) { animation-delay: .14s } .ovs .insight li:nth-child(4) { animation-delay: .21s } .ovs .insight li:nth-child(5) { animation-delay: .28s }
+
+/* ---------- Balkendiagramm (Verlauf) ---------- */
+.ovs .chart-bars { position: relative; height: 164px; padding-top: 14px;
+  background: repeating-linear-gradient(180deg, transparent 0 calc(25% - 1px), var(--ovs-line) calc(25% - 1px) 25%); background-size: 100% calc(100% - 22px); background-repeat: no-repeat; }
+.ovs .chart-bars .stack { max-width: 28px; border-radius: 9px 9px 4px 4px; background: transparent; transform-origin: bottom; animation: ovs-grow .8s var(--ovs-ease) both; animation-delay: calc(var(--i, 0) * 28ms); transition: filter .2s, transform .2s; }
+.ovs .chart-bars .col:hover .stack { filter: brightness(1.08) saturate(1.1); transform: scaleX(1.12); }
+.ovs .chart-bars .stack i { box-shadow: inset 0 1px 0 rgba(255,255,255,.28); }
+.ovs .chart-bars .col.today .stack { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--brand), 0 6px 18px -4px color-mix(in srgb, var(--brand) 55%, transparent); }
+.ovs .chart-bars .col.today .lbl { color: var(--brand); font-weight: 800; }
+.ovs .chart-bars .lbl { font-size: 11px; letter-spacing: .2px; }
+@keyframes ovs-grow { from { transform: scaleY(0); opacity: .2 } to { transform: scaleY(1); opacity: 1 } }
+.ovs .legend { gap: 8px 10px; margin-top: 16px; }
+.ovs .legend span { font-size: 12px; padding: 4px 10px 4px 8px; border-radius: 999px; background: var(--surface-2); }
+.ovs .legend i { border-radius: 50%; }
+
+/* ---------- Donut + Fächer ---------- */
+.ovs .donut-wrap { gap: 20px; }
+.ovs .donut-wrap svg { filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--ink) 12%, transparent)); animation: ovs-spin 1s var(--ovs-ease) both; }
+@keyframes ovs-spin { from { transform: rotate(-70deg) scale(.86); opacity: 0 } to { transform: none; opacity: 1 } }
+.ovs .subj-row { gap: 12px; margin-bottom: 12px; }
+.ovs .subj-row .progress { height: 8px; background: color-mix(in srgb, var(--ink) 6%, transparent); }
+.ovs .subj-row .progress > i { transform-origin: left; animation: ovs-fill .9s var(--ovs-ease) both; box-shadow: 0 0 12px -2px currentColor; }
+@keyframes ovs-fill { from { transform: scaleX(0) } to { transform: scaleX(1) } }
+.ovs .subj-row .v { color: var(--ink-2); }
+
+/* ---------- Heatmap «Konstanz» ---------- */
+.ovs .heat { gap: 5px; animation: ovs-fade .9s ease both .1s; }
+.ovs .heat i { border-radius: 6px; background: color-mix(in srgb, var(--ink) 6%, transparent); transition: transform .15s; }
+.ovs .heat i:hover { transform: scale(1.35); position: relative; z-index: 1; }
+.ovs .heat i[style*="background"] { box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+@keyframes ovs-fade { from { opacity: 0; transform: scale(.97) } to { opacity: 1; transform: none } }
+
+/* ---------- Kalender ---------- */
+.ovs .cal-head { margin-bottom: 14px; }
+.ovs .cal-head b { font-size: 17px; letter-spacing: -.3px; }
+.ovs .cal-head .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--surface-2); transition: transform .15s; }
+.ovs .cal-head .icon-btn:active { transform: scale(.9); }
+.ovs .cal-grid { gap: 6px; }
+.ovs .cal-grid .wd { font-size: 10.5px; letter-spacing: .6px; text-transform: uppercase; }
+.ovs .cal-day { border-radius: 14px; font-size: 14px; font-weight: 700; transition: background .2s, transform .15s, color .2s; }
+.ovs .cal-day:not(.sel):not(.out):hover { background: var(--surface-2); }
+.ovs .cal-day:active { transform: scale(.92); }
+.ovs .cal-day.today { color: var(--brand); background: color-mix(in srgb, var(--brand) 12%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--brand) 50%, transparent); }
+.ovs .cal-day.sel { background: linear-gradient(145deg, var(--ink), color-mix(in srgb, var(--ink) 78%, var(--violet))); color: var(--bg); box-shadow: 0 8px 18px -6px color-mix(in srgb, var(--ink) 55%, transparent); animation: ovs-pop .3s var(--ovs-ease); }
+.ovs .cal-day .dots { height: 6px; }
+.ovs .cal-day .dots i { width: 6px; height: 6px; box-shadow: 0 0 0 1px var(--surface); }
+@keyframes ovs-pop { from { transform: scale(.85) } to { transform: none } }
+.ovs .agenda .li .bar { width: 3px; border-radius: 3px; }
+.ovs .empty { border-radius: 22px; border: 1px dashed var(--ovs-line); background: color-mix(in srgb, var(--surface) 55%, transparent); }
+
+/* ---------- Ziele ---------- */
+.ovs .progress { background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.ovs .progress > i { box-shadow: 0 0 14px -3px color-mix(in srgb, var(--brand) 70%, transparent); transform-origin: left; }
+.ovs .progress.good > i { box-shadow: 0 0 14px -3px rgba(22,179,119,.6); }
+.ovs .chip-btn { border: 1px solid var(--ovs-line); background: var(--ovs-glass); }
+
+/* ---------- Level-Karte (Trophäen) ---------- */
+.ovs .level-card { position: relative; overflow: hidden; border-radius: 26px; padding: 22px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.22);
+  background: radial-gradient(90% 80% at 100% 0%, #B9A6FF, transparent 60%), radial-gradient(70% 70% at 0% 100%, rgba(255,79,135,.55), transparent 65%), linear-gradient(145deg, #6D5BFF, #3A2BC9);
+  box-shadow: 0 18px 40px -12px rgba(76,56,230,.55), inset 0 1px 0 rgba(255,255,255,.3); animation: ovs-in .5s var(--ovs-ease) both; }
+.ovs .level-card::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent); transform: skewX(-18deg); animation: ovs-sheen 5s ease-in-out 1s infinite; pointer-events: none; }
+@keyframes ovs-sheen { 0%, 60% { left: -60% } 100% { left: 130% } }
+.ovs .level-card .rank-next { border-top-color: rgba(255,255,255,.22); }
+.ovs .level-card svg circle:nth-child(2) { transition: stroke-dashoffset 1.2s var(--ovs-ease); }
+
+/* ---------- Trophäen: Medaillen ---------- */
+.ovs .trophy-grid { gap: 12px; }
+.ovs .trophy { border-radius: 22px; padding: 18px 8px 14px; overflow: hidden; transition: transform .25s var(--ovs-ease), box-shadow .25s; animation: ovs-in .5s var(--ovs-ease) both; }
+.ovs .trophy:nth-child(3n+2) { animation-delay: .05s } .ovs .trophy:nth-child(3n) { animation-delay: .1s }
+.ovs .trophy:active { transform: scale(.96); }
+.ovs .trophy .em { position: relative; width: 60px; height: 60px; margin-bottom: 10px; font-size: 28px; border: 0;
+  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.85), transparent 38%), conic-gradient(from 210deg, var(--ovs-gold-a), var(--ovs-gold-b), var(--ovs-gold-c), var(--ovs-gold-b), var(--ovs-gold-a));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ovs-gold-b) 35%, transparent), inset 0 -4px 0 rgba(0,0,0,.14), inset 0 2px 0 rgba(255,255,255,.55), 0 10px 22px -6px rgba(245,167,10,.55); }
+.ovs .trophy .em::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: color-mix(in srgb, #fff 62%, var(--ovs-gold-a)); box-shadow: inset 0 2px 5px rgba(120,70,0,.25); z-index: -1; }
+.ovs .trophy .em { isolation: isolate; }
+.ovs .trophy:not(.locked)::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%); transform: translateX(-120%); animation: ovs-glint 1.4s var(--ovs-ease) .35s 1 both; pointer-events: none; }
+.ovs .trophy:nth-child(3n+2):not(.locked)::after { animation-delay: .5s } .ovs .trophy:nth-child(3n):not(.locked)::after { animation-delay: .65s }
+@keyframes ovs-glint { to { transform: translateX(120%) } }
+.ovs .trophy:not(.locked) .em { animation: ovs-medal .7s cubic-bezier(.2,1.3,.4,1) both; }
+@keyframes ovs-medal { from { transform: scale(.4) rotate(-40deg); opacity: 0 } to { transform: none; opacity: 1 } }
+.ovs .trophy:not(.locked):hover .em { transform: rotate(-6deg) scale(1.06); transition: transform .3s var(--ovs-ease); }
+.ovs .trophy.locked { background: color-mix(in srgb, var(--surface) 55%, transparent); box-shadow: none; border-style: dashed; }
+.ovs .trophy.locked .em { filter: grayscale(1); opacity: .42; box-shadow: inset 0 2px 6px rgba(0,0,0,.12); background: var(--surface-2); }
+.ovs .trophy.locked .em::before { display: none; }
+.ovs .trophy.locked .em::after { content: "🔒"; position: absolute; right: -4px; bottom: -4px; font-size: 14px; filter: none; opacity: 1; background: var(--surface); border-radius: 50%; width: 22px; height: 22px; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(0,0,0,.18); }
+.ovs .trophy b { font-size: 12.5px; letter-spacing: -.1px; }
+.ovs .trophy .t-count { position: absolute; top: 8px; right: 8px; font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 999px; background: var(--ink); color: var(--bg); }
+.ovs .trophy .t-rep { position: absolute; top: 8px; left: 9px; font-size: 12px; color: var(--ink-3); }
+
+/* ---------- Segment-Schalter (Tabs der Statistik) ---------- */
+.content[data-keep^="tab-stats"] > .seg { background: color-mix(in srgb, var(--ink) 6%, transparent); border: 1px solid var(--ovs-line, transparent); border-radius: 16px; padding: 4px; }
+.content[data-keep^="tab-stats"] > .seg button { border-radius: 12px; height: 38px; transition: background .25s, color .25s, box-shadow .25s; }
+.content[data-keep^="tab-stats"] > .seg button.on { background: var(--surface); box-shadow: 0 1px 2px rgba(22,19,31,.08), 0 4px 12px -2px rgba(22,19,31,.1); }
+.ovs .seg { background: color-mix(in srgb, var(--ink) 6%, transparent); border-radius: 14px; }
+
+@media (min-width: 700px) {
+  .ovs .chart-bars { height: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ovs, .ovs *, .ovs *::before, .ovs *::after { animation: none !important; transition: none !important; }
+}
