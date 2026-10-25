@@ -1,0 +1,67 @@
+/* Brained Clarity · Ladescreen: gleiche Designsprache wie der Splash (Verlauf, Maskottchen-Silhouette mit dicker Kontur, Fredoka-Wortmarke), kühl und gläsern. Nur transform/opacity werden animiert. */
+.ci {
+  --ci-shadow: 40, 190, 230;
+  position: fixed; inset: 0; z-index: 95; overflow: hidden; display: grid; place-items: center; cursor: pointer; outline: none; -webkit-tap-highlight-color: transparent;
+  padding: env(safe-area-inset-top, 0px) 16px env(safe-area-inset-bottom, 0px);
+  background: radial-gradient(75% 45% at 84% 104%, rgba(40, 214, 200, .42), transparent 72%), radial-gradient(70% 40% at 8% 0%, rgba(110, 100, 255, .38), transparent 70%), radial-gradient(130% 80% at 50% 38%, #2B8CCF 0%, #14589F 34%, #0A2F6A 70%, #061941 100%);
+  animation: ci-out .3s ease-in 1.5s both;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ci { background: radial-gradient(75% 45% at 84% 104%, rgba(40, 214, 200, .32), transparent 72%), radial-gradient(70% 40% at 8% 0%, rgba(110, 100, 255, .30), transparent 70%), radial-gradient(130% 80% at 50% 38%, #1D6FA6 0%, #0E3F78 34%, #071E47 70%, #040E26 100%); } }
+:root[data-theme="dark"] .ci { background: radial-gradient(75% 45% at 84% 104%, rgba(40, 214, 200, .32), transparent 72%), radial-gradient(70% 40% at 8% 0%, rgba(110, 100, 255, .30), transparent 70%), radial-gradient(130% 80% at 50% 38%, #1D6FA6 0%, #0E3F78 34%, #071E47 70%, #040E26 100%); }
+
+/* Weiche Lichtkreise */
+.ci-bokeh { position: absolute; inset: 0; pointer-events: none; }
+.ci-bokeh i { position: absolute; width: var(--z); height: var(--z); border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .30), rgba(255, 255, 255, .10) 60%, transparent 100%); animation: ci-bokeh 5s ease-in-out var(--d) infinite alternate; will-change: transform, opacity; }
+.ci-pt u { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: rgba(200, 240, 255, .95); box-shadow: 0 0 9px 1px rgba(150, 225, 255, .75); opacity: 0; animation: ci-part 3.6s ease-in-out var(--d) infinite; will-change: transform, opacity; }
+.ci-bokeh i:nth-child(2n) { background: radial-gradient(closest-side, rgba(120, 240, 235, .32), rgba(120, 240, 235, .08) 60%, transparent 100%); }
+
+.ci-inner { position: relative; display: flex; flex-direction: column; align-items: center; margin-top: -4vh; }
+.ci-stage { position: relative; width: min(60vw, 240px); aspect-ratio: 104 / 96; margin-bottom: 26px; }
+.ci-float { position: absolute; inset: 0; animation: ci-in .9s cubic-bezier(.2, .9, .3, 1.1) .05s both, ci-bob 3.4s ease-in-out 1s infinite alternate; filter: drop-shadow(0 14px 28px rgba(4, 20, 70, .5)); }
+.ci-brain { width: 100%; height: 100%; display: block; overflow: visible; }
+.ci-shadow { position: absolute; left: 14%; right: 14%; bottom: -13%; height: 11%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .5) 0 15%, rgba(var(--ci-shadow), .28) 50%, transparent 100%); animation: ci-shadow 3.4s ease-in-out 1s infinite alternate; }
+
+/* Frost und Nebel lösen sich auf und geben das klare Glas frei; danach gleitet einmal ein Lichtstreifen darüber */
+.ci-frost { animation: ci-frost 1.2s ease-in-out .3s both; }
+.ci-sweep { transform: skewX(-16deg); opacity: 0; animation: ci-shine 1.1s ease-in-out 1s both; }
+.ci-fog { position: absolute; inset: -22% -30%; pointer-events: none; }
+.ci-fog b { position: absolute; border-radius: 50%; will-change: transform, opacity; background: radial-gradient(closest-side, rgba(210, 240, 255, .55), rgba(190, 230, 255, .22) 55%, transparent 100%); }
+.ci-fog .f1 { left: -4%; top: 4%; width: 80%; height: 92%; animation: ci-fog-l 1.3s cubic-bezier(.3, .1, .3, 1) .15s both; }
+.ci-fog .f2 { right: -4%; top: 6%; width: 80%; height: 88%; animation: ci-fog-r 1.4s cubic-bezier(.3, .1, .3, 1) .1s both; }
+
+/* Wortmarke wie im Splash */
+.ci-word { font-family: var(--font-logo, 'Fredoka', 'Plus Jakarta Sans', system-ui, sans-serif); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -.5px; color: #fff; text-shadow: 0 6px 20px rgba(10, 10, 80, .22); animation: ci-rise .7s cubic-bezier(.2, .7, .2, 1) .45s both; }
+.ci-sub { margin-top: 6px; font-family: var(--font-logo, 'Fredoka', 'Plus Jakarta Sans', system-ui, sans-serif); font-weight: 500; font-size: 24px; line-height: 1; letter-spacing: .22em; text-indent: .22em; color: rgba(225, 245, 255, .82); animation: ci-rise .7s cubic-bezier(.2, .7, .2, 1) .62s both; }
+.ci-tag { margin-top: 14px; font-size: 13px; font-weight: 600; letter-spacing: .06em; color: rgba(215, 240, 255, .66); animation: ci-rise .7s ease .75s both; }
+.ci-load { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 13px; animation: ci-rise .6s ease .85s both; }
+.ci-dots { display: flex; gap: 6px; }
+.ci-dots i { width: 7px; height: 7px; border-radius: 50%; background: #fff; opacity: .5; animation: ci-blink 1s infinite; }
+.ci-dots i:nth-child(2) { animation-delay: .15s; } .ci-dots i:nth-child(3) { animation-delay: .3s; }
+.ci-bar { width: 120px; height: 2px; border-radius: 2px; background: rgba(160, 220, 255, .25); overflow: hidden; }
+.ci-bar b { display: block; height: 100%; border-radius: 2px; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, #5CE0E0, #BDEBFF, #fff); animation: ci-barf 1.6s cubic-bezier(.4, .1, .3, 1) .1s both; }
+.ci-eyes { transform-box: fill-box; transform-origin: center; animation: ci-wink 3.4s ease-in-out 1.5s infinite; }
+@keyframes ci-wink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes ci-barf { to { transform: scaleX(1); } }
+@keyframes ci-part { 0% { opacity: 0; transform: translateY(14px); } 30% { opacity: .9; } 100% { opacity: 0; transform: translateY(-42px); } }
+@media (min-width: 600px) { .ci-stage { width: 290px; margin-bottom: 32px; } .ci-word { font-size: 54px; } .ci-sub { font-size: 28px; } .ci-tag { font-size: 15px; } }
+@keyframes ci-in { from { opacity: 0; transform: scale(.82) translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes ci-bob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+@keyframes ci-shadow { from { transform: scale(1); opacity: .9; } to { transform: scale(.88); opacity: .6; } }
+@keyframes ci-frost { from { opacity: .95; } 60% { opacity: .4; } to { opacity: 0; } }
+@keyframes ci-fog-l { 0% { opacity: 1; transform: translate(8%, 0) scale(1); } 100% { opacity: 0; transform: translate(-60%, -6%) scale(1.45); } }
+@keyframes ci-fog-r { 0% { opacity: 1; transform: translate(-8%, 0) scale(1); } 100% { opacity: 0; transform: translate(60%, 4%) scale(1.45); } }
+@keyframes ci-shine { 0% { opacity: 0; transform: translateX(0) skewX(-16deg); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateX(150px) skewX(-16deg); } }
+@keyframes ci-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes ci-blink { 50% { opacity: 1; } }
+@keyframes ci-bokeh { from { opacity: .35; transform: translate(0, 0) scale(.94); } to { opacity: .85; transform: translate(10px, -14px) scale(1.06); } }
+@keyframes ci-out { to { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ci, .ci * { animation: none !important; }
+  .ci-fog, .ci-sweep, .ci-frost { display: none; }
+  .ci-bar b { transform: scaleX(1); }
+  .ci-pt u { opacity: .6; }
+  .ci-bokeh i { opacity: .6; }
+}

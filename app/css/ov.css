@@ -1,0 +1,58 @@
+/* ============ Überarbeitung: globale Tokens & Grundbausteine (--ov-*) ============ */
+:root {
+  /* Abstandsraster (4er) */
+  --ov-1: 4px; --ov-2: 8px; --ov-3: 12px; --ov-4: 16px; --ov-5: 20px; --ov-6: 24px; --ov-8: 32px; --ov-10: 40px;
+  /* Radien */
+  --ov-r-sm: 12px; --ov-r: 20px; --ov-r-lg: 28px; --ov-r-pill: 999px;
+  /* Bewegung */
+  --ov-ease: cubic-bezier(.2,.8,.2,1);
+  --ov-spring: cubic-bezier(.34,1.56,.64,1);
+  --ov-t-fast: .16s; --ov-t: .32s; --ov-t-slow: .6s;
+  /* Glas (hell) */
+  --ov-glass: rgba(255,255,255,.72);
+  --ov-glass-2: rgba(255,255,255,.5);
+  --ov-border: rgba(22,19,31,.07);
+  --ov-hi: rgba(255,255,255,.9);
+  --ov-shadow: 0 1px 1px rgba(22,19,31,.03), 0 8px 28px -8px rgba(22,19,31,.10);
+  --ov-shadow-up: 0 2px 4px rgba(22,19,31,.04), 0 16px 40px -12px rgba(22,19,31,.16);
+  --ov-fire-1: #FF6A1A; --ov-fire-2: #FFB224; --ov-fire-3: #FFF0A8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ov-glass: rgba(34,32,43,.62); --ov-glass-2: rgba(34,32,43,.42);
+    --ov-border: rgba(255,255,255,.08); --ov-hi: rgba(255,255,255,.06);
+    --ov-shadow: 0 1px 1px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5);
+    --ov-shadow-up: 0 2px 4px rgba(0,0,0,.35), 0 18px 44px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"] {
+  --ov-glass: rgba(34,32,43,.62); --ov-glass-2: rgba(34,32,43,.42);
+  --ov-border: rgba(255,255,255,.08); --ov-hi: rgba(255,255,255,.06);
+  --ov-shadow: 0 1px 1px rgba(0,0,0,.3), 0 10px 30px -10px rgba(0,0,0,.5);
+  --ov-shadow-up: 0 2px 4px rgba(0,0,0,.35), 0 18px 44px -12px rgba(0,0,0,.6);
+}
+
+/* Glas-Karte */
+.ov-glass {
+  background: var(--ov-glass); border: 1px solid var(--ov-border); border-radius: var(--ov-r);
+  box-shadow: var(--ov-shadow), inset 0 1px 0 var(--ov-hi);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+}
+
+/* Gemeinsame Keyframes (nur transform/opacity) */
+@keyframes ov-fadeup { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes ov-fadein { from { opacity: 0 } to { opacity: 1 } }
+@keyframes ov-pop { 0% { opacity: 0; transform: scale(.6) } 60% { opacity: 1; transform: scale(1.06) } 100% { transform: scale(1) } }
+@keyframes ov-slidein { from { opacity: 0; transform: translateX(22px) } to { opacity: 1; transform: none } }
+@keyframes ov-breathe { 0%, 100% { transform: scale(.94); opacity: .55 } 50% { transform: scale(1.04); opacity: .95 } }
+@keyframes ov-ripple { 0% { transform: scale(.94); opacity: .5 } 100% { transform: scale(1.14); opacity: 0 } }
+@keyframes ov-drift { 0%, 100% { transform: translate3d(0,0,0) scale(1) } 50% { transform: translate3d(6%,4%,0) scale(1.12) } }
+
+/* Press-Feedback */
+.ov-press { transition: transform var(--ov-t-fast) var(--ov-ease), filter var(--ov-t-fast); }
+.ov-press:active { transform: scale(.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="ov-"], [class*="ov-"] *, [class*="ov-"]::before, [class*="ov-"]::after,
+  .ov-home-anim > *, .big-ring::before, .big-ring::after, .timer-screen::before, .timer-screen::after { animation: none !important; }
+}

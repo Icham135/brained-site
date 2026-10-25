@@ -1,0 +1,5 @@
+/* Lernraum-Hintergrund: Sternenhimmel füllt den Raum von oben bis zur Oberkante des Timer-Balkens (Balken unverändert). */
+/* Sternenhimmel hinter der Szene (gleiche Farben wie im Bild); die Bildkanten laufen weich aus, damit nie eine Naht sichtbar wird */
+.rm-vp::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: #0b0540; }   /* Grundfarbe, falls der Himmel noch lädt oder die Ansicht darüber hinausragt */
+.rm-sky { position: absolute; max-width: none; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+/* Szenenbild: weiche Ränder sind im Bild eingebacken (Alpha, tools/room-sky.py); keine CSS-Maske (teuer beim Zoomen) */

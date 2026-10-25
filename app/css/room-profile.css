@@ -1,0 +1,17 @@
+/* Profilkarte im Lernraum (Tipp auf ein fremdes Brainy): kompaktes Glas auf dunklem Violett, weisse Schrift und Knöpfe */
+.rm-panel { position: relative; }
+.rm-pcard { position: absolute; left: 10px; right: 10px; bottom: calc(100% + 18px); z-index: 6; padding: 10px 12px 2px; border-radius: 20px; background: linear-gradient(180deg, rgba(58,32,120,.94), rgba(26,12,62,.96)); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.3); box-shadow: 0 -8px 30px rgba(0,0,0,.45); display: flex; flex-direction: column; gap: 8px; align-items: stretch; text-align: center; color: #fff; animation: sheetup .28s cubic-bezier(.2,.9,.3,1) both; touch-action: pan-x; }
+.rm-card-x { position: absolute; top: 4px; right: 4px; width: 40px; height: 40px; display: grid; place-items: center; background: none; color: #fff; }
+.rm-card-x svg { width: 18px; height: 18px; }
+.rm-card-top { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 36px 0 36px; min-height: 46px; }
+.rm-card-av { flex: none; width: 46px; height: 46px; }
+.rm-card-av .av { box-shadow: 0 0 0 2px rgba(255,255,255,.55); }
+.rm-card-id { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
+.rm-card-id b { font-size: 16px; font-weight: 800; overflow-wrap: anywhere; }
+.rm-card-id span { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.85); }
+.rm-card-act { display: flex; gap: 8px; }
+.rm-card-act .rm-btn { flex: 1; min-height: 42px; padding: 0 8px; font-size: 14px; background: #fff; color: #2A1658; border: 0; }
+.rm-card-act .rm-btn[disabled] { opacity: .75; }
+.rm-pcard .rm-rx button { min-height: 40px; flex-direction: row; gap: 5px; font-size: 12px; }
+.rm-pcard .rm-link { min-height: 44px; padding: 0 12px; font-size: 13px; }
+

@@ -1,0 +1,63 @@
+/* Brained – Pakete: Pro-Bildschirm, Code einlösen, Lern-Guthaben, Paywall, Wochenbericht (Präfix pr2-). Akzent Flieder #A58BF6, Tinte #231552 wie der Standard-Look. */
+:root { --pr2-acc: #A58BF6; --pr2-ink: #231552; --pr2-soft: color-mix(in srgb, #A58BF6 14%, transparent); }
+
+/* Lern-Guthaben */
+.pr2-credit { margin: 12px 0; padding: 12px 14px; border-radius: 16px; background: var(--pr2-soft); }
+.pr2-credit-h { display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; color: var(--ink); }
+.pr2-credit-h span { color: var(--ink); font-variant-numeric: tabular-nums; }
+.pr2-bar { height: 10px; border-radius: 99px; background: color-mix(in srgb, var(--pr2-acc) 22%, transparent); overflow: hidden; margin: 8px 0 6px; }
+.pr2-bar i { display: block; height: 100%; border-radius: 99px; background: var(--pr2-acc); transition: width .4s; }
+.pr2-credit.low .pr2-bar i { background: #E5624D; }
+.pr2-credit small { font-size: 12px; color: var(--ink-3); font-weight: 600; }
+.cl-credit { margin: 10px 0 14px; }
+
+/* Pro-Bildschirm */
+.pr2-free { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin: 12px 0; text-align: center; }
+.pr2-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 14px; background: var(--surface-2); margin-bottom: 4px; }
+.pr2-toggle button { height: 38px; border-radius: 11px; font-weight: 800; font-size: 14px; color: var(--ink-2); }
+.pr2-toggle button.on { background: var(--pr2-acc); color: var(--pr2-ink); }
+.pr2-row { margin: 18px 0 8px; font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+.pr2-card { position: relative; margin-bottom: 12px; padding: 16px; border-radius: 20px; background: var(--surface); border: 2px solid var(--line); }
+.pr2-card.main { border-color: var(--pr2-acc); background: color-mix(in srgb, var(--pr2-acc) 7%, var(--surface)); }
+.pr2-card h4 { margin: 0; font-size: 18px; font-weight: 800; color: var(--ink); }
+.pr2-card h4 small { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink-3); margin-top: 2px; }
+.pr2-badge { position: absolute; top: -10px; right: 14px; padding: 3px 10px; border-radius: 99px; background: var(--pr2-acc); color: var(--pr2-ink); font-size: 11.5px; font-weight: 800; }
+.pr2-amount { margin-top: 10px; font-size: 26px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pr2-amount small { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.pr2-alt { margin: 2px 0 10px; font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+.pr2-card ul { margin: 0 0 12px; padding: 0 0 0 18px; font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.pr2-card li { margin-bottom: 4px; }
+.pr2-card .pr2-buy, .pr2-card .pr2-ask { width: 100%; margin: 0; }
+.pr2-ask { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* Code einlösen */
+.pr2-redeem { margin-top: 16px; padding: 14px; border-radius: 18px; background: var(--surface-2); }
+.pr2-lab { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 800; color: var(--ink-2); }
+.pr2-redeem-row { display: flex; gap: 8px; }
+.pr2-code { flex: 1; min-width: 0; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+.pr2-btn { flex: none; background: var(--pr2-acc) !important; color: var(--pr2-ink) !important; }
+.pr2-msg { margin: 10px 0 0; font-size: 13.5px; line-height: 1.45; font-weight: 700; }
+.pr2-msg.ok { color: #1F8A5B; }
+.pr2-msg.err { color: #C0392B; }
+
+/* Klasse und Wochenbericht */
+.pr2-tag { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; background: var(--pr2-soft); color: var(--ink); font-size: 11px; font-weight: 800; vertical-align: middle; }
+.pr2-class, .pr2-wr-btn { border-color: var(--pr2-acc) !important; }
+.pr2-sum { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.pr2-sum div { padding: 12px; border-radius: 16px; background: var(--pr2-soft); text-align: center; }
+.pr2-sum b { display: block; font-size: 22px; font-weight: 800; color: var(--ink); }
+.pr2-sum span { font-size: 12px; font-weight: 700; color: var(--ink-3); }
+.pr2-wr-wrap { overflow-x: auto; }
+.pr2-wr { width: 100%; border-collapse: collapse; font-size: 13px; }
+.pr2-wr th { text-align: left; padding: 6px 8px; font-size: 11.5px; font-weight: 800; color: var(--ink-3); white-space: nowrap; }
+.pr2-wr td { padding: 9px 8px; border-top: 1px solid var(--line); color: var(--ink-2); vertical-align: top; }
+.pr2-wr td:first-child b { color: var(--ink); }
+.pr2-wr em { display: block; font-style: normal; font-size: 11px; font-weight: 800; color: #C0392B; margin-top: 2px; }
+.pr2-wr tr.quiet td:last-child, .pr2-wr tr.quiet td:nth-child(5) { color: #C0392B; font-weight: 700; }
+
+/* Paywall in Clarity: unscharfe Vorschau der Kapitel */
+.pr2-blur { list-style: none; margin: 16px 0 8px; padding: 14px; border-radius: 18px; background: var(--pr2-soft); filter: blur(5px); user-select: none; pointer-events: none; display: grid; gap: 10px; }
+.pr2-blur li { display: flex; align-items: center; gap: 10px; }
+.pr2-blur span { width: 26px; height: 26px; border-radius: 50%; background: var(--pr2-acc); color: var(--pr2-ink); font-weight: 800; display: grid; place-items: center; font-size: 13px; }
+.pr2-blur b { font-size: 15px; color: var(--ink); }
+.pr2-pw-t { text-align: center; font-size: 14px; line-height: 1.5; color: var(--ink-2); margin: 8px 0 4px; }

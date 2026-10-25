@@ -1,0 +1,19 @@
+/* Clarity-Kursliste (in der Clarity-Karte, Tab «Clarity»): Fortschrittsring, nächste Etappe, Prognose, «Weiter». Präfix hub-.
+   Die Karte selbst (v2-clh, v2-cl) steht in v2.css. */
+:root { --hub-navy: #08213D; --hub-navy2: #0C4A6E; --hub-blue: #2E7BFF; --hub-teal: #19C6C0; --hub-ice: #BFE9FF; }
+
+.hub-course { display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 14px; border-radius: 20px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .16); }
+.hub-ring { position: relative; width: 46px; height: 46px; flex: none; display: grid; place-items: center; }
+.hub-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.hub-ring circle { fill: none; stroke-width: 4.5; } .hub-ring .bg { stroke: rgba(255, 255, 255, .22); }
+.hub-ring .fg { stroke: var(--hub-teal); stroke-linecap: round; animation: hub-ring 1.1s var(--cl-ease, ease) both; }
+@keyframes hub-ring { from { stroke-dasharray: 0 200; } }
+.hub-ring b { font-size: 11.5px; font-weight: 800; color: #fff; }
+.hub-course-t { flex: 1; min-width: 0; display: flex; flex-direction: column; text-align: left; }
+.hub-course-t b { font-size: 15px; color: #fff; overflow: hidden; text-overflow: ellipsis; }
+.hub-course-t small { font-size: 12px; color: rgba(214, 238, 255, .8); overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+.hub-grade { flex: none; font-size: 12px; font-weight: 800; color: var(--hub-ice); background: rgba(255, 255, 255, .16); border-radius: 999px; padding: 4px 9px; }
+.hub-go { flex: none; padding: 10px 15px; border-radius: 14px; font-weight: 800; font-size: 13.5px; color: var(--hub-navy); background: linear-gradient(135deg, #fff, #CFEFFF); transition: transform .15s; }
+.hub-go:active { transform: scale(.94); }
+@media (max-width: 380px) { .hub-course { gap: 9px; padding-left: 10px; } .hub-go { padding: 9px 12px; } }
+@media (prefers-reduced-motion: reduce) { .hub-ring .fg { animation: none !important; } }

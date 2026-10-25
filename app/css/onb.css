@@ -1,0 +1,18 @@
+/* Onboarding-Auswahl: Karten im Zwei-Weiss-Ton, gewählt = Hintergrundton mit dunklem Rahmen (wie .pl-chip.on) */
+.ob-wrap { display: flex; flex-direction: column; gap: 8px; }
+.ob-g { font-size: 12px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--ink-3); margin: 10px 2px 0; }
+.ob-g:first-child { margin-top: 0; }
+.ob-list { display: flex; flex-direction: column; gap: 8px; }
+.ob-list.two { display: grid; grid-template-columns: 1fr 1fr; }
+.ob-opt { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; width: 100%; min-height: 48px; padding: 8px 16px; border-radius: 16px; border: 1.5px solid transparent; background: var(--surface); color: var(--ink); text-align: left; font-weight: 700; font-size: 15px; line-height: 1.25; transition: transform .12s, background .2s, border-color .2s; }
+.ob-list.two .ob-opt { align-items: center; text-align: center; min-height: 68px; font-size: 17px; }
+.ob-opt .h { font-size: 12.5px; font-weight: 600; color: var(--ink-3); }
+.ob-opt:active { transform: scale(.98); }
+.ob-opt.on { background: var(--bg) !important; border-color: var(--ink); box-shadow: inset 0 2px 6px rgba(60, 40, 70, .14); }
+.ob-opt.on .t { font-weight: 800; }
+.ob-own { margin-top: 8px; }
+:root[data-theme="light"] .ob-opt { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .ob-opt { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); } }
+:root[data-theme="dark"] .ob-opt { background: var(--dk-card); }
+:root[data-theme="dark"] .ob-opt.on { background: #0F0B12 !important; box-shadow: none; }
+:root[data-theme="dark"] .ob-opt .h { color: var(--ink-3); }

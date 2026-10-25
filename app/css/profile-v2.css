@@ -1,0 +1,141 @@
+/* ============ Profil 2.0: Kopf, Mein Look, Shop, Trophäen, Einstellungen ============ */
+:root {
+  --pv-red: var(--v2-red-1, var(--v2-red-1)); --pv-red-2: var(--v2-red-2, var(--v2-red-2));
+  --pv-red-soft: color-mix(in srgb, var(--pv-red) 11%, var(--surface));
+}
+.pv-root { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: stretch; gap: 14px; text-align: center;
+  padding: calc(10px + var(--safe-t)) 16px calc(28px + var(--safe-b)); font-family: 'Plus Jakarta Sans', var(--font), sans-serif; }
+.pv-root::-webkit-scrollbar { display: none; }
+.pv-root > * { flex-shrink: 0; }
+.pv-top { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; }
+.pv-top b { font-size: 17px; font-weight: 800; letter-spacing: -.2px; }
+.pv-ib { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--surface); box-shadow: var(--shadow); color: var(--ink); flex: none; }
+.pv-ib.soft { background: transparent; box-shadow: none; color: var(--ink-3); }
+.pv-ib.soft:active, .pv-ib.soft:hover { color: var(--ink); background: var(--surface-2); }
+.pv-ib svg { width: 21px; height: 21px; }
+
+.pv-card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 24px; padding: 20px 14px 18px; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+.pv-h { font-size: 20px; font-weight: 800; letter-spacing: -.4px; margin: 0; text-align: center; }
+.pv-note { color: var(--ink-3); font-size: 12.5px; font-weight: 600; line-height: 1.45; margin: 0; text-align: center; max-width: 320px; }
+.pv-hint { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--ink-2); font-size: 12.5px; font-weight: 700; margin: 0; }
+.pv-hint svg { width: 14px; height: 14px; flex: none; }
+.pv-gt { font-size: 12px; font-weight: 800; color: var(--ink-3); letter-spacing: .6px; text-transform: uppercase; text-align: center; margin-top: 6px; width: 100%; }
+
+/* Kopf */
+.pv-head { padding-top: 24px; gap: 4px; }
+.pv-av { margin-bottom: 10px; display: grid; place-items: center; }
+.pv-name { font-size: 24px; font-weight: 800; letter-spacing: -.5px; margin: 0; max-width: 100%; overflow-wrap: anywhere; }
+.pv-sub { font-weight: 700; color: var(--ink-2); font-size: 14.5px; }
+.pv-loc { font-weight: 600; color: var(--ink-3); font-size: 13px; }
+.pv-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; margin-top: 14px; }
+.pv-stat { background: var(--surface-2); border-radius: 16px; padding: 11px 4px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; }
+.pv-stat b { font-size: 14.5px; font-weight: 800; letter-spacing: -.2px; white-space: nowrap; }
+.pv-stat span { font-size: 10.5px; font-weight: 700; color: var(--ink-3); max-width: 100%; text-align: center; line-height: 1.15; overflow-wrap: anywhere; }
+
+/* Tabs (Look und Shop) */
+.pv-tabs { display: flex; gap: 6px; width: 100%; overflow-x: auto; scrollbar-width: none; padding: 2px 0; justify-content: safe center; }
+.pv-tabs.wrap { flex-wrap: wrap; overflow: visible; }
+.pv-tabs::-webkit-scrollbar { display: none; }
+.pv-tabs button { flex: none; height: 36px; padding: 0 14px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-size: 13px; font-weight: 700; border: 1.5px solid transparent; }
+.pv-tabs.sm button { height: 32px; padding: 0 12px; font-size: 12.5px; }
+.pv-tabs button.on { background: var(--pv-red); color: var(--v2-on-red); }
+
+/* Raster aus gleich grossen Kacheln */
+.pv-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; }
+.pv-tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 124px; padding: 10px 4px 9px;
+  border-radius: 18px; background: var(--surface); border: 1.5px solid var(--line); text-align: center; transition: transform .12s, border-color .15s, background .15s; overflow: hidden; }
+.pv-tile:active { transform: scale(.96); }
+.pv-tile.on { border-color: var(--pv-red); background: var(--pv-red-soft); box-shadow: 0 0 0 1.5px var(--pv-red); }
+.pv-tile.r-epic:not(.on) { border-color: #8C5BFF55; } .pv-tile.r-legend:not(.on) { border-color: #F5A30A88; }
+.pv-tile.locked .pv-prev { opacity: .72; }
+.pv-tile.dim { opacity: .45; filter: grayscale(1); }
+.pv-prev { height: 66px; display: grid; place-items: center; width: 100%; }
+.pv-nm { font-size: 12px; font-weight: 700; line-height: 1.2; max-width: 100%; padding: 0 2px; overflow: hidden; overflow-wrap: anywhere; text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pv-st { font-size: 11.5px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 3px; min-height: 16px; color: var(--ink-3); }
+.pv-st svg { width: 12px; height: 12px; }
+.pv-st.on { color: var(--v2-red-text, #A5586B); } .pv-st.own { color: var(--good); } .pv-st.pro { color: #8C5BFF; } .pv-st.price { color: #9A6B00; }
+.pv-st .ico-coin { width: 12px; height: 12px; margin: 0; vertical-align: 0; }
+.pv-lock { position: absolute; top: 7px; right: 7px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface-2); color: var(--ink-3); display: grid; place-items: center; z-index: 2; }
+.pv-lock svg { width: 11px; height: 11px; }
+
+/* Shop */
+.pv-coins { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--surface-2); border-radius: 999px; padding: 8px 18px; margin-top: -4px; }
+.pv-coins b { font-size: 20px; font-weight: 800; letter-spacing: -.3px; } .pv-coins span { font-size: 13px; font-weight: 700; color: var(--ink-3); }
+.pv-coins .ico-coin { color: #E0A21A; width: 22px; height: 22px; margin: 0; vertical-align: 0; }
+
+/* Buttons */
+.pv-btn { width: 100%; max-width: 360px; height: 50px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-weight: 800; font-size: 15px; background: var(--surface-2); color: var(--ink); text-align: center; }
+.pv-btn.red { background: linear-gradient(155deg, var(--pv-red), var(--pv-red-2)); color: var(--v2-on-red); box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--pv-red-2) 70%, transparent); }
+.pv-btn.ghost { height: 44px; font-size: 14px; }
+.pv-btn:disabled { background: var(--surface-3); color: var(--ink-3); box-shadow: none; }
+.pv-btn svg { width: 16px; height: 16px; } .pv-btn .ico-coin { margin: 0; width: 18px; height: 18px; vertical-align: 0; color: #FFD66B; }
+.pv-btn:disabled .ico-coin { color: #E0A21A; }
+
+/* Trophäen */
+.pv-troph { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; }
+.pv-tr { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-height: 96px; padding: 12px 8px; border-radius: 18px; background: var(--surface-2); text-align: center; }
+.pv-tri { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--ink-3); }
+.pv-tri svg { width: 17px; height: 17px; } .pv-tri .ei { color: inherit !important; display: grid; place-items: center; }
+.pv-tr.on .pv-tri { background: var(--pv-red); color: var(--v2-on-red); }
+.pv-trn { font-size: 12.5px; font-weight: 700; line-height: 1.2; }
+.pv-trs { font-size: 11px; font-weight: 700; color: var(--v2-red-text, #A5586B); }
+.pv-bar { width: 70%; height: 5px; border-radius: 5px; background: var(--surface-3); overflow: hidden; } .pv-bar i { display: block; height: 100%; background: var(--pv-red); border-radius: 5px; }
+
+/* Sheets */
+.pv-scrim { z-index: 60; }
+.pv-sh { display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; margin-bottom: 14px; }
+.pv-sh h3 { grid-column: 2; font-size: 19px; font-weight: 800; letter-spacing: -.3px; text-align: center; }
+.pv-sh .pv-ib { grid-column: 3; box-shadow: none; background: var(--surface-2); }
+.pv-sheet { display: flex; flex-direction: column; text-align: center; font-family: 'Plus Jakarta Sans', var(--font), sans-serif; }
+.pv-sheet > * { flex-shrink: 0; }
+.pv-sheet > .pv-note { margin: 10px auto; }
+.pv-sheet > .pv-gt { margin-top: 14px; margin-bottom: 8px; }
+.pv-list { background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; overflow: hidden; }
+.pv-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 52px; padding: 8px 16px; text-align: left; border-bottom: 1px solid var(--line); font-size: 15px; font-weight: 700; }
+.pv-row:last-child { border-bottom: 0; }
+.pv-row .l { flex: 1; min-width: 0; } .pv-row .r { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-3); font-size: 14px; font-weight: 700; flex: none; }
+.pv-row .chev { width: 16px; height: 16px; }
+.pv-sel { width: 118px; height: 38px; font-size: 14px; }
+.pv-danger { color: #E5484D; }
+.pv-badge { background: var(--pv-red); color: var(--v2-on-red); font-size: 11.5px; font-weight: 800; border-radius: 99px; padding: 2px 8px; }
+.pv-form { display: flex; flex-direction: column; gap: 14px; align-items: stretch; }
+.pv-fl { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink-2); text-align: center; }
+.pv-fl .input, .pv-fl .select { text-align: center; text-align-last: center; }
+.pv-form .pv-btn { align-self: center; margin-top: 4px; }
+.pv-item { display: flex; flex-direction: column; align-items: center; gap: 12px; padding-bottom: 6px; }
+.pv-bigav { padding: 18px 30px; border-radius: 28px; background: radial-gradient(circle at 50% 45%, var(--surface), var(--surface-2)); }
+.pv-bigic { display: grid; place-items: center; width: 150px; height: 150px; color: var(--v2-red-text, #A5586B); }
+.pv-bigic .ico-shield { width: 84px; } .pv-bigic .fx-tile { width: 110px; height: 110px; }
+.pv-rar { font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 99px; background: color-mix(in srgb, var(--c) 15%, transparent); color: var(--c); }
+
+@media (max-width: 380px) {
+  .pv-stat b { font-size: 13.5px; } .pv-grid { gap: 6px; } .pv-tile { min-height: 116px; } .pv-card { padding-inline: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .pv-tile { transition: none; } }
+
+/* Tagesgeschenk im Shop */
+.pv-card .daily { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 18px; background: var(--surface-2) !important; color: var(--ink) !important; border: 0 !important; text-align: center; margin: 0; }
+.pv-card .daily .e { display: grid; place-items: center; width: 34px; height: 34px; color: var(--v2-red-text, #A5586B); font-size: 0; }
+.pv-card .daily .pv { display: grid; place-items: center; width: 100%; min-height: 60px; margin-bottom: 4px; font-size: 0; }
+.pv-card .daily .e svg { width: 28px; height: 28px; }
+.pv-card .daily .pv .e { width: auto; height: auto; }
+.pv-card .daily .pv > * { margin: 0 auto; }
+.pv-card .daily .grow { flex: none; } .pv-card .daily b { font-size: 15px; }
+.pv-btn.sm { height: 42px; max-width: 200px; font-size: 14px; }
+
+/* Mein Look = Shop: Seltenheit, Anprobe, Bedingungen */
+.pv-rl { font-size: 10.5px; font-weight: 800; letter-spacing: .2px; color: var(--c, transparent); min-height: 13px; }
+.pv-tile { min-height: 138px; gap: 3px; }
+.pv-tile.try { border-color: var(--pv-red); border-style: dashed; background: var(--pv-red-soft); }
+.pv-st.req { color: var(--ink-3); font-size: 11px; }
+.pv-try { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; padding: 14px; border-radius: 18px; background: var(--surface-2); }
+.pv-try > b { font-size: 16px; font-weight: 800; }
+.pv-try .pv-hint { color: var(--v2-red-text, #A5586B); }
+.pv-daily { padding: 12px; } .pv-daily .daily { background: none !important; padding: 0 !important; }
+.pv-miss { display: flex; flex-direction: column; gap: 2px; width: 100%; padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--pv-red) 12%, transparent); font-weight: 700; }
+.pv-miss b { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+
+/* Streak-Schutz kaufen: weisser Knopf, damit die Münzen gut sichtbar sind; Trophäen-Detail: Schloss */
+.pv-btn.white, .btn3d.white { background: #fff; color: #231552; box-shadow: 0 0 0 1.5px rgba(35,21,82,.14), 0 6px 16px -8px rgba(35,21,82,.35); }
+.pv-btn.white .ico-coin, .btn3d.white .ico-coin { color: #E0A21A; }
+.trophy-hero .em > svg { width: 48px; height: 48px; }

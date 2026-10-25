@@ -1,0 +1,336 @@
+/* ============ Brained 2.0: Tokens, Kopfzeile, Tableiste, Home, Clarity-Hub, Statistik ============
+   Lernzeit-Rot ersetzt den alten pinken Verlauf bei Hauptbuttons. Präfix v2-. Plan: docs/UMBAU-2.md */
+:root {
+  --v2-red-1: #FFFFFF; --v2-red-2: #F4F5F8; --v2-red-3: #D6D9E1; --v2-red-glow: rgba(255, 255, 255, .65); --v2-on-red: #16131F; --v2-red-text: #6A4FD6;
+  --v2-room-1: #2A1658; --v2-room-2: #140A2E; --v2-room-acc: #FFC768; --v2-room-glow: rgba(150, 110, 255, .45);
+  --v2-red-grad: linear-gradient(155deg, var(--v2-red-1), var(--v2-red-2));
+  --v2-red-shadow: 0 4px 12px -6px rgba(22, 19, 31, .25);
+  --v2-blue: #2E7BFF; --v2-pill: #fff; --v2-pill-shadow: 0 1px 2px rgba(22, 19, 31, .05);
+  --v2-tab-red: #4A4A55;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --v2-pill: var(--surface); --v2-pill-shadow: none; --v2-tab-red: #F2C9D2; } }
+:root[data-theme="dark"] { --v2-pill: var(--surface); --v2-pill-shadow: none; --v2-tab-red: #F2C9D2; }
+
+/* ---------- Hauptbuttons im neuen Rot ---------- */
+.btn.primary, .btn3d, .onb2 .btn3d, .timer-screen .btn.primary.block, .timer-screen .ctrl.main.go, .ctrl.go {
+  background: var(--v2-red-grad); color: var(--v2-on-red); box-shadow: var(--v2-red-shadow); border: 0;
+}
+.btn3d:active, .onb2 .btn3d:active { box-shadow: 0 4px 10px -6px color-mix(in srgb, var(--v2-red-text, #6A4FD6) 5%, transparent); }
+.btn3d:disabled, .onb2 .btn3d:disabled { background: var(--surface-3); color: var(--ink-3); box-shadow: none; }
+.btn.primary:disabled { background: var(--surface-3); color: var(--ink-3); box-shadow: none; }
+
+/* ---------- Kopfzeile ---------- */
+.topbar { gap: 10px; padding-bottom: 8px; }
+.topbar .v2-av { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; position: relative; }
+.topbar .v2-av > * { pointer-events: none; }
+.topbar h1 { text-align: left; font-size: 28px; letter-spacing: -.9px; }
+.v2-greet { flex: 1; min-width: 0; line-height: 1.2; text-align: left; }
+.v2-greet small { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.v2-greet b { display: block; font-size: 21px; font-weight: 800; letter-spacing: -.4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.v2-pill { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 12px; flex: none;
+  background: var(--v2-pill); box-shadow: var(--v2-pill-shadow); color: var(--ink); font-weight: 800; font-size: 14px; font-variant-numeric: tabular-nums; }
+.v2-pill svg { width: 16px; height: 16px; flex: none; }
+.v2-pill.dead { color: var(--ink-3); } .v2-pill.dead .fl { fill: var(--ink-3); }
+.v2-pill.warn { animation: wiggle 1s ease-in-out infinite; }
+.topbar.in-tool .v2-pill { display: none; }
+@media (max-width: 360px) { .v2-pill { padding: 0 9px; font-size: 13px; } .topbar { gap: 7px; } }
+
+/* ---------- Tableiste ---------- */
+.tabbar { background: color-mix(in srgb, var(--surface) 94%, transparent); }
+.tab { color: var(--ink-3); }
+.tab.on { color: var(--ink); }
+.tab svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tab.on svg { color: var(--v2-tab-red); }
+.tab.t-ai.on svg { color: var(--v2-blue); }
+.tab.t-ai.on svg .fl { fill: rgba(46, 123, 255, .2); }
+.tab-start button { background: radial-gradient(90% 80% at 85% 10%, var(--v2-red-glow), transparent 60%), linear-gradient(155deg, var(--v2-red-1), var(--v2-red-2));
+  box-shadow: 0 6px 16px rgba(22, 19, 31, .14); }
+.tab-start button svg { width: 24px; height: 24px; }
+.tab-start button.live { background: radial-gradient(90% 80% at 85% 10%, var(--v2-red-glow), transparent 60%), linear-gradient(155deg, var(--v2-red-1), var(--v2-red-2));
+  box-shadow: 0 6px 16px rgba(22, 19, 31, .14); animation: v2-pulse 2s infinite; }
+@keyframes v2-pulse { 50% { box-shadow: 0 6px 16px rgba(22, 19, 31, .1), 0 0 0 12px rgba(120, 110, 125, .18); } }
+
+/* ---------- Home ---------- */
+.v2-home { display: flex; flex-direction: column; gap: 14px; }
+.v2-home > * { margin: 0; animation: ov-fadeup .6s var(--ov-ease, ease) backwards; }
+.v2-home > :nth-child(2) { animation-delay: .06s; } .v2-home > :nth-child(3) { animation-delay: .12s; } .v2-home > :nth-child(4) { animation-delay: .18s; } .v2-home > :nth-child(n+5) { animation-delay: .24s; }
+.v2-today { position: relative; overflow: hidden; border-radius: 28px; padding: 22px 20px 20px; color: var(--v2-on-red); text-align: center; border: 0;
+  background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF);
+  box-shadow: 0 14px 30px rgba(40, 40, 60, .14), inset 0 1px 0 #FFFFFF, inset 0 -10px 24px rgba(255, 255, 255, .6); }
+.v2-today .k { font-size: 11.5px; font-weight: 800; letter-spacing: .12em; color: var(--v2-on-red); }
+.v2-today .big { color: var(--v2-on-red); text-shadow: none; font-size: 44px; font-weight: 800; letter-spacing: -1.4px; line-height: 1.05; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.v2-today .wk { font-size: 14px; font-weight: 600; color: var(--v2-on-red); margin-top: 4px; }
+.v2-today .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+.v2-today .chips span { padding: 8px 12px; border-radius: 12px; background: rgba(255, 255, 255, .36); border: 1px solid rgba(255, 255, 255, .5); font-size: 13px; font-weight: 700; }
+.v2-today .none { margin-top: 14px; font-size: 14px; color: var(--v2-on-red); }
+.v2-today .deco { position: absolute; right: -6px; top: -4px; width: 120px; opacity: .2; pointer-events: none; }
+.v2-live { width: 100%; text-align: left; }
+.v2-warn { width: 100%; padding: 12px 14px; border-radius: 18px; background: var(--flame-soft); color: var(--ink); text-align: center; font-size: 13.5px; font-weight: 700; }
+.v2-warn b { color: var(--flame); }
+
+/* Clarity-Karte auf Home */
+.v2-cl { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; text-align: center; color: #fff;
+  border-radius: 26px; padding: 20px 18px 18px; border: 1px solid rgba(160, 220, 255, .28);
+  background: radial-gradient(120% 90% at 85% 0%, rgba(25, 198, 192, .5), transparent 55%), radial-gradient(90% 80% at 0% 100%, rgba(46, 123, 255, .5), transparent 60%), linear-gradient(155deg, #0C4A6E, #08213D);
+  box-shadow: 0 18px 40px rgba(8, 33, 61, .28), inset 0 1px 0 rgba(255, 255, 255, .22); isolation: isolate; transition: transform .2s; }
+.v2-cl:active { transform: scale(.985); }
+.v2-cl .k { font-size: 11.5px; font-weight: 800; letter-spacing: .12em; color: #BFE9FF; }
+.v2-cl b.t { font-size: 21px; letter-spacing: -.4px; line-height: 1.2; text-wrap: balance; }
+.v2-cl .m { font-size: 13px; color: rgba(214, 238, 255, .88); line-height: 1.4; }
+.v2-cl .cta { margin-top: 6px; padding: 11px 24px; border-radius: 14px; background: linear-gradient(135deg, #fff, #CFEFFF); color: #08213D; font-weight: 800; font-size: 14px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); }
+.v2-cl .deco { position: absolute; right: -4px; top: -4px; width: 112px; opacity: .3; z-index: -1; pointer-events: none; }
+
+/* Freunde heute */
+.v2-fr { border-radius: 24px; padding: 16px 16px 14px; background: var(--surface); box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+.v2-fr .h { display: flex; align-items: center; justify-content: center; gap: 10px; position: relative; }
+.v2-fr .h b { font-size: 17px; letter-spacing: -.3px; }
+.v2-fr .h .lv { position: absolute; right: 0; display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 800; color: #0E8A5A; }
+.v2-fr .h .lv i { width: 7px; height: 7px; border-radius: 50%; background: #16B377; }
+.v2-fr .row5 { display: flex; justify-content: center; gap: 10px; }
+.v2-fr .fv { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 58px; min-width: 0; }
+.v2-fr .fv .rg { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); box-shadow: 0 0 0 1.5px var(--line); position: relative; }
+.v2-fr .fv.live .rg { box-shadow: 0 0 0 2.5px #16B377; } .v2-fr .fv.on .rg { box-shadow: 0 0 0 2.5px var(--v2-red-1); }
+.v2-fr .fv span { font-size: 12px; font-weight: 700; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.v2-fr .fv small { font-size: 11px; font-weight: 700; color: var(--ink-3); margin-top: -3px; }
+.v2-fr .fv.live small { color: #0E8A5A; } .v2-fr .fv.on small { color: var(--ink-2); }
+.v2-fr .empty-t { text-align: center; padding: 6px 4px 2px; font-size: 13.5px; color: var(--ink-2); font-weight: 600; line-height: 1.4; }
+.v2-fr .btns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.v2-fr .btns button { height: 44px; border-radius: 13px; font-weight: 800; font-size: 13.5px; background: var(--surface-2); color: var(--ink); }
+.v2-fr .btns button.main { background: var(--v2-red-grad); color: var(--v2-on-red); }
+.v2-req { width: 100%; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); text-align: left; }
+.v2-req b { font-size: 14px; } .v2-req .tiny { color: var(--ink-2); }
+.v2-sec { margin: 8px 4px 0; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); }
+.v2-home .empty, .v2-clarity .empty { text-align: center; }
+
+/* ---------- Clarity-Tab ---------- */
+.v2-clarity { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; }
+.content:has(> .v2-clarity) { display: flex; flex-direction: column; }
+.v2-clh { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 18px; min-height: 360px; position: relative; overflow: hidden; border-radius: 28px; padding: 22px 18px 18px; color: #fff; text-align: center; border: 1px solid rgba(160, 220, 255, .28); isolation: isolate;
+  background: radial-gradient(120% 90% at 85% 0%, rgba(25, 198, 192, .5), transparent 55%), radial-gradient(90% 80% at 0% 100%, rgba(46, 123, 255, .5), transparent 60%), linear-gradient(155deg, #0C4A6E, #08213D);
+  box-shadow: 0 18px 40px rgba(8, 33, 61, .32), inset 0 1px 0 rgba(255, 255, 255, .22); }
+.v2-clh .deco { position: absolute; right: 6px; top: 6px; width: 104px; opacity: .55; z-index: -1; pointer-events: none; animation: none; filter: drop-shadow(0 10px 22px rgba(25,198,192,.45)); }
+@keyframes v2-float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-9px) rotate(2deg); } }
+.hub-parts { position: absolute; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; border-radius: inherit; }
+.hub-parts i { position: absolute; bottom: -8px; width: 4px; height: 4px; border-radius: 50%; background: #CFF3FF; opacity: 0; box-shadow: 0 0 8px 2px rgba(150, 225, 255, .6); animation: hub-part 7s linear infinite; }
+.hub-parts i:nth-child(1) { left: 8%; } .hub-parts i:nth-child(2) { left: 20%; animation-delay: 2.1s; } .hub-parts i:nth-child(3) { left: 33%; animation-delay: 4.3s; } .hub-parts i:nth-child(4) { left: 46%; animation-delay: 1.2s; width: 3px; height: 3px; } .hub-parts i:nth-child(5) { left: 58%; animation-delay: 5.2s; } .hub-parts i:nth-child(6) { left: 70%; animation-delay: 3.1s; width: 5px; height: 5px; } .hub-parts i:nth-child(7) { left: 80%; animation-delay: .6s; width: 3px; height: 3px; } .hub-parts i:nth-child(8) { left: 90%; animation-delay: 4.8s; } .hub-parts i:nth-child(9) { left: 27%; animation-delay: 6s; width: 3px; height: 3px; }
+@keyframes hub-part { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 85% { opacity: .5; } 100% { transform: translateY(-300px) translateX(14px); opacity: 0; } }
+.v2-clh .k { font-size: 11.5px; font-weight: 800; letter-spacing: .14em; color: #BFE9FF; }
+.v2-clh h2 { margin: 46px auto 8px; font-size: 24px; line-height: 1.15; letter-spacing: -.6px; max-width: 290px; text-wrap: balance; }
+.v2-clh p { margin: 0 auto 16px; font-size: 14px; line-height: 1.5; color: rgba(214, 238, 255, .88); max-width: 300px; }
+.v2-clh .cta { display: inline-block; padding: 12px 22px; border-radius: 14px; background: linear-gradient(135deg, #fff, #CFEFFF); color: #08213D; font-weight: 800; font-size: 14px; box-shadow: 0 6px 18px rgba(0, 0, 0, .22); }
+.v2-clh .cta.ghost { background: rgba(255, 255, 255, .14); color: #fff; box-shadow: none; border: 1px solid rgba(255, 255, 255, .24); width: 100%; margin-top: 4px; padding: 12px; }
+.v2-clh .crs { display: flex; flex-direction: column; gap: 8px; margin: 14px 0 12px; text-align: left; }
+.v2-clh .crs .hub-grade { display: none; }
+.v2-clh .crs .hub-course-t b, .v2-clh .crs .hub-course-t small { white-space: normal; }
+.v2-practice { width: 100%; display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); text-align: left; transition: transform .18s; }
+.v2-practice:active { transform: scale(.975); }
+.v2-practice .ic { width: 50px; height: 50px; border-radius: 16px; background: var(--flame-soft); display: grid; place-items: center; flex: none; }
+.v2-practice .ic svg { width: 26px; height: 26px; }
+.v2-practice .tx { flex: 1; min-width: 0; line-height: 1.35; }
+.v2-practice .tx b { display: block; font-size: 17px; }
+.v2-practice .tx span { font-size: 13.5px; font-weight: 600; color: var(--ink-2); }
+.v2-practice .tx .due { color: var(--v2-red-text); font-weight: 800; }
+.v2-practice > svg { width: 18px; height: 18px; color: var(--ink-3); flex: none; }
+
+/* ---------- Statistik ---------- */
+.v2-stats { display: flex; flex-direction: column; gap: 14px; }
+.v2-stats .c { border-radius: 24px; padding: 20px; background: var(--surface); box-shadow: var(--shadow); }
+.v2-stats .c h3 { font-size: 16px; font-weight: 800; text-align: center; margin-bottom: 12px; }
+.v2-stats .wkh { text-align: center; }
+.v2-stats .wkh small { display: block; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.v2-stats .wkh b { display: block; font-size: 34px; font-weight: 800; letter-spacing: -1px; font-variant-numeric: tabular-nums; }
+.v2-stats .wkh .df { font-size: 12.5px; font-weight: 800; color: #0E8A5A; } .v2-stats .wkh .df.neg { color: var(--ink-3); }
+.v2-stats .bars { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; align-items: end; height: 130px; margin-top: 14px; }
+.v2-stats .bars .d { display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; }
+.v2-stats .bars .st { width: 100%; display: flex; flex-direction: column-reverse; border-radius: 8px; overflow: hidden; min-height: 4px; background: var(--surface-2); }
+.v2-stats .bars .st i { display: block; }
+.v2-stats .bars .d span { font-size: 11px; font-weight: 800; color: var(--ink-3); }
+.v2-stats .bars .d.today span { color: var(--v2-red-text); }
+.v2-stats .subj { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.v2-stats .subj .nm { width: 38%; font-size: 13.5px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.v2-stats .subj .progress { flex: 1; }
+.v2-stats .subj .v { width: 56px; text-align: right; font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.v2-stats .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.v2-stats .two .c { padding: 16px; text-align: center; }
+.v2-stats .two small { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink-2); }
+.v2-stats .two b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.6px; word-spacing: .12em; }
+.v2-stats .two em { display: block; font-style: normal; font-size: 12px; font-weight: 700; color: var(--ink-3); }
+.v2-stats .hrs { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; align-items: end; height: 70px; }
+.v2-stats .hrs i { display: block; border-radius: 3px; background: color-mix(in srgb, var(--brand) 30%, var(--surface-2)); min-height: 3px; }
+.v2-stats .hrs i.hi { background: var(--brand); }
+.v2-stats .hrl { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--ink-3); }
+.v2-stats .lock { position: relative; display: flex; gap: 14px; align-items: center; text-align: left; }
+.v2-stats .lock .ic { width: 52px; height: 52px; border-radius: 16px; background: var(--violet-soft); display: grid; place-items: center; flex: none; }
+.v2-stats .lock .ic { color: var(--violet); }
+.v2-stats .lock .ic svg { width: 24px; height: 24px; }
+.v2-stats .lock .tx { flex: 1; min-width: 0; }
+.v2-stats .lock .tx b { font-size: 16px; } .v2-stats .lock .tx div { font-size: 13px; color: var(--ink-2); font-weight: 600; }
+.v2-stats .lock .bar { height: 8px; border-radius: 4px; background: var(--surface-2); margin-top: 8px; overflow: hidden; } .v2-stats .lock .bar i { display: block; height: 100%; border-radius: 4px; background: var(--violet); }
+.v2-stats .lock .n { font-size: 15px; font-weight: 800; color: var(--violet); }
+.v2-stats .empty { text-align: center; }
+
+@media (prefers-reduced-motion: reduce) { .v2-clh .deco, .hub-parts i { animation: none !important; } .v2-home > *, .tab-start button.live { animation: none !important; } }
+/* Weiss/Elfenbein: feine Kante, dunkle Ringe und dunkles Play-Symbol */
+.tab-start button svg path { fill: var(--v2-on-red); stroke: var(--v2-on-red); }
+.tab-start button, .v2-today { border: 0; }
+
+
+.v2-today .deco g { stroke: #16131F; }
+.v2-today .deco { opacity: .16; }
+
+/* Darkmode-Schalter neben Münzen und Streak */
+.v2-pill.th { width: 36px; padding: 0; }
+.v2-pill.th svg { width: 19px; height: 19px; }
+/* Play-Knopf in Pastellpink */
+.tab-start button:not(.live) { background: radial-gradient(90% 80% at 85% 10%, rgba(255, 255, 255, .55), transparent 60%), linear-gradient(155deg, #FFC2D8, #FF9EC0); box-shadow: 0 6px 16px rgba(255, 140, 180, .3); }
+
+/* Alle bisher weissen Buttons: Perlmutt (heller Perlmutt-Verlauf, schwarze Schrift) */
+:root { --perl: radial-gradient(120% 140% at 88% 0%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0) 60%), radial-gradient(100% 120% at 0% 100%, rgba(238, 242, 252, .9), rgba(238, 242, 252, 0) 62%), linear-gradient(155deg, #FFFFFF, #F6F7FA); }
+.v2-pill, .seg button.on, .rk-seg button.on, .pl-chip.on, .pl-seg button.on,
+.rm-btn.gold, .rm-home, .rm-take, .hub .cl-card-cta, .cl-card-cta, .btn.light, .tb-btn.white { background: var(--perl) !important; color: #16131F; }
+.rm-btn.gold, .rm-home, .rm-take { color: #16131F !important; }
+.rm-take { border-color: #EAEAEE !important; }
+
+/* Graue Buttons: ebenfalls Perlmutt */
+.btn.ghost, .btn.soft, .btn.secondary, .v2-fr .btns button:not(.main), .pl-chip:not(.on), .pl-all, .tb-ghost { background: var(--perl); color: #16131F; }
+.pv-tabs button:not(.on), .pv-btn.ghost, .pv-tr:not(.on) { background: var(--perl); color: #16131F; }
+.icon-btn:not(.plain) { background: var(--perl); }
+
+/* Streak-Warnung: Perlmutt statt Pfirsich, Zahl bleibt orange */
+.v2-warn { background: var(--perl) !important; color: #16131F; }
+
+/* «Heute gelernt»: nur die Ringe schweben, sehr langsam */
+.v2-today .deco { animation: none; }
+@media (prefers-reduced-motion: reduce) { .v2-today .deco { animation: none !important; } }
+
+/* Clarity-Karte auf Home: Brain schwebt wie im Banner «Heute gelernt» */
+.v2-cl .deco { animation: none; }
+@media (prefers-reduced-motion: reduce) { .v2-cl .deco { animation: none !important; } }
+
+/* Karten und Flächen im Hellmodus: gleicher Zwei-Weiss-Ton wie «Heute gelernt» (Buttons bleiben unverändert) */
+:root[data-theme="light"] :is(.card, .pv-card, .pv-list, .v2-fr, .v2-req, .v2-practice, .v2-stats .c, .my-look, .kpi, .list, .feed-item, .tile, .mode-card, .shop-item, .pl-row, .rm-solo, .sprint-card) { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) :is(.card, .pv-card, .pv-list, .v2-fr, .v2-req, .v2-practice, .v2-stats .c, .my-look, .kpi, .list, .feed-item, .tile, .mode-card, .shop-item, .pl-row, .rm-solo, .sprint-card) { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); } }
+
+/* Brainy-Analyse und gesperrte Karte: gleicher Zwei-Weiss-Ton */
+:root[data-theme="light"] :is(.ovs .insight, .insight, .c.lock, .v2-stats .lock) { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) :is(.ovs .insight, .insight, .c.lock, .v2-stats .lock) { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF); } }
+
+/* Freunde heute: Buttons als Mischung aus Karten-Weiss und Hintergrund */
+.v2-fr .btns button, .v2-fr .btns button.main { background: var(--bg) !important; color: #16131F; box-shadow: none; }
+
+/* Play-Menü «Was lernst du jetzt?»: gewähltes Fach klar erkennbar (Hintergrundton, dunkler Rahmen) */
+.pl-chip.on, .pl-row.on { background: var(--bg) !important; border-color: var(--ink) !important; box-shadow: inset 0 2px 6px rgba(60, 40, 70, .14) !important; color: var(--ink); }
+.pl-chip.on span:not(.pl-dot), .pl-row.on .pl-nm { font-weight: 800; }
+
+/* Play-Menü: «Solo starten» im Hintergrundton */
+.pl-solo .rm-btn.red { background: var(--bg) !important; color: #16131F; box-shadow: none; }
+
+/* Play-Button im Hintergrundton */
+.tab-start button, .tab-start button:not(.live), .tab-start button.live { background: var(--bg) !important; box-shadow: 0 6px 16px rgba(60, 40, 70, .18); }
+.tab-start button, .tab-start button.live { animation: none !important; }
+.tab-start button::before, .tab-start button::after { display: none !important; }
+
+/* Play-Button: etwas präsenter, leicht dunkleres Perlmutt mit Lichtkante */
+.tab-start button, .tab-start button:not(.live), .tab-start button.live { background: radial-gradient(90% 80% at 80% 10%, rgba(255, 255, 255, .55), transparent 60%), linear-gradient(155deg, color-mix(in srgb, var(--bg) 94%, #fff), color-mix(in srgb, var(--bg) 84%, #7A4A6A)) !important; box-shadow: 0 8px 20px rgba(80, 50, 80, .28), inset 0 1px 0 rgba(255, 255, 255, .6); }
+.tab-start button svg path { fill: #000000; stroke: #000000; }
+
+/* Rangliste: Auswahl (Alle/Schweiz/Woche …) wie im Play-Menü: Hintergrundton, dunkler Rahmen */
+.rk-chip.on { background: var(--bg) !important; color: var(--ink) !important; border: 1.5px solid var(--ink) !important; box-shadow: inset 0 2px 6px rgba(60, 40, 70, .14) !important; font-weight: 800; }
+
+/* Tagesgeschenk «Holen»: Hintergrundton */
+.daily .pv-btn { background: var(--bg) !important; color: #16131F !important; box-shadow: none !important; }
+
+/* Mein Look: Münzen im Hintergrundton, Kategorie-Auswahl wie Länder/Fächer */
+.pv-coins { background: var(--bg) !important; color: #16131F; }
+.pv-tabs button.on { background: var(--bg) !important; color: var(--ink) !important; border: 1.5px solid var(--ink) !important; box-shadow: inset 0 2px 6px rgba(60, 40, 70, .14) !important; font-weight: 800; }
+
+/* Trophäen im Hintergrundton */
+.trophy, .pv-tr { background: var(--bg) !important; box-shadow: none; }
+
+/* Feinschliff: Aktivitäten-Kopf in einer Zeile (Ort und Streak brechen nicht um) */
+.feed-top .who span { white-space: normal; overflow: hidden; overflow-wrap: normal; }   /* Zeile darf umbrechen statt «ZH · …» zu kürzen; Streak bleibt als Einheit */
+i.nw { font-style: normal; white-space: nowrap; }
+.feed-top .subj-tag, .feed-top > :last-child:not(.who) { flex: none; }
+
+/* Feinschliff: Violett/Pfirsich-Reste ins Perlmutt-System (Pflaume statt Violett, Perlmutt statt Pfirsich) */
+:root { --violet: #5E3F70; --violet-soft: color-mix(in srgb, var(--bg) 55%, #fff); --flame-soft: color-mix(in srgb, var(--bg) 55%, #fff); }
+.v2-practice .ic rect:first-child { fill: #fff; stroke: var(--ink); }
+.v2-practice .ic rect:last-child { fill: var(--bg); stroke: var(--ink); }
+.v2-clh h2 { margin-top: 24px; }
+.v2-clh { gap: 12px; }
+
+/* Feinschliff: Titel «Rangliste» wird in der Kopfzeile nicht mehr abgeschnitten */
+@media (max-width: 420px) { .topbar { gap: 8px; padding-left: 14px; padding-right: 14px; } .topbar h1 { font-size: 22px; letter-spacing: -.4px; } }
+
+/* Feinschliff: Ranglisten-Zeilen gleich hoch: Liga-Marke in eigener Zeile, darunter Pokale und Ort (nichts wird abgeschnitten) */
+.li .mini-stats { flex-wrap: wrap; row-gap: 3px; }
+.li .mini-stats > * { white-space: nowrap; }
+.li .mini-stats > .lg-tag { flex: none; margin-right: calc(100% - 1px); }
+
+/* Feinschliff: Brainy-Analyse zentriert wie die übrigen Statistik-Karten */
+.insight { text-align: center; }
+.insight h4 { justify-content: center; }
+.insight li { justify-content: center; text-align: center; }
+.insight > .btn { display: flex; margin-left: auto; margin-right: auto; width: max-content; max-width: 100%; }
+
+/* Feinschliff: «Alle anzeigen» im Play-Menü gut lesbar, gestrichelter Rahmen sichtbar */
+.pl-chip.more { background: transparent !important; color: var(--ink) !important; border: 1.5px dashed color-mix(in srgb, var(--ink) 38%, transparent) !important; box-shadow: none !important; }
+[data-keep="tab-rank"] .li { gap: 10px; padding-left: 12px; padding-right: 12px; }
+[data-keep="tab-rank"] .li .mini-stats { gap: 2px 6px; }
+
+/* Feinschliff: Liga-Marken in Listen behalten ihre Schriftfarbe (wurde von «.li .t span» auf Grau gesetzt) */
+.li .t .lg-tag.lg-bronze { color: #6A3B18; } .li .t .lg-tag.lg-silber { color: #404859; } .li .t .lg-tag.lg-gold { color: #6B4700; } .li .t .lg-tag.lg-platin { color: #11595E; }
+.li .t .lg-tag.lg-diamant { color: #1B3E86; } .li .t .lg-tag.lg-meister { color: #4A22B8; } .li .t .lg-tag.lg-grossmeister { color: #A0143F; } .li .t .lg-tag.lg-legende { color: #FFD43B; }
+
+/* Feinschliff: Kategorie-Chips in «Mein Look» heben sich auf der weissen Karte sichtbar ab */
+.pv-tabs button:not(.on) { border: 1.5px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+.pv-btn.ghost { border: 1.5px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+
+/* Feinschliff: Anprobe-Panel im Profil mit gleichem Abstand wie die übrigen Blöcke */
+.pv-try { margin-top: 14px; }
+
+/* Feinschliff: Streak-/Trophäen-Hinweis nach Session im Perlmutt-System, Text zentriert */
+.unlock { background: var(--perl) !important; color: var(--ink) !important; justify-content: center; text-align: center; box-shadow: var(--v2-red-shadow); }
+.unlock > div { text-align: center; }
+.unlock .small { color: var(--ink-2); }
+.unlock[style] { text-align: center !important; }
+.summary > .row.mb16 .grow { text-align: center; padding-left: 44px; }
+
+/* Feinschliff: Spiele-Kacheln im Karten-System statt bunter Verläufe */
+.game-tile { background: radial-gradient(120% 90% at 85% 0%, #FFFFFF, rgba(255, 255, 255, 0) 55%), radial-gradient(90% 80% at 0% 100%, #FFFFFF, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #F5F5F8, #EAEAEF) !important; color: var(--ink) !important; }
+.game-tile .ge { background: var(--bg); color: var(--ink); }
+.game-tile .gbest { opacity: 1; color: var(--ink-2); } .game-tile .gbest b { color: var(--ink); }
+.game-tile span { opacity: 1; color: var(--ink-2); } .game-tile .ge { opacity: 1; }
+
+/* Feinschliff: Zeilen in Sheets (Freunde finden, Folge ich) gleich hoch, lange Zusatzzeile wird gekürzt statt umgebrochen */
+.sheet .li .t span { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; overflow-wrap: anywhere; }   /* Zusatzzeile darf zweizeilig sein statt «cet…» abzuschneiden */
+
+/* Feinschliff: Gruppen-Chips in der Rangliste einzeilig, Auswahl wie im Play-Menü (Hintergrundton, dunkler Rahmen) */
+.rk-groups .chip-btn { white-space: nowrap; flex: none; height: 36px; padding: 0 14px; }
+.chip-btn.on, .rk-gchip.on { background: var(--bg) !important; border: 1.5px solid var(--ink) !important; color: var(--ink) !important; font-weight: 800; box-shadow: inset 0 2px 6px rgba(60, 40, 70, .14); }
+
+/* Feinschliff: auf sehr schmalen Handys (Store-Bilder, kleine Geräte) bekommt der Titel «Rangliste»/«Statistik» den Platz des Avatars */
+@media (max-width: 385px) { .topbar:has(h1) .v2-av { display: none; } .topbar h1 { font-size: 22px; } }
+
+/* Feinschliff: Ringe auf Home sitzen in der Ecke und überdecken keine Schrift mehr (Banner «Heute gelernt», Clarity-Karte) */
+.v2-today .deco { right: -14px; top: -16px; width: 92px; opacity: .12; }
+.v2-cl .deco { right: -12px; top: -14px; width: 88px; opacity: .22; }
+
+/* Feinschliff: Play-Menü auf sehr schmalen Handys (Android-Store-Bilder): Fachnamen und «Pomodoro» werden nicht mehr gekürzt */
+@media (max-width: 340px) { .pl-chip { padding-left: 6px; padding-right: 6px; font-size: 12.5px; letter-spacing: -.2px; } .pl-chip.more { font-size: 12px; } .pl-seg button { font-size: 12.5px; padding-left: 4px; padding-right: 4px; } }
+@media (max-width: 340px) { .seg button { font-size: 12px; padding: 0 2px; letter-spacing: -.2px; } }
+
+/* Design-Feinschliff: Tippflächen mindestens 44 px. Das Aussehen bleibt, nur die unsichtbare Trefferfläche wird grösser (Pseudo-Element). */
+:is(.v2-pill, .seg button, .chip-btn, .chip-toggle, .btn.sm, .btn.xs, .v2-sharebtn, .pv-btn.sm, .react-sum, .react-btn, .rk-oth, .shop-cats button, .rar-chips button, .icon-btn, .color-row button, .li > button.ico, .li > button.t, .pl-seg button, .pl-chip, .cta, .lang-row button, .feed-top > button) { position: relative; }
+:is(.v2-pill, .seg button, .chip-btn, .chip-toggle, .btn.sm, .btn.xs, .v2-sharebtn, .pv-btn.sm, .react-sum, .react-btn, .rk-oth, .shop-cats button, .rar-chips button, .icon-btn, .color-row button, .li > button.ico, .li > button.t, .pl-seg button, .pl-chip, .cta, .lang-row button, .feed-top > button)::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); }
+.seg button { overflow: visible; }
+.rar-chips { padding: 8px 0; margin: -8px 0; }   /* Platz für die grössere Trefferfläche in Scrollzeilen */
+@media (min-width: 341px) and (max-width: 400px) { .pl-chip { font-size: 13px; letter-spacing: -.2px; } }
+@media (min-width: 341px) and (max-width: 370px) { .pl-chip { font-size: 12.5px; } }   /* «Mathématiques» wird auf 375 px nicht mehr gekürzt */
+/* Typografie: fette Schrift mit engem Zeichenabstand liess Leerzeichen verschwinden («0jours», «Niveau1»); keine einzelnen Wörter in der letzten Zeile */
+b, strong, h1, h2, h3, h4, .big-stat { word-spacing: .12em; }
+h1, h2, h3, .sheet-h h3, .center p, .center small, .muted, .faint, .small { text-wrap: balance; }
+p { text-wrap: pretty; }
+/* Symbol-Icons (.ei) im Fliesstext: Regeln wie «.feed-top .who span { display: block }» machten sie zu Blöcken (Flamme/Tomate über der Zahl) */
+span.ei { display: inline-flex !important; }
