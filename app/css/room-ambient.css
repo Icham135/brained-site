@@ -1,0 +1,33 @@
+/* Lernraum-Atmosphäre (js/room-ambient.js): alles nur transform/opacity, wenige Ebenen, dezent. Liegt in .rm-world hinter Brainys und Schildern. */
+.rm-ambient, .rm-amb, .rm-amb > div { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+.rm-amb i { position: absolute; display: block; pointer-events: none; }
+/* Sterne: Gruppen funkeln versetzt */
+.rm-amb .st { border-radius: 50%; background: #fff; box-shadow: 0 0 5px 1px rgba(210,200,255,.7); }
+.rm-amb .st.v { background: #c9b8ff; }
+.rm-amb .tw { animation: amb-tw 4.6s ease-in-out infinite; }
+.rm-amb .tw0 { animation-delay: -.4s; } .rm-amb .tw1 { animation-delay: -1.5s; animation-duration: 5.4s; } .rm-amb .tw2 { animation-delay: -2.6s; animation-duration: 3.9s; }
+.rm-amb .tw3 { animation-delay: -3.3s; animation-duration: 6.1s; } .rm-amb .tw4 { animation-delay: -.9s; animation-duration: 4.2s; } .rm-amb .tw5 { animation-delay: -4.1s; animation-duration: 5.1s; }
+@keyframes amb-tw { 0%, 100% { opacity: .25; } 50% { opacity: .95; } }
+/* Nervenbahnen: weiche Lichtflecken und Knoten pulsieren langsam */
+.rm-amb .gl { border-radius: 50%; background: radial-gradient(closest-side, rgba(150,100,255,.22), rgba(150,100,255,0)); opacity: .5; animation: amb-gl 7s ease-in-out infinite; }
+@keyframes amb-gl { 0%, 100% { opacity: .25; transform: scale(.94); } 50% { opacity: .8; transform: scale(1.04); } }
+.rm-amb .nd { width: 28px; height: 28px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,210,150,.75), rgba(255,170,90,.25) 55%, rgba(255,170,90,0)); }
+.rm-amb .pu { animation: amb-pu 4.8s ease-in-out infinite; }
+.rm-amb .pu1 { animation-delay: -1.6s; } .rm-amb .pu2 { animation-delay: -3.2s; }
+@keyframes amb-pu { 0%, 100% { opacity: .15; } 50% { opacity: .85; } }
+/* Lampen: leichtes, unregelmässiges Flackern */
+.rm-amb .lm { width: 44px; height: 44px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,190,110,.5), rgba(255,160,70,.16) 60%, rgba(255,160,70,0)); animation: amb-fl 4s ease-in-out infinite; }
+.rm-amb .lm.wl { background: radial-gradient(closest-side, rgba(255,200,130,.4), rgba(255,160,70,.12) 60%, rgba(255,160,70,0)); }
+@keyframes amb-fl { 0%, 100% { opacity: .75; } 18% { opacity: .95; } 31% { opacity: .62; } 47% { opacity: .9; } 63% { opacity: .7; } 82% { opacity: 1; } }
+/* Staub: ganz feine Punkte treiben langsam nach oben */
+.rm-amb .du { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,225,190,.8); opacity: 0; animation: amb-du 18s linear infinite; }
+@keyframes amb-du { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: .5; } 85% { opacity: .35; } 100% { transform: translate(var(--dx, 20px), -90px); opacity: 0; } }
+/* Speicherschutz: auf Handys (low) und beim Reinzoomen stehen Sterne, Lichtflecken, Knoten und Staub still (jede animierte Ebene wäre eine eigene grosse Rasterfläche); nur die Lampen flackern weiter, ausser beim Reinzoomen */
+[data-perf="low"] .rm-amb .tw, .rm-world[data-near="1"] .rm-amb .tw { animation: none; opacity: .7; }
+[data-perf="low"] .rm-amb .gl, .rm-world[data-near="1"] .rm-amb .gl { animation: none; opacity: .5; }
+[data-perf="low"] .rm-amb .pu, .rm-world[data-near="1"] .rm-amb .pu { animation: none; opacity: .5; }
+[data-perf="low"] .rm-amb .du, .rm-world[data-near="1"] .rm-amb .du { display: none; }
+.rm-world[data-near="1"] .rm-amb .lm { animation: none; opacity: .8; }
+/* Pause im Hintergrund-Tab, ruhig bei reduzierter Bewegung */
+html.rm-amb-pause, .rm-paused .rm-amb *, html.rm-amb-pause .rm-amb { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) { .rm-amb * , .rm-amb { animation: none !important; } .rm-amb .du { display: none; } .rm-amb .gl, .rm-amb .pu { opacity: .45; } .rm-amb .tw { opacity: .7; } .rm-amb .lm { opacity: .8; } }
