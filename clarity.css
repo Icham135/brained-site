@@ -1,0 +1,98 @@
+/* Brained Clarity – Seite im Blau des Ladescreens: Verlauf, Glas, Lichtkreise. Schriften lokal. */
+@import url(fonts/fonts.css);
+:root{--ink:#F2F8FF;--ink2:rgba(220,238,255,.74);--line:rgba(190,225,255,.18);--glass:rgba(255,255,255,.07);--glass2:rgba(255,255,255,.11);--cy:#5CE0E0;--vio:#8B83FF;--blue:#2B8CCF;--deep:#07173F;
+--font:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;--logo:"Fredoka",var(--font);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--deep)}
+body{margin:0;font-family:var(--font);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;
+background:radial-gradient(60% 40% at 90% 2%,rgba(110,100,255,.40),transparent 70%),radial-gradient(70% 45% at 5% 30%,rgba(40,214,200,.22),transparent 70%),radial-gradient(90% 50% at 70% 70%,rgba(43,140,207,.35),transparent 72%),linear-gradient(180deg,#1F73B8 0%,#12418F 22%,#0B2A6B 55%,#07173F 100%);background-attachment:scroll}
+img{max-width:100%;display:block}a{color:inherit}h1,h2,h3,p{margin:0}h1,h2,h3{letter-spacing:-.03em;line-height:1.08}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:0;z-index:20;background:rgba(10,40,100,.45);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font:700 22px var(--logo);text-decoration:none}.logo img{border-radius:9px}
+.sw{display:flex;gap:3px;margin-left:auto;padding:3px;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid var(--line)}
+.sw a{padding:7px 16px;border-radius:99px;font-weight:700;font-size:14px;text-decoration:none;color:var(--ink2)}
+.sw a[aria-current]{background:#fff;color:#0B2A6B}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:50px;padding:0 26px;border-radius:15px;font-weight:800;font-size:16px;text-decoration:none;background:#fff;color:#0B2A6B;box-shadow:0 10px 30px rgba(0,20,80,.35);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}.btn.g{background:var(--glass2);color:#fff;box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.s{height:38px;padding:0 16px;font-size:14px;border-radius:12px}
+.hero{padding:76px 0 40px;position:relative}
+.hero .w{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.k{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:99px;background:var(--glass2);border:1px solid var(--line);font-size:13px;font-weight:700;letter-spacing:.04em;color:#CFEFFF}
+.k i{width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy)}
+h1{font-size:clamp(40px,6.4vw,72px);margin:20px 0 20px;font-weight:800}
+h1 em{font-style:normal;background:linear-gradient(100deg,#fff,#8FE8FF 55%,#9D96FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:19px;color:var(--ink2);max-width:520px}
+.row{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+.fine{margin-top:16px;font-size:13px;color:var(--ink2)}
+.stage{position:relative;display:flex;justify-content:center}
+.stage::before{content:"";position:absolute;inset:8% 4% 0;background:radial-gradient(closest-side,rgba(120,220,255,.55),rgba(110,100,255,.25) 60%,transparent);filter:blur(30px)}
+.ph{aspect-ratio:540/1170;height:auto;position:relative;width:min(290px,76vw);border-radius:34px;border:1px solid rgba(255,255,255,.28);box-shadow:0 40px 80px rgba(0,10,50,.55),0 0 0 8px rgba(255,255,255,.06);animation:fl 5s ease-in-out infinite alternate}
+@keyframes fl{to{transform:translateY(-10px)}}
+.chip{position:absolute;padding:8px 16px;border-radius:16px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-weight:800;font-size:14px;box-shadow:0 12px 30px rgba(0,10,50,.3)}
+.chip small{display:block;font-weight:600;font-size:11px;color:var(--ink2)}
+
+section{padding:80px 0;position:relative}
+.h{max-width:640px;margin-bottom:40px}.h h2{font-size:clamp(28px,4.2vw,44px);margin:14px 0 12px}.h p{color:var(--ink2);font-size:17px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.gl{background:var(--glass);border:1px solid var(--line);border-radius:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.step{padding:24px}.step b{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--cy),var(--vio));color:#06204F;font:700 17px var(--logo);margin-bottom:16px}
+.step h3{font-size:19px;margin-bottom:6px}.step p{font-size:14.5px;color:var(--ink2)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}.split.rev>:first-child{order:2}
+.split h2{font-size:clamp(28px,4vw,42px);margin:14px 0 14px}.split p{color:var(--ink2);font-size:17px}
+.split .stage .ph{width:min(270px,70vw);animation:none}
+.ul{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px}.ul li{display:flex;gap:12px;color:var(--ink2)}.ul li b{color:#fff}
+.ul li::before{content:"";flex:none;width:20px;height:20px;margin-top:3px;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--vio));-webkit-mask:radial-gradient(circle at 50% 50%,#000 0 38%,transparent 40%);mask:radial-gradient(circle at 50% 50%,#000 0 38%,transparent 40%)}
+.blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.blk{padding:24px}.blk .n{font:700 13px var(--logo);color:var(--cy);letter-spacing:.1em}.blk h3{font-size:18px;margin:8px 0 6px}.blk p{font-size:14.5px;color:var(--ink2)}
+.sys{display:flex;flex-wrap:wrap;gap:16px}.sys div{padding:16px 24px;border-radius:24px}.sys b{display:block;font-size:20px}.sys span{font-size:13px;color:var(--ink2)}
+.band{display:grid;grid-template-columns:1fr 1fr;gap:24px}.band .gl{padding:32px}.band h3{font-size:22px;margin-bottom:10px}.band p{color:var(--ink2)}
+.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pr{padding:24px;position:relative}.pr h3{font-size:16px;color:var(--ink2);font-weight:700;letter-spacing:0}.pr .am{font-size:30px;font-weight:800;margin:8px 0 4px}.pr .am small{font-size:14px;font-weight:600;color:var(--ink2)}
+.pr ul{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px;font-size:14px;color:var(--ink2)}.pr ul li::before{content:"✓ ";color:var(--cy);font-weight:800}
+.pr.hot{background:linear-gradient(160deg,rgba(92,224,224,.22),rgba(139,131,255,.22));border-color:rgba(190,235,255,.5)}
+.tag{position:absolute;top:-11px;right:16px;padding:3px 10px;border-radius:99px;background:#fff;color:#0B2A6B;font-size:11px;font-weight:800}
+.pn{margin-top:16px;font-size:14px;color:var(--ink2)}
+details{border-top:1px solid var(--line);padding:18px 0}details:last-of-type{border-bottom:1px solid var(--line)}
+summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font-size:17px}
+summary::after{content:"+";color:var(--cy);font-weight:600;font-size:22px;line-height:1}details[open] summary::after{content:"–"}
+details p{color:var(--ink2);margin-top:10px;max-width:700px}
+.faq{max-width:760px}
+.cta{text-align:center}.cta .box{padding:64px 24px;border-radius:32px;background:radial-gradient(70% 100% at 50% 120%,rgba(92,224,224,.35),transparent 70%),var(--glass);border:1px solid var(--line)}
+.cta h2{font-size:clamp(30px,4.6vw,50px);margin-bottom:12px}.cta p{color:var(--ink2);max-width:460px;margin:0 auto}.cta .row{justify-content:center}
+footer{border-top:1px solid var(--line);padding:30px 0 40px;font-size:14px;color:var(--ink2)}
+footer .w{display:flex;flex-wrap:wrap;gap:14px 28px;justify-content:space-between}footer nav{display:flex;gap:18px;flex-wrap:wrap}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}.rv.in{opacity:1;transform:none}
+@media(max-width:860px){.hero{padding:44px 0 24px}.hero .w,.split,.band{grid-template-columns:1fr;gap:40px}.split.rev>:first-child{order:0}.steps,.prices{grid-template-columns:1fr 1fr}.blocks{grid-template-columns:1fr 1fr}section{padding:56px 0}}
+@media(max-width:480px){.steps,.prices,.blocks{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+.prices.three{grid-template-columns:repeat(3,1fr);max-width:900px;margin:0 auto}@media(max-width:860px){.prices.three{grid-template-columns:1fr;max-width:460px}}
+
+/* Kopfleiste wie auf der Landingpage: Logo und «App öffnen» an derselben Stelle */
+header .w{max-width:1160px}
+.bar{height:68px}
+.logo{font-size:24px}.logo img{width:36px;height:36px;border-radius:10px}
+.btn.s{height:40px}
+header .logo{gap:10px}
+
+/* Weicher Seitenwechsel (Landingpage <-> Clarity): kurzes Überblenden, die Kopfleiste bleibt stehen. Nur Opacity, schont Akku und CPU. */
+@view-transition{navigation:auto}
+header{view-transition-name:site-nav}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.22s;animation-timing-function:ease}
+::view-transition-group(site-nav),::view-transition-old(site-nav),::view-transition-new(site-nav){animation:none}
+@keyframes pagein{from{opacity:0}to{opacity:1}}
+body{animation:pagein .25s ease both}
+@media(prefers-reduced-motion:reduce){body{animation:none}::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* Feinschliff Web-Design: Chips am Handy verankert, Kopfleiste einzeilig, Tippflächen mind. 44 px */
+.pw{position:relative;width:min(290px,76vw)}.hero .ph{width:100%;animation:none}.pw{animation:fl 5s ease-in-out infinite alternate}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px}
+@media(min-width:1001px){.pw{margin-bottom:0}.chips{display:block;margin:0}.chip{position:absolute;white-space:nowrap}.chip.a{left:-64px;top:14%}.chip.b{right:-64px;bottom:18%}}
+@media(max-width:1000px){.chip{position:static}}
+.logo{min-height:44px}.sw a{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:480px){.bar{gap:8px}.sw a{padding:0 10px;font-size:13px}}
+details{padding:0}summary{padding:16px 0;min-height:44px;align-items:center}details p{margin-top:0;padding-bottom:16px}
+footer nav a{display:inline-flex;align-items:center;min-height:44px}
+footer nav{gap:0 16px}
+@media(max-width:480px){.row .btn{flex:1 1 100%}}
+.sys{display:grid;grid-template-columns:repeat(3,1fr)}@media(max-width:700px){.sys{grid-template-columns:1fr}}

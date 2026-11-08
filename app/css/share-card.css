@@ -1,0 +1,19 @@
+/* Home: «Meine Stats teilen» im Banner und die Teilen-Karte «Study Stats» (immer hell, damit der Screenshot überall gut aussieht) */
+.v2-sharebtn { margin: 14px auto 0; height: 40px; padding: 0 18px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14px; background: var(--perl, #fff); color: #16131F; border: 1px solid rgba(22, 19, 31, .12); box-shadow: 0 6px 14px -8px rgba(22, 19, 31, .35); }
+.v2-sharebtn svg { width: 16px; height: 16px; }
+.v2-sharebtn:active { transform: scale(.97); }
+:root[data-theme="dark"] .v2-sharebtn { background: rgba(255, 255, 255, .14); color: #F7F1F9; border-color: rgba(255, 255, 255, .18); box-shadow: none; }
+.sc-card { color: #16131F; border-radius: 26px; padding: 20px 18px 16px; background: linear-gradient(180deg, #FFFFFF 0%, #F3F0FB 100%); box-shadow: 0 10px 30px -14px rgba(22, 19, 31, .4); }
+.sc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.sc-top b { font-size: 26px; font-weight: 900; letter-spacing: -.6px; }
+.sc-logo { display: inline-flex; align-items: center; gap: 7px; font-weight: 900; font-size: 16px; color: #6A4FD6; }
+.sc-logo i { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(155deg, #C4B2FF, #A58BF6); }
+.sc-hero { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 6px 0 16px; }
+.sc-big { font-size: 46px; line-height: 1; font-weight: 900; letter-spacing: -1.5px; font-variant-numeric: tabular-nums; }
+.sc-k { margin-top: 6px; font-size: 12px; font-weight: 900; letter-spacing: 1.2px; color: #5A5368; }
+.sc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sc-t { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 16px; background: #fff; box-shadow: 0 4px 12px -6px rgba(22, 19, 31, .25); min-width: 0; }
+.sc-i { flex: none; width: 30px; height: 30px; display: grid; place-items: center; } .sc-i svg { width: 26px; height: 26px; }
+.sc-t b { display: block; font-size: 22px; font-weight: 900; letter-spacing: -.5px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sc-t span:not(.sc-i) { display: block; font-size: 12.5px; font-weight: 700; color: #5A5368; }
+.sc-foot { margin-top: 14px; text-align: center; font-weight: 900; font-size: 16px; color: #6A4FD6; }

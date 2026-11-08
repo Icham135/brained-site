@@ -1,0 +1,130 @@
+/* Brained 2.0 – Rangliste: Filter, neues Lernzeit-Rot, zentrierte Leer-Zustände, angehefteter eigener Platz */
+[data-keep="tab-rank"] {
+  --rk-red-1: var(--v2-red-1, var(--v2-red-1));
+  --rk-red-2: var(--v2-red-2, var(--v2-red-2));
+  --rk-red-soft: color-mix(in srgb, var(--rk-red-1) 12%, transparent);
+}
+
+/* Hauptbuttons im Rot */
+[data-keep="tab-rank"] .rk-red, [data-keep="tab-rank"] .btn.primary {
+  background: linear-gradient(155deg, var(--rk-red-1), var(--rk-red-2)); color: var(--v2-on-red); box-shadow: 0 8px 20px -6px color-mix(in srgb, var(--v2-red-text, #6A4FD6) 45%, transparent);
+}
+[data-keep="tab-rank"] .rk-red-o { border-color: var(--rk-red-1); color: var(--v2-red-text, #6A4FD6); background: var(--rk-red-soft); }
+.rk-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.rk-btns.mb12 { margin-bottom: 12px; }
+
+/* Segment (Alle | Freunde | Gruppen): aktiver Reiter bekommt einen roten Akzent */
+[data-keep="tab-rank"] .rk-seg { margin-top: 14px; }
+[data-keep="tab-rank"] .rk-seg button.on { color: var(--v2-red-text, #6A4FD6); }
+[data-keep="tab-rank"] .rk-period { margin-top: 2px; }
+
+/* Länderfilter */
+.rk-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 12px; }
+.rk-chip {
+  height: 36px; padding: 0 14px; border-radius: 999px; font-weight: 700; font-size: 13.5px; color: var(--ink-2);
+  background: var(--ovr-glass); border: 1px solid var(--ovr-line); transition: transform .15s, background .2s, color .2s;
+}
+.rk-chip:active { transform: scale(.95); }
+.rk-chip.on { background: linear-gradient(155deg, var(--rk-red-1), var(--rk-red-2)); color: var(--v2-on-red); border-color: transparent; box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--v2-red-text, #6A4FD6) 5%, transparent); }
+.rk-region { width: 100%; height: 46px; margin: 0 0 12px; border-radius: 14px; font-weight: 700; font-size: 15px; text-align: center; text-align-last: center; }
+.rk-region:focus { border-color: var(--rk-red-1); box-shadow: 0 0 0 4px var(--rk-red-soft); }
+
+/* Gruppen-Chips */
+.rk-groups { justify-content: flex-start; margin-bottom: 6px; }
+[data-keep="tab-rank"] .rk-gchip.on { background: var(--rk-red-soft); border-color: var(--rk-red-1); color: var(--ink); }
+
+/* Eigene Zeile in der Liste und Podest */
+[data-keep="tab-rank"] .li.me { background: var(--rk-red-soft); }
+[data-keep="tab-rank"] .li.me .rank-n { color: var(--v2-red-text, #6A4FD6); }
+.rk-crown { display: block; }
+
+/* Leere und ladende Zustände (zentriert, Vektor statt Emoji) */
+.rk-empty { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.rk-empty .rk-ico { color: var(--v2-red-text, #6A4FD6); opacity: .85; margin-bottom: 10px; }
+.rk-empty .small { max-width: 300px; margin: 0 auto 14px; }
+.rk-empty .small:last-child { margin-bottom: 0; }
+.rk-wait { text-align: center; padding: 36px 0; }
+
+/* Eigener Platz unten angeheftet */
+.rk-me {
+  position: sticky; bottom: -14px; /* .content hat unten tabbar+28 px Polster: so sitzt die Leiste 14 px über der Tableiste */ z-index: 4; display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 16px 10px 14px;
+  border-radius: 20px; color: var(--v2-on-red); background: linear-gradient(155deg, var(--rk-red-1), var(--rk-red-2)); border: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--v2-red-text, #6A4FD6) 55%, transparent), inset 0 1px 0 rgba(255,255,255,.22);
+}
+.rk-me .grow { min-width: 0; }
+.rk-me b { display: block; font-size: 14.5px; }
+.rk-me .grow span { font-size: 12px; opacity: .85; font-weight: 600; }
+.rk-me-n { min-width: 30px; text-align: center; font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
+.rk-me-v { font-weight: 800; font-variant-numeric: tabular-nums; }
+.rk-me .av { box-shadow: 0 0 0 2px rgba(255,255,255,.55); }
+
+@media (max-width: 359px) { .rk-chip { padding: 0 11px; font-size: 13px; } }
+
+/* Podest: gemeinsame Mittelachse je Platz (Krone, Avatar, Name, Zeit, Säule), keine Pixel-Offsets */
+.rk-podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; align-items: end; justify-items: stretch; column-gap: 8px; }
+.rk-podium .pod { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; align-content: end; row-gap: 4px; padding: 0; text-align: center; min-width: 0; }
+.rk-podium .pod > * { justify-self: center; }
+.rk-podium .pod-av { display: grid; place-items: center; line-height: 0; }
+.rk-podium .pod-av > .av, .rk-podium .pod-av > .av-x, .rk-podium .pod-av > .av-fr { margin: 0; }
+.rk-podium .av { display: grid; place-items: center; }
+.rk-podium .av svg { display: block; margin: 0 auto; }
+.rk-podium .name, .rk-podium .val { max-width: 100%; text-align: center; margin: 0; }
+.rk-podium .name { margin-top: 4px; }
+.rk-podium .block { width: 100%; margin-top: 4px; display: grid; place-items: center; }
+.rk-podium .crown { position: absolute; left: 0; right: 0; top: -20px; margin: 0; display: grid; justify-items: center; pointer-events: none; }
+
+/* Liga-Medaillen (Vektor) */
+.rk-medal { display: block; }
+[data-keep="tab-rank"] .league .medal { display: grid; place-items: center; flex: none; }
+.lg-tag { display: inline-flex; align-items: center; gap: 4px; }
+.lg-tag .rk-medal { flex: none; }
+.rk-gi { display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 20px; border-radius: 14px; }
+/* Avatar im Podest: Rand ausserhalb statt im Inhalt, sonst ragt das Gehirn 1–2 px aus der Mitte */
+.content[data-keep="tab-rank"] .rk-podium .pod .pod-av > .av { border: 0; box-shadow: 0 0 0 3px var(--surface); }
+.content[data-keep="tab-rank"] .rk-podium .pod.p1 .pod-av > .av { box-shadow: 0 0 0 3px var(--surface); }
+
+/* Podest: kein goldener Schleier, ruhige Fläche */
+.ovr-podium, .rk-podium { background: var(--surface) !important; }
+.ovr-podium::before, .ovr-podium::after { display: none !important; }
+/* Segment Alle | Freunde | Gruppen und Zeit-Reiter: Schrift schwarz (Darkmode: hell) */
+[data-keep="tab-rank"] .seg button, [data-keep="tab-rank"] .rk-seg button, [data-keep="tab-rank"] .rk-chip { color: var(--ink) !important; }
+[data-keep="tab-rank"] .seg button.on, [data-keep="tab-rank"] .rk-seg button.on, [data-keep="tab-rank"] .rk-chip.on { color: #16131F !important; }
+
+/* Keine Dauer-Animationen mehr: kein Schimmer über der Liga-Karte, kein pulsierender Schein, keine wippende Krone */
+[data-keep="tab-rank"] .league::after { display: none !important; animation: none !important; }
+.ovr-podium .pod.p1 .pod-av, .ovr-podium .crown, .rk-podium .crown, .rk-podium .pod-av { animation: none !important; }
+
+/* Kein Strahl, Glanz oder Schimmer mehr auf dem Podest (alles ruhig) */
+.ovr-podium *, .ovr-podium *::before, .ovr-podium *::after, .rk-podium *, .rk-podium *::before, .rk-podium *::after { animation: none !important; }
+.ovr-podium .block::before, .ovr-podium .block::after, .rk-podium .block::before, .rk-podium .block::after, .ovr-podium .pod::before, .ovr-podium .pod::after { display: none !important; content: none !important; }
+
+/* Klares Länder-System: Land als 4 Felder, Region als Chips, Statuszeile */
+.rk-where { margin: 0 0 12px; }
+/* Land: gleiche Methode wie «Alle | Freunde | Gruppen» (grauer Grund, weisser Schalter), mit Flaggen */
+[data-keep="tab-rank"] .rk-where .rk-ctry { margin-top: 0; }
+.rk-ctry button { height: auto; min-height: 56px; padding: 6px 4px; flex-direction: column; display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 12.5px; }
+.rk-ctry button i { font-style: normal; font-size: 20px; line-height: 1; }
+.rk-regs { display: flex; gap: 8px; overflow-x: auto; margin: 10px -16px 0; padding: 2px 16px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.rk-regs::-webkit-scrollbar { display: none; }
+.rk-reg { flex: none; min-height: 40px; padding: 0 13px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: 13.5px; color: var(--ink-2); background: var(--ovr-glass); border: 1px solid var(--ovr-line); white-space: nowrap; }
+.rk-reg b { font-size: 12px; opacity: .6; letter-spacing: .3px; }
+.rk-reg em { font-style: normal; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 99px; background: var(--rk-red-soft); color: var(--ink); }
+.rk-reg.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.rk-reg.on b { opacity: .75; } .rk-reg.on em { background: rgba(255, 255, 255, .22); color: inherit; }
+.rk-status { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; padding: 0 4px; font-size: 13px; color: var(--ink-3); }
+.rk-status b { color: var(--ink); font-weight: 800; }
+.rk-status button { min-height: 36px; padding: 0 4px; font-weight: 700; font-size: 13px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; }
+.rk-status .rk-oth.on { color: var(--ink); }
+
+/* «Dein Platz»: erst sichtbar, wenn Platz 4 beim Scrollen den Play-Button erreicht */
+.rk-me { opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
+.rk-me.show { opacity: 1; transform: none; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .rk-me { transition: none; } }
+
+/* Gruppen: «Meine Gruppen» als Auswahlfeld, darunter Erstellen und Beitreten */
+.rk-grp { display: grid; gap: 8px; margin: 0 0 14px; }
+.rk-grp-l { font-size: 12px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; color: var(--ink-3); padding: 0 4px; }
+.rk-grp-sel { width: 100%; height: 50px; border-radius: 14px; font-weight: 800; font-size: 16px; }
+.rk-grp-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rk-grp-btns .btn { width: 100%; min-height: 46px; }
+.rk-st-b { display: inline-flex; gap: 12px; align-items: center; }

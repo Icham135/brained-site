@@ -1,0 +1,21 @@
+/* Lernraum-Schilder (Agent «signs»): Zeit weiss und tabellarisch, Fach darunter gekürzt, keine Orange/Gold-Töne.
+   Überschreibt die Basis in rooms.css über erhöhte Spezifität (.rm .rm-sign). Optional: --rm-inv (Gegenskalierung beim Zoomen, vom Kamera-Agenten gesetzt) */
+.rm .rm-sign { --s: var(--rm-inv, 1); width: 100px; left: -40px; top: 58px; padding: 5px 5px 4px; gap: 1px; border-radius: 9px; overflow: hidden; transform-origin: 50% 0; transform: scale(var(--s));
+  background: linear-gradient(180deg, rgba(26,13,58,.94), rgba(11,4,32,.94)); border: 1.5px solid rgba(255,255,255,.28);
+  box-shadow: 0 3px 8px rgba(0,0,0,.5); -webkit-font-smoothing: antialiased; transition: border-color .2s, box-shadow .2s, opacity .2s; }
+.rm .rm-lcd { font: 700 16px/1.15 ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; letter-spacing: .5px; text-align: center; text-rendering: geometricPrecision; }
+.rm .rm-lcd u { display: none; }   /* Geisterziffern weg: sauberer, scharfer Text */
+.rm .rm-lcd b { color: #FFFFFF; text-shadow: none; font-weight: 700; }
+.rm .rm-sj { display: block; width: 100%; font: 700 10px/1.2 system-ui, -apple-system, sans-serif; letter-spacing: .1px; color: #FFFFFF; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; }
+.rm .rm-nm { display: none !important; }   /* Vorname nur im Panel, nicht auf dem Schild: nichts überlappt */
+/* Pause: dezent grau-weiss */
+.rm .rm-seat.st-pause .rm-sign { opacity: .82; filter: none; border-color: rgba(255,255,255,.18); }
+.rm .rm-seat.st-pause .rm-lcd b { color: rgba(255,255,255,.62); font-size: 12px; letter-spacing: 2.4px; text-shadow: none; }
+.rm .rm-seat.st-pause .rm-sj { color: rgba(255,255,255,.6); }
+.rm .rm-seat.st-idle .rm-lcd b { color: rgba(255,255,255,.78); }
+/* eigenes Schild: weisser Rahmen; ausgewählt: Glow */
+.rm .rm-seat.me .rm-sign { border: 2px solid #FFFFFF; box-shadow: 0 3px 8px rgba(0,0,0,.5); }
+.rm .rm-seat.sel .rm-sign { border-color: #FFFFFF; box-shadow: 0 0 10px rgba(255,255,255,.75), 0 0 22px rgba(190,170,255,.55), 0 3px 8px rgba(0,0,0,.5); }
+/* «Frei»-Marker: einheitlich weisse Pille, gleiche Mitte wie das Schild */
+.rm .rm-take { left: -22px; top: 62px; min-width: 44px; height: 22px; padding: 0 10px; font: 800 12px/20px system-ui, -apple-system, sans-serif; letter-spacing: .2px; text-align: center; transform-origin: 50% 0; transform: scale(var(--rm-inv, 1)); }
+.rm .rm-take:active { transform: scale(calc(var(--rm-inv, 1) * .94)); }

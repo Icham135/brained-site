@@ -1,0 +1,99 @@
+/* Brained Clarity (Prüfungsgenerator) – Typ-Auswahl, Dokumentliste, Dokument-Ansicht, Brain-Stempel, A6-Spickzettel, Druck. Präfixe clu-/gn- */
+
+/* Typ-Auswahl (Mehrfachauswahl) */
+.clu-types { display: flex; flex-direction: column; gap: var(--cl-s2); }
+.clu-type { display: flex; align-items: center; gap: var(--cl-s3); width: 100%; min-height: 64px; padding: var(--cl-s3) var(--cl-s4); text-align: left; border: 1px solid var(--cl-line-2); border-radius: var(--cl-r-m); background: var(--cl-surface); color: var(--cl-ink); font-family: inherit; cursor: pointer; }
+.clu-type.on { border-color: var(--cl-accent); background: var(--cl-accent-soft); box-shadow: inset 0 0 0 1px var(--cl-accent); }
+.clu-type-ic { flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--cl-surface-2); color: var(--cl-accent); }
+.clu-type-ic svg { width: 20px; height: 20px; }
+.clu-type-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.clu-type-t b { font-size: 15px; font-weight: 700; }
+.clu-type-t small { font-size: var(--cl-t-small); color: var(--cl-ink-2); }
+.clu-type-ck { flex: none; width: 26px; height: 26px; border-radius: 8px; border: 1.5px solid var(--cl-line-2); display: grid; place-items: center; font-style: normal; }
+.clu-type.on .clu-type-ck { background: var(--cl-accent); border-color: var(--cl-accent); color: var(--cl-accent-ink); }
+.clu-type-ck svg { width: 16px; height: 16px; }
+.clu-sublabel { font-size: 13px; font-weight: 700; color: var(--cl-ink-2); margin: var(--cl-s4) 0 var(--cl-s2); }
+.clu-seg.diff button { flex-direction: column; gap: 2px; padding: 6px 2px; min-height: 56px; font-size: 13px; }
+.clu-seg.diff button small { font-size: 11px; font-weight: 600; color: var(--cl-ink-2); line-height: 1.2; }
+
+/* Fertig-Hinweis, Dokumentliste */
+.clu-done { margin: 0 0 var(--cl-s4); padding: var(--cl-s3) var(--cl-s4); border-radius: var(--cl-r-m); background: var(--cl-good-soft); color: var(--cl-ink); font-size: 14px; }
+.clu-dtype { flex: none; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--cl-accent-soft); color: var(--cl-accent); }
+.clu-dtype svg { width: 22px; height: 22px; }
+.clu-up .cl-credit { text-align: left; }
+
+/* Generier-Screen: Vorteile */
+.clu-usps { list-style: none; margin: var(--cl-s4) 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--cl-s2); }
+.clu-usps li { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; background: var(--cl-accent-soft); font-size: 12.5px; font-weight: 700; color: var(--cl-ink); }
+.clu-usps li svg { width: 14px; height: 14px; color: var(--cl-good); }
+
+/* Dokument-Ansicht */
+.gn-doc .cl-ex-body { display: block; }
+.gn-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--cl-s2); margin-top: var(--cl-s5); }
+.gn-actions .cl-ex-btn { min-height: 48px; padding: 0 6px; font-size: 13.5px; }
+.gn-del { color: var(--cl-bad); }
+.gn-report .clu-text, .gn-delbox + .x { margin-bottom: var(--cl-s3); }
+.gn-report .cl-ex-btn, .gn-delbox .cl-ex-btn { width: 100%; margin-top: var(--cl-s2); }
+.gn-pass { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--cl-s2); margin: 0 0 var(--cl-s3); font-size: 14px; color: var(--cl-ink-2); }
+.gn-pass b { min-width: 52px; text-align: center; font-size: 18px; color: var(--cl-ink); font-variant-numeric: tabular-nums; }
+.gn-pass .cl-ex-btn { min-height: 44px; width: 44px; padding: 0; font-size: 20px; }
+.gn-pass small { flex-basis: 100%; text-align: center; font-size: 12px; }
+
+/* Blatt: Kopfzeile mit Brain-Stempel */
+.gn-ph { justify-content: space-between; align-items: flex-start; }
+.gn-ph-t { min-width: 0; flex: 1; }
+.gn-ph-m { margin-top: 2px; font-size: 12px; color: #6a6678; }
+.gn-stamp { flex: none; display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 5px 9px; border: 1.5px solid var(--ink); border-radius: 8px; transform: rotate(-3deg); color: var(--ink); text-align: center; line-height: 1.15; }
+.gn-stamp img { width: 26px; height: 26px; border-radius: 6px; }
+.gn-stamp b { font: 800 12px var(--cl-font); letter-spacing: .12em; }
+.gn-stamp small { font: 600 9.5px var(--cl-font); color: #55516a; }
+.gn-foot { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: var(--cl-s5); padding-top: var(--cl-s2); border-top: .5px solid #c9c6d2; font-size: 10.5px; color: #6a6678; }
+.gn-foot img { border-radius: 3px; }
+
+.cl-paper, .gn-card { overflow-wrap: break-word; }   /* lange Fachwörter sprengen weder Blatt noch A6-Karte */
+/* Zusammenfassung */
+.gn-sec { margin-bottom: var(--cl-s4); break-inside: avoid; }
+.gn-sec h2 { margin: 0 0 4px; font: 800 14.5px/1.3 var(--cl-font); padding-bottom: 3px; border-bottom: 1px solid var(--ink); }
+.gn-sec p { margin: 4px 0; font-size: 13px; line-height: 1.5; }
+.gn-sec ul { margin: 3px 0; padding-left: 18px; } .gn-sec li { margin: 2px 0; font-size: 12.5px; line-height: 1.45; }
+.gn-dropped { margin-top: var(--cl-s5); padding: var(--cl-s3); border: .8px dashed #8c8996; border-radius: 6px; background: #f6f5f8; break-inside: avoid; }
+.gn-dropped h3 { margin: 0 0 4px; font: 800 11px var(--cl-font); letter-spacing: .08em; text-transform: uppercase; color: #55516a; }
+.gn-dropped ul { margin: 0; padding-left: 16px; } .gn-dropped li { font-size: 12px; margin: 2px 0; }
+
+/* Spickzettel: Karten im A6-Raster */
+.gn-cards { display: grid; grid-template-columns: 1fr; gap: var(--cl-s3); }
+.gn-card { padding: 12px 14px; border: 1px dashed #9a97a6; border-radius: 6px; background: #fff; display: flex; flex-direction: column; min-height: 140px; break-inside: avoid; }
+.gn-card h3 { margin: 0 0 5px; font: 800 14px/1.25 var(--cl-font); padding-bottom: 3px; border-bottom: 1.5px solid var(--ink); }
+.gn-card ul { margin: 0; padding-left: 16px; } .gn-card li { margin: 2px 0; font-size: 12.5px; line-height: 1.4; }
+.gn-card-f { margin-top: auto; padding-top: 8px; display: flex; align-items: center; gap: 4px; font-size: 9.5px; color: #6a6678; }
+.gn-card-st { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 560px) { .gn-cards { grid-template-columns: 1fr 1fr; } }
+
+/* Lösungsblatt: Bewertungsraster, Notenschlüssel */
+.gn-raster { margin: var(--cl-s4) 0; break-inside: avoid; }
+.gn-raster h2, .gn-key h2 { font: 800 14px var(--cl-font); margin: 0 0 var(--cl-s2); padding-bottom: 3px; border-bottom: 1px solid var(--ink); }
+.gn-raster table { width: 100%; border-collapse: collapse; font-size: 12.5px; } .gn-raster th { text-align: left; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: #6a6678; }
+.gn-raster th, .gn-raster td { padding: 3px 6px; border-bottom: .5px solid #c9c6d2; } .gn-raster .tot td { font-weight: 800; }
+.gn-key h2 em { font-style: normal; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 6px; border: 1px solid var(--ink); border-radius: 99px; margin-left: 6px; vertical-align: 2px; }
+.gn-key-n { margin: 0 0 6px; font-size: 11.5px; color: #55516a; }
+
+/* Druck: Spickzettel als 4 × A6 auf A4 (Seitenrand 0), alle Blätter mit Stempel */
+@page cheat { size: A4; margin: 0; }
+.gn-cheat { page: cheat; }
+@media print {
+  .gn-ph { margin-bottom: 5mm; } .gn-stamp img { width: 9mm; height: 9mm; }
+  .gn-sec { margin-bottom: 4mm; } .gn-sec p { font-size: 10pt; } .gn-sec li { font-size: 9.5pt; }
+  body.cl-printing .gn-cheat .gn-ph, body.cl-printing .gn-cheat .gn-dropped { display: none !important; }
+  body.cl-printing .gn-cards { display: grid !important; grid-template-columns: 105mm 105mm; grid-auto-rows: 148mm; gap: 0; }
+  body.cl-printing .gn-card { box-sizing: border-box; padding: 9mm 8mm 7mm; border: 0; border-radius: 0; outline: .3mm dashed #888; outline-offset: -.3mm; min-height: 0; overflow: hidden; }
+  body.cl-printing .gn-card h3 { font-size: 11pt; } body.cl-printing .gn-card li { font-size: 9pt; line-height: 1.35; }
+  body.cl-printing .gn-card-f { font-size: 7pt; }
+  body.cl-printing .gn-dropped, body.cl-printing .gn-raster { background: transparent; }
+}
+
+/* Bezahl-Blatt in der blauen Clarity-Umgebung (die Pro-Farben sind für helle Flächen gedacht) */
+.cl-env .pr2-pw-t { color: var(--cl-ink-2); }
+.cl-env .pr2-blur { background: var(--cl-surface); }
+.cl-env .pr2-blur b { color: var(--cl-ink); }
+.cl-env .pr2-blur span { background: var(--cl-accent); color: var(--cl-accent-ink); }
+.clu-seg.diff button b { font-size: 13px; }
